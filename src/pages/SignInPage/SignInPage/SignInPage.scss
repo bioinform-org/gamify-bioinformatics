@@ -1,3 +1,156 @@
-.signinpage {
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
+.sign-in {
+  padding: 24px 0;
+
+  &__container {
+    @include page-grid;
+  }
+
+  &__explore {
+    grid-column: 2 / 6;
+    background-image: url("../../../../public/images/man-science.svg");
+    background-repeat: no-repeat;
+    background-size: 564px 472px;
+    background-position: center 92px;
+  }
+
+  &__text {
+    color: $c-primary;
+  }
+
+  &__content {
+    grid-column: 8 / 12;
+  }
+
+  &__title {
+    margin: 0 0 16px;
+    color: $c-gray-100;
+  }
+
+  &__subtitle {
+    margin: 0 0 24px;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 16px;
+    color: $c-gray-100;
+    position: relative;
+  }
+
+  &__input {
+    box-sizing: border-box;
+    display: block;
+    margin-top: 4px;
+    background-color: transparent;
+    border: 1px solid $c-gray-40;
+    padding: 13px 16px;
+    width: 448px;
+    font-style: 16px;
+    line-height: 140%;
+    color: $c-gray-50;
+  }
+
+  &__input-eye {
+    position: absolute;
+    top: 50%;
+    transform: translateY(25%);
+    right: 16px;
+  }
+
+  &__forgot-password {
+    display: block;
+    margin-bottom: 24px;
+    color: $c-primary;
+    text-decoration: none;
+  }
+
+  &__submit {
+    border: none;
+    background-color: $c-primary;
+    padding: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    color: $c-white;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  &__divider {
+    margin: 0 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: " ";
+      position: absolute;
+      width: 193px;
+      height: 1px;
+      background-color: $c-gray-40;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+  }
+
+  &__sign-up {
+    color: $c-gray-100;
+    margin: 24px 0;
+  }
+
+  &__sign-up-link {
+    font-weight: 500;
+    text-decoration: none;
+    color: $c-primary;
+  }
+
+  &__terms {
+    font-size: 14px;
+    line-height: 140%;
+
+    a {
+      color: $c-blue;
+      text-decoration: none;
+    }
+  }
+}
+
+.social-buttons {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+
+  &__button {
+    border: none;
+    background-color: $c-gray-10;
+    padding: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    color: $c-gray-100;
+    margin-bottom: 16px;
+  }
+
+  &__button svg {
+    margin-right: 8px;
+  }
 }
