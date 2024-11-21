@@ -1,0 +1,248 @@
+@use "/src/styles/utils/vars";
+@use "/src/styles/utils/mixins";
+@use "/src/styles/utils/extends";
+
+.page-compilator {
+  &__nav {
+    display: flex;
+    width: 100%;
+    padding: 16px 24px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: vars.$c-white;
+    border-radius: 16px;
+
+    &-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 92px;
+      height: 48px;
+      border-radius: 4px;
+      text-decoration: none;
+      background-color: vars.$c-primary-teal;
+
+      &-text {
+        @extend %button-text;
+        color: vars.$c-white;
+      }
+
+      &:hover {
+        background-color: vars.$c-teal-50;
+      }
+
+      &:active {
+        background-color: vars.$c-teal-dark-100;
+      }
+
+      &:disabled {
+        background-color: vars.$c-gray-10;
+      }
+    }
+  }
+
+  &__content {
+    @include mixins.grid;
+    margin-top: 16px;
+    padding-block: 24px;
+    border-radius: 16px;
+    background-color: vars.$c-white;
+  }
+
+  &__title-and-img {
+    grid-column: 2 / 7;
+  }
+
+  &__title {
+    @extend %h3;
+    color: vars.$c-primary-teal;
+  }
+
+  &__img {
+    margin-top: 32px;
+    width: 100%;
+  }
+
+  &__text {
+    color: vars.$c-primary-teal;
+  }
+
+  &__regestration {
+    grid-column: 8 / 12;
+  }
+
+  &__greeting {
+    @extend %h1;
+    color: vars.$c-gray-100;
+  }
+
+  &__message {
+    @extend %body-text;
+    margin-top: 16px;
+    color: vars.$c-gray-60;
+  }
+
+  &__form {
+    margin-top: 24px;
+  }
+
+  &__label {
+    display: block;
+    position: relative;
+    margin-top: 16px;
+    color: vars.$c-gray-100;
+  }
+
+  &__input {
+    @extend %body-text;
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 13px 16px;
+    border: 1px solid vars.$c-gray-40;
+    border-radius: 4px;
+    color: vars.$c-gray-100;
+    outline: none;
+
+    &:focus {
+      border-color: vars.$c-primary-teal;
+    }
+
+    &:not(:placeholder-shown) {
+      border-color: vars.$c-gray-40;
+    }
+  }
+
+  &__input-eye {
+    position: absolute;
+    bottom: 13px;
+    right: 16px;
+    cursor: pointer;
+  }
+
+  &__forgot-password {
+    @extend %button-text;
+    display: block;
+    margin-top: 8px;
+    color: vars.$c-primary-teal;
+    text-decoration: none;
+  }
+
+  &__submit {
+    @extend %button-text;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 24px;
+    padding: 13px;
+    border: none;
+    border-radius: 4px;
+    background-color: vars.$c-primary-teal;
+    color: vars.$c-white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: vars.$c-teal-50;
+    }
+
+    &:active {
+      background-color: vars.$c-teal-dark-100;
+    }
+
+    &:disabled {
+      background-color: vars.$c-gray-10;
+    }
+  }
+
+  &__divider {
+    @extend %secondary-text;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    color: vars.$c-gray-60;
+
+    &::before,
+    &::after {
+      content: " ";
+      position: absolute;
+      width: 193px;
+      height: 1px;
+      background-color: vars.$c-gray-40;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+  }
+
+  &__social-buttons {
+    list-style: none;
+    margin-top: 24px;
+  }
+
+  /* Additional information: dont forget to finish button stylization. */
+  /* Additional information: dont forget to finish button stylization. */
+  /* Additional information: dont forget to finish button stylization. */
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    margin-top: 16px;
+    padding-block: 13px;
+    border: 1px solid vars.$c-gray-40;
+    border-radius: 4px;
+    background-color: vars.$c-gray-10;
+    cursor: pointer;
+
+    &--top {
+      margin-top: 24px;
+    }
+
+    &-text {
+      @extend %button-text;
+      color: vars.$c-teal-dark-100;
+    }
+
+    &-img {
+      margin-right: 8px;
+    }
+  }
+
+  &__sign-up {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+
+    &-text {
+      @extend %body-text;
+      color: vars.$c-gray-100;
+    }
+
+    &-link {
+      @extend %button-text;
+      color: vars.$c-primary-teal;
+      text-decoration: none;
+    }
+  }
+
+
+  &__terms {
+    @extend %secondary-text;
+    margin-top: 24px;
+
+    &-link {
+      color: vars.$c-blue;
+      text-decoration: none;
+    }
+  }
+}

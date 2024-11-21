@@ -1,46 +1,15 @@
-// General Styles
-@import './vars';
-@import './mixins';
-// @import './styles/fonts';
+// @import is going to be deprecated in the future sass
+@use './utils/vars';
 
-// Pages
-@import '../pages/SignInPage/SignInPage/SignInPage';
-
-@import './App.scss';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Ubuntu, sans-serif;
+  transition: all vars.$transition-time;
+}
 
 html {
-  min-width: 1440px;
-  background-color: var(--c-black);
-
-  font-family: Ubuntu, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 140%;
-  color: $c-gray-60;
-}
-
-body {
-  margin: 0;
-}
-
-button {
-  font-family: inherit;
-}
-
-.container {
-  max-width: 1376px;
-  margin: 0 auto;
-  padding-inline: 32px;
-}
-
-.title-h1 {
-  font-weight: 500;
-  font-size: 48px;
-  line-height: 120%;
-}
-
-.title-h3 {
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 120%;
+  background-color: vars.$c-gray-10;
+  padding-block: 24px;
 }
