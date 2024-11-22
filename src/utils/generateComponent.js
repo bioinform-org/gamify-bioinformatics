@@ -12,8 +12,8 @@ function createComponent(componentName) {
     return;
   }
 
-  const indexPath = path.join(componentDir, 'index.ts');
-  fs.writeFileSync(indexPath, `export * from './${path.basename(componentDir)}.tsx';\n`);
+  const indexPath = path.join(componentDir, 'index.tsx');
+  fs.writeFileSync(indexPath, `export * from './${path.basename(componentDir)}';\n`);
 
   const scssPath = path.join(componentDir, `${path.basename(componentDir)}.scss`);
   fs.writeFileSync(scssPath, `.${path.basename(componentDir).toLowerCase()} {\n\n}`);

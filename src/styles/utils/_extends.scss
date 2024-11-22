@@ -1,0 +1,105 @@
+/*#region Typography titles */
+%h-sizes {
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: 0%;
+}
+
+%h1 {
+  @extend %h-sizes;
+  font-size: 48px;
+}
+
+%h2 {
+  @extend %h-sizes;
+  font-size: 36px;
+}
+
+%h3 {
+  @extend %h-sizes;
+  font-size: 30px;
+}
+
+%h4 {
+  @extend %h-sizes;
+  font-size: 24px;
+}
+
+%h5 {
+  @extend %h-sizes;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+%h6 {
+  @extend %h-sizes;
+  font-size: 20px;
+  font-weight: 400;
+}
+/*#endregion Typography titles */
+
+/*#region Typography body text */
+%text-size {
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+%underline {
+  @extend %text-size;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: left;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+%large-body-text {
+  @extend %text-size;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+%large-contrast-text {
+  @extend %text-size;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+%body-text {
+  @extend %text-size;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+%button-text {
+  @extend %text-size;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+%contrast-text {
+  @extend %text-size;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+%secondary-text {
+  @extend %text-size;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+%sall-contrast-text {
+  @extend %text-size;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+%small-description-text {
+  @extend %text-size;
+  font-size: 12px;
+  font-weight: 400;
+}
+/*#endregion Typography body text */
