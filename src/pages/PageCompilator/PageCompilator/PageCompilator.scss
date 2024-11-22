@@ -121,11 +121,54 @@
   }
 
   &__forgot-password {
-    @extend %button-text;
-    display: block;
-    margin-top: 8px;
-    color: vars.$c-primary-teal;
-    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    outline: none;
+
+    &:disabled {
+      .page-compilator__forgot-password-link {
+        color: vars.$c-gray-40;
+        
+        &::after {
+          width: 0;
+        }
+      };
+    }
+
+    &-link {
+      @extend %button-text;
+      display: block;
+      position: relative;
+      margin-top: 8px;
+      color: vars.$c-primary-teal;
+      text-decoration: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: vars.$c-primary-teal;
+        opacity: 0;
+        transition: all vars.$transition-time;
+      }
+
+      &:hover::after,
+      &:focus::after{
+        width: 100%;
+        opacity: 1;
+      }
+
+      &:active {
+        color: vars.$c-teal-dark-100;
+
+        &::after {
+          background-color: vars.$c-teal-dark-100;
+        }
+      }
+    }
   }
 
   &__submit {
@@ -187,10 +230,6 @@
     margin-top: 24px;
   }
 
-  /* Additional information: dont forget to finish button stylization. */
-  /* Additional information: dont forget to finish button stylization. */
-  /* Additional information: dont forget to finish button stylization. */
-
   &__button {
     display: flex;
     justify-content: center;
@@ -214,7 +253,60 @@
     }
 
     &-img {
+      width: 20px;
+      height: 20px;
       margin-right: 8px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    // for future refactor this code into @function
+    $logos-color: ('google' : '/public/images/google-logo.svg', 
+    'facebook' : '/public/images/facebook-logo.svg',
+    'apple' : '/public/images/apple-logo.svg');
+
+    @each $logo, $url in $logos-color {
+      .page-compilator__button-img--#{$logo} {
+        background-image: url($url);
+      }
+    }
+
+    &:hover {
+      border-color: vars.$c-teal-dark-100;
+      background-color: vars.$c-light-teal-10;
+
+      .page-compilator__button-text {
+        color: vars.$c-teal-dark-100;
+      }
+    }
+
+    &:active {
+      border-color: transparent;
+      background-color: vars.$c-light-teal-30;
+
+      .page-compilator__button-text {
+        color: vars.$c-teal-dark-100;
+      }
+    }
+
+    &:disabled {
+      border-color: vars.$c-gray-40;
+      background-color: vars.$c-white;
+
+      .page-compilator__button-text {
+        color: vars.$c-gray-40;
+      }
+
+      $logos-grey: ('google' : '/public/images/google-logo-grey.svg', 
+      'facebook' : '/public/images/facebook-logo-grey.svg',
+      'apple' : '/public/images/apple-logo-grey.svg');
+
+      @each $logo, $url in $logos-grey {
+        .page-compilator__button-img--#{$logo} {
+          background-image: url($url);
+        }
+      }
     }
   }
 
@@ -228,10 +320,54 @@
       color: vars.$c-gray-100;
     }
 
+    &-button {
+      border: none;
+      background-color: transparent;
+      outline: none;
+
+      &:disabled {
+        .page-compilator__sign-up-link {
+          color: vars.$c-gray-40;
+          
+          &::after {
+            width: 0;
+          }
+        };
+      }
+    }
+
     &-link {
       @extend %button-text;
+      position: relative;
       color: vars.$c-primary-teal;
       text-decoration: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: vars.$c-primary-teal;
+        opacity: 0;
+        transition: all vars.$transition-time;
+      }
+
+      &:hover::after,
+      &:focus::after{
+        width: 100%;
+        opacity: 1;
+      }
+
+      // possible feature: make all underlines using ::after, so their appearance will be smooth and good-looking;
+      &:active {
+        color: vars.$c-teal-dark-100;
+
+        &::after {
+          background-color: vars.$c-teal-dark-100;
+        }
+      }
     }
   }
 
@@ -240,9 +376,56 @@
     @extend %secondary-text;
     margin-top: 24px;
 
+    &-button {
+      border: none;
+      background-color: vars.$c-white;
+      outline: none;
+
+      //button-links styles have similar underline implemantation - find a way to make it into a function or DRY (dont repeat yourself)
+      //@each also has similar implementation - find a way to DRY
+
+      &:disabled {
+        .page-compilator__terms-link {
+          color: vars.$c-gray-40;
+          
+          &::after {
+            width: 0;
+          }
+        };
+      }
+    }
+
     &-link {
+      position: relative;
       color: vars.$c-blue;
       text-decoration: none;
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: vars.$c-blue;
+        opacity: 0;
+        transition: all 300ms
+      }
+
+      &:hover::after,
+      &:focus::after{
+        width: 100%;
+        opacity: 1;
+      }
+
+      &:active {
+        color: vars.$c-gray-100;
+
+        &::after {
+          transition: all vars.$transition-time;
+        }
+      }
     }
   }
 }

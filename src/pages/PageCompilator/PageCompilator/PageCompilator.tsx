@@ -98,9 +98,12 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               )}
     
               {pathname.includes('/sign-in') && (
-                <Link to="/reset" className="page-compilator__forgot-password">
-                  I forgot my password
-                </Link>
+                // ask designers if there is a need for this button disable stylization
+                <button className='page-compilator__forgot-password'>
+                  <Link to="/reset" className="page-compilator__forgot-password-link">
+                    I forgot my password
+                  </Link>
+                </button>
               )}
 
               <button type="submit" className="page-compilator__submit">
@@ -113,23 +116,21 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
             <>
               <span className="page-compilator__divider">or</span>
 
-              {/* Additional information: dont forget to finish button stylization. */}
-              {/* Additional information: dont forget to finish button stylization. */}
-              {/* Additional information: dont forget to finish button stylization. */}
               <ul className="page-compilator__social-buttons">
                 {['Google', 'Facebook', 'Apple'].map((button, i) => {
                   return (
-                    <li className="page-compilator__button-container">
+                    <li 
+                      className="page-compilator__button-container"
+                      key={button}
+                    >
                       <button 
                         className={classNames("page-compilator__button", {
                           "page-compilator__button--top": !i
                         })}
                       >
-                        <img 
-                          src={`../../../public/images/${button.toLowerCase()}-logo.svg`} 
-                          alt={`${button} Logo`} 
-                          className="page-compilator__button-img" 
-                        />
+                        <div 
+                          className={`page-compilator__button-img page-compilator__button-img--${button.toLowerCase()}`}
+                        ></div>
 
                         <div className="page-compilator__button-text">
                           Continue with {button}
@@ -140,37 +141,44 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
                 })}
               </ul>
 
-              <p className="page-compilator__sign-up">
-                <div className="page-compilator__sign-up-text">
+              <div className="page-compilator__sign-up">
+                <p className="page-compilator__sign-up-text">
                   {pathname.includes('sign-in') ? "Not a member yet?" : "Already have an account?"}
-                </div>
+                </p>
 
-                <Link 
-                  to={pathname.includes('sign-in') ? '/sign-up': '/sign-in'} 
-                  className="page-compilator__sign-up-link"
-                >
-                  {pathname.includes('sign-in') ? 'Sign Up': 'Log In'}
-                </Link>
-              </p>
+                {/* // ask designers if there is a need for this button disable stylization */}
+                <button className="page-compilator__sign-up-button">
+                  <Link 
+                    to={pathname.includes('sign-in') ? '/sign-up': '/sign-in'} 
+                    className="page-compilator__sign-up-link"
+                  >
+                    {pathname.includes('sign-in') ? 'Sign Up': 'Log In'}
+                  </Link>
+                </button>
+              </div>
 
               <p className="page-compilator__terms">
-                By continuing, you agree to our 
-                <a 
-                  href="#"
-                  className='page-compilator__terms-link'
-                >
-                  Privacy Policy
-                </a> 
+                By continuing, you agree to our&nbsp;
+                <button className='page-compilator__terms-button'>
+                  <Link 
+                    to="/"
+                    className='page-compilator__terms-link'
+                  >
+                    Privacy Policy
+                  </Link>
+                </button> 
 
                 <br />
 
                 and&nbsp;
-                <a 
-                  href="#"
-                  className='page-compilator__terms-link'
-                >
-                  Terms of Service
-                </a>.
+                <button className='page-compilator__terms-button'>
+                  <Link 
+                    to="/"
+                    className='page-compilator__terms-link'
+                  >
+                    Terms of Service
+                  </Link>.
+                </button> 
               </p>
             </>
           )}
