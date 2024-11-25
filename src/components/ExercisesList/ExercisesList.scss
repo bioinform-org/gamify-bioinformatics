@@ -1,0 +1,24 @@
+@use "../../styles/utils/extends";
+@use "../../styles/utils/vars";
+
+$padding-inline: 24px;
+
+.exercises-list {
+  background-color: vars.$c-white;
+  border-radius: 16px;
+
+  &__title {
+    border-bottom: 1px solid vars.$c-gray-10;
+    padding: 16px $padding-inline;
+    @extend %h4;
+    color: vars.$c-gray-100;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 24px $padding-inline;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}

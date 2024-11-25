@@ -5,6 +5,8 @@ import { SignInPage } from "./pages/SignInPage/SignInPage";
 import { SignUpPage } from "./pages/SignUpPage/SignUpPage";
 import './styles/App.scss';
 import classNames from "classnames";
+import { ExercisesPage } from "./pages/ExercisesPage";
+import { MyExercisesPage } from "./pages/MyExercisesPage";
 
 export const App: React.FC = () => {
   return (
@@ -16,6 +18,8 @@ export const App: React.FC = () => {
           <Route path='sign-in' element={<SignInPage/>}/>
           <Route path='sign-up' element={<SignUpPage/>}/>
           <Route path='reset' element={<ResetPasswordPage/>}/>
+          <Route path='exercises' element={<ExercisesPage/>}/>
+          <Route path='my-exercises' element={<MyExercisesPage/>}/>
         </Route>
       </Routes>
     </div>

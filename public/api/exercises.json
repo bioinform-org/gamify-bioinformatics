@@ -1,0 +1,83 @@
+[
+  {
+    "title": "The poisonous milkshake",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "Gene Regulation",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": 60,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "DNA Repair",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "Protein Synthesis",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "4",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "Genetic Mutations",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "3",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "Cell Signaling",
+    "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
+    "steps": 4,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Molecular biology"
+  },
+  {
+    "title": "Python Fundamentals",
+    "description": "Learn important Python basics with fun tasks and hands-on activities to help you code better.",
+    "steps": 3,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": 100,
+    "topic": "Basics of Python"
+  },
+  {
+    "title": "Data Types",
+    "description": "Learn about Python data types with fun tasks and hands-on activities to help you understand them better.",
+    "steps": 4,
+    "time": "1",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Basics of Python"
+  },
+  {
+    "title": "Loops & Conditions",
+    "description": "Learn about Python loops and conditions with fun tasks and hands-on activities to help you understand them better.",
+    "steps": 4,
+    "time": "2",
+    "imagePath": "../../../public/images/milkshake-image.png",
+    "progress": null,
+    "topic": "Basics of Python"
+  }
+]

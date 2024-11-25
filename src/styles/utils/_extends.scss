@@ -1,3 +1,5 @@
+@use "/src/styles/utils/vars";
+
 /*#region Typography titles */
 %h-sizes {
   font-weight: 500;
@@ -103,3 +105,130 @@
   font-weight: 400;
 }
 /*#endregion Typography body text */
+
+/*#region Button styles */
+
+%text-button {
+  position: relative;
+  cursor: pointer;
+  color: vars.$c-primary-teal;
+  transition: color vars.$transition-time;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: vars.$c-primary-teal;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform vars.$transition-time ease;
+  }
+
+  &:hover {
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  &:active {
+    color: vars.$c-teal-dark-100;
+
+    &::before {
+      background-color: vars.$c-teal-dark-100;
+    }
+  }
+
+  &:disabled {
+    color: vars.$c-gray-40;
+  }
+}
+
+%primary-button {
+  cursor: pointer;
+  color: vars.$c-white;
+  background-color: vars.$c-primary-teal;
+  transition: background-color vars.$transition-time,
+    color vars.$transition-time;
+
+  &:hover {
+    background-color: vars.$c-teal-50;
+  }
+
+  &:active {
+    background-color: vars.$c-teal-dark-100;
+  }
+
+  &:disabled {
+    color: vars.$c-gray-40;
+    background-color: vars.$c-gray-40;
+    cursor: not-allowed;
+  }
+}
+
+%text-icon-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: vars.$c-gray-100;
+  border: 1px solid transparent;
+  transition: background-color vars.$transition-time,
+    border-color vars.$transition-time;
+
+  &:hover {
+    background-color: vars.$c-gray-10;
+    border-color: vars.$c-gray-40;
+  }
+
+  &:active {
+    background-color: vars.$c-light-teal-30;
+    border-color: vars.$c-primary-teal;
+  }
+
+  &:disabled {
+    color: vars.$c-gray-40;
+    cursor: not-allowed;
+  }
+}
+
+%colored-button {
+  position: relative;
+  cursor: pointer;
+  color: vars.$c-primary-teal;
+  transition: color vars.$transition-time;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: vars.$c-primary-teal;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform vars.$transition-time ease;
+  }
+
+  &:hover {
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  &:active {
+    color: vars.$c-teal-dark-100;
+
+    &::before {
+      background-color: vars.$c-teal-dark-100;
+    }
+  }
+
+  &:disabled {
+    color: vars.$c-gray-40;
+  }
+}
+
+/*#endregion Button styles */
