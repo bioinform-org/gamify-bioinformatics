@@ -1,0 +1,129 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/mixins";
+@use "../../styles/utils/extends";
+
+.page-layout {
+  @include mixins.grid;
+
+  &__content {
+    grid-column: span 9;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background-color: vars.$c-white;
+    border-radius: 16px;
+    position: relative;
+  }
+
+  &__title {
+    @extend %h3;
+  }
+
+  &__user {
+    display: flex;
+    gap: 8px;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -25%;
+      left: -16px;
+      width: 1px;
+      height: 48px;
+      background-color: vars.$c-gray-10;
+    }
+  }
+
+  &__user-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    background-color: transparent;
+    @extend %button-text;
+    @extend %colored-button;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-image: url("/public/images/arrow-down.svg");
+    }
+
+    &:active {
+      &::after {
+        background-image: url("/public/images/arrow-down-dark.svg");
+      }
+    }
+  }
+
+  &__user-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 4px);
+    list-style-type: none;
+    background-color: vars.$c-white;
+    border-radius: 4px;
+  }
+
+  &__user-menu-btn {
+    display: block;
+    text-decoration: none;
+    color: vars.$c-gray-100;
+    width: 216px;
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    @extend %secondary-text;
+    @extend %text-icon-button;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    &--settings::before {
+      background-image: url("/public/images/gearsix.svg");
+    }
+
+    &--help::before {
+      background-image: url("/public/images/question.svg");
+    }
+
+    &--logout::before {
+      background-image: url("/public/images/logout.svg");
+    }
+  }
+
+  &__loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 112px;
+    gap: 24px;
+  }
+
+  &__loader-text {
+    color: vars.$c-gray-100;
+    @extend %body-text;
+  }
+
+  &__error-message {
+    color: vars.$c-gray-60;
+    @extend %body-text;
+  }
+}

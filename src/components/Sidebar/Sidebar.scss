@@ -1,0 +1,77 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+$side-bar-padding: 24px;
+
+$icons: (
+  "exercises": "/public/images/cases-black.svg",
+  "dashboard": "/public/images/dashboard-black.svg",
+  "my-exercises": "/public/images/chatbar-black.svg",
+  "chats": "/public/images/chat-black.svg",
+  "team": "/public/images/users-black.svg",
+);
+
+$active-icons: (
+  "exercises": "/public/images/cases-prima.svg",
+  "dashboard": "/public/images/dashboard-prima.svg",
+  "my-exercises": "/public/images/chatbar-prima.svg",
+  "chats": "/public/images/chat-prima.svg",
+  "team": "/public/images/users-prima.svg",
+);
+
+.side-bar {
+  grid-column: 1 / 4;
+  width: 332px;
+  height: 804px;
+  background-color: vars.$c-white;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: $side-bar-padding;
+    border-bottom: 1px solid rgba(241, 242, 242, 1);
+  }
+
+  &__nav {
+    padding: $side-bar-padding;
+  }
+
+  &__list {
+    list-style-type: none;
+  }
+
+  &__link {
+    display: flex;
+    gap: 8px;
+    text-decoration: none;
+    padding: 14px 8px;
+    @extend %body-text;
+    @extend %text-icon-button;
+
+    @each $key, $icon in $icons {
+      &.side-bar__link--#{$key}::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url(#{$icon});
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+    }
+
+    &--active {
+      background-color: vars.$c-gray-10;
+      color: vars.$c-primary-teal;
+      @extend %contrast-text;
+
+      @each $key, $active-icon in $active-icons {
+        &.side-bar__link--#{$key}::before {
+          background-image: url(#{$active-icon});
+        }
+      }
+    }
+  }
+}
