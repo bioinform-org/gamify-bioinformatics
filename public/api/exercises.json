@@ -13,7 +13,7 @@
     "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
     "steps": 4,
     "time": "1",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/gene-regulation.png",
     "progress": 60,
     "topic": "Molecular biology"
   },
@@ -22,7 +22,7 @@
     "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
     "steps": 4,
     "time": "1",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/dna-repairing.png",
     "progress": null,
     "topic": "Molecular biology"
   },
@@ -31,7 +31,7 @@
     "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
     "steps": 4,
     "time": "4",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/protein-synthesis.png",
     "progress": null,
     "topic": "Molecular biology"
   },
@@ -40,7 +40,7 @@
     "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
     "steps": 4,
     "time": "3",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/genetic-mutations.png",
     "progress": null,
     "topic": "Molecular biology"
   },
@@ -49,7 +49,7 @@
     "description": "Learn important science ideas with fun tasks and hands-on activities to help you understand and use science better.",
     "steps": 4,
     "time": "1",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/cell-signaling.png",
     "progress": null,
     "topic": "Molecular biology"
   },
@@ -58,7 +58,7 @@
     "description": "Learn important Python basics with fun tasks and hands-on activities to help you code better.",
     "steps": 3,
     "time": "1",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/python-fundamentals.png",
     "progress": 100,
     "topic": "Basics of Python"
   },
@@ -67,7 +67,7 @@
     "description": "Learn about Python data types with fun tasks and hands-on activities to help you understand them better.",
     "steps": 4,
     "time": "1",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/data-types.png",
     "progress": null,
     "topic": "Basics of Python"
   },
@@ -76,7 +76,7 @@
     "description": "Learn about Python loops and conditions with fun tasks and hands-on activities to help you understand them better.",
     "steps": 4,
     "time": "2",
-    "imagePath": "../../../public/images/milkshake-image.png",
+    "imagePath": "../../../public/images/loops-&-conditions.png",
     "progress": null,
     "topic": "Basics of Python"
   }
