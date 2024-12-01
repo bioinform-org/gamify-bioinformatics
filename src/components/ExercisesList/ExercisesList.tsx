@@ -14,7 +14,10 @@ export const ExercisesList: React.FC<Props> = ({ listTitle, exercises }) => {
 
       <ul className="exercises-list__list">
         {exercises.map((exercise) => (
-          <li className="exercises-list__item">
+          <li
+            key={exercise.title}
+            className="exercises-list__item"
+          >
             <ExerciseCard
               title={exercise.title}
               description={exercise.description}

@@ -3,6 +3,9 @@ import { Sidebar } from "../../components/Sidebar";
 import "./PageLayout.scss";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
+import { useAppSelector } from "../../store/hooks";
+import { selectUser } from "../../store/features/userSlice";
+import { User } from "../../types/ProductType";
 
 type Props = {
   children: React.ReactNode;
@@ -18,6 +21,7 @@ export const PageLayout: React.FC<Props> = ({
   errorMessage,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const user = useAppSelector(selectUser);
 
   return (
     <div className="page-layout">
@@ -37,7 +41,7 @@ export const PageLayout: React.FC<Props> = ({
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              Student Name
+              {(user as User).userName}
             </button>
           </div>
           {isMenuOpen && (

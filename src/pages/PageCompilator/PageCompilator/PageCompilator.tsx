@@ -1,7 +1,10 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './PageCompilator.scss';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import classNames from 'classnames';
+import { createUser, getUser } from '../../../api';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { selectUser, setUser } from '../../../store/features/userSlice';
 
 type PageCopilatorProps = {
   titlesText: {
@@ -24,7 +27,36 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   shouldBePassword = true,
 }) => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log('submit');
+
+    if (pathname === '/sign-in' && email && password) {
+      getUser(email)
+        .then(res => {
+          dispatch(setUser(res[0]))
+
+          if (res[0].password === password) {
+            navigate('/exercises');
+          }
+        });
+    }
+
+    if (pathname === '/sign-up' && email && password) {
+      return createUser(email, password)
+        .then(res => {
+          dispatch(setUser(res[0]))
+          navigate('/exercises')
+        });
+    }
+  }
 
   return (
     <div className="page-compilator">
@@ -66,7 +98,10 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
           </p>
 
           {shouldBeForm && (
-            <form className="page-compilator__form" action="">
+            <form 
+              className="page-compilator__form" 
+              onSubmit={handleSubmit}
+            >
               {shouldBeEmail && (
                 <label className="page-compilator__label">
                   Email
@@ -74,6 +109,8 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
                     className="page-compilator__input"
                     type="email"
                     placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </label>
               )}
@@ -85,6 +122,8 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
                     className="page-compilator__input"
                     type={isPasswordVisible ? 'text' : 'password'}
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   >
                   </input>
 
