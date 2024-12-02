@@ -3,8 +3,8 @@ import './PageCompilator.scss';
 import { FormEvent, useState } from 'react';
 import classNames from 'classnames';
 import { createUser, getUser } from '../../../api';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { selectUser, setUser } from '../../../store/features/userSlice';
+import { useAppDispatch } from '../../../store/hooks';
+import { setUser } from '../../../store/features/userSlice';
 
 type PageCopilatorProps = {
   titlesText: {
@@ -34,7 +34,8 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
 
-  //add email and password verification password
+  //add email and password verification function
+  //add new styles on incorrect fields
   //add incorrect email and password message during login (show message 'Email or password is incorrect. Please try again')
   //add incorrect email and password message during signing up (show messages: 
   //'this email is already used' - email
@@ -47,9 +48,9 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
     if (pathname === '/sign-in' && email && password) {
       getUser(email)
         .then(res => {
-          dispatch(setUser(res[0]))
+          dispatch(setUser(res))
 
-          if (res[0].password === password) {
+          if (res.password === password) {
             navigate('/exercises');
           }
         });
@@ -58,7 +59,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
     if (pathname === '/sign-up' && email && password) {
       return createUser(email, password)
         .then(res => {
-          dispatch(setUser(res[0]))
+          dispatch(setUser(res))
           navigate('/exercises')
         });
     }

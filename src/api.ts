@@ -67,10 +67,10 @@ function patch<T>(url: string, body: body = {}): Promise<T> {
 
 export const getExercises = () => get<Exercise[]>('/exercises');
 export const getUsers = () => get<User[]>('/users');
-export const getUser = (email: string) => get<User[]>(`/users`, { email });
+export const getUser = (email: string) => get<User>(`/users`, { email });
 
 // To use this function, we need to always pass user3@gmail.com as an email and PassWord3! as password, to receive response from mock server
-export const createUser = (email: string, password: string) => post<User[]>(
+export const createUser = (email: string, password: string) => post<User>(
   '/users', 
   {email, password, userName: email.split('@')[0]},
 );
