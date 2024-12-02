@@ -10,9 +10,10 @@ type PageCopilatorProps = {
   titlesText: {
     titleTop: string,
     titleBottom: string,
+    secondTitleBottom?: string,
   },
   imageLink: string,
-  submitMessage: string,
+  submitMessage?: string,
   shouldBeForm?: boolean,
   shouldBeEmail?: boolean,
   shouldBePassword?: boolean,
@@ -31,12 +32,17 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+
+  //add email and password verification password
+  //add incorrect email and password message during login (show message 'Email or password is incorrect. Please try again')
+  //add incorrect email and password message during signing up (show messages: 
+  //'this email is already used' - email
+  //'the password hasn't met requirements' - password
+  //)
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('submit');
 
     if (pathname === '/sign-in' && email && password) {
       getUser(email)
@@ -96,6 +102,12 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
           <p className="page-compilator__message">
             {titlesText.titleBottom}
           </p>
+
+          {titlesText.secondTitleBottom && (
+            <p className="page-compilator__message">
+              {titlesText.secondTitleBottom}
+            </p>
+          )}
 
           {shouldBeForm && (
             <form 
