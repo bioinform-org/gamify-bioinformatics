@@ -1,10 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './PageCompilator.scss';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { createUser, getUser } from '../../../api';
-import { useAppDispatch } from '../../../store/hooks';
-import { setUser } from '../../../store/features/userSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { createUser, getUser, selectUser } from '../../../store/features/userSlice';
 
 type PageCopilatorProps = {
   titlesText: {
@@ -32,8 +31,10 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
+  //will need to be implemented
   //add email and password verification function
   //add new styles on incorrect fields
   //add incorrect email and password message during login (show message 'Email or password is incorrect. Please try again')
@@ -46,24 +47,19 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
     e.preventDefault();
 
     if (pathname === '/sign-in' && email && password) {
-      getUser(email)
-        .then(res => {
-          dispatch(setUser(res))
-
-          if (res.password === password) {
-            navigate('/exercises');
-          }
-        });
+      dispatch(getUser({email, password}));
     }
 
     if (pathname === '/sign-up' && email && password) {
-      return createUser(email, password)
-        .then(res => {
-          dispatch(setUser(res))
-          navigate('/exercises')
-        });
+      dispatch(createUser({email, password}))
     }
   }
+
+  useEffect(() => {
+    if (user.value) {
+      navigate('/exercises');
+    }
+  }, [user.value])
 
   return (
     <div className="page-compilator">

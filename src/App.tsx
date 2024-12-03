@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { ResetPasswordPage } from "./pages/ResetPasswordPage/ResetPasswordPage";
 import { SignInPage } from "./pages/SignInPage/SignInPage";
 import { SignUpPage } from "./pages/SignUpPage/SignUpPage";
@@ -29,8 +29,6 @@ export const App: React.FC = () => {
           <Route path='email-sent' element={<ResetPasswordEmailSendPage/>}/>
           <Route path='set-password/:tokenId' element={<ResetPasswordSetNewPasswordPage/>}/>
         </Route>
-
-        <Route path="*" element={<Navigate to="sign-in"/>} />
       </Routes>
     </div>
   )

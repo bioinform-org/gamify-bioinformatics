@@ -65,17 +65,28 @@ function patch<T>(url: string, body: body = {}): Promise<T> {
     .then(({data}) => data)
 };
 
-export const getExercises = () => get<Exercise[]>('/exercises');
-export const getUsers = () => get<User[]>('/users');
-export const getUser = (email: string) => get<User>(`/users`, { email });
+//delete word is reserved, replaced it with remove
+function remove(url: string): Promise<string> {
+  return wait(300)
+    .then(() => API_URL.delete(url))
+    .then((response) => response.statusText)
+};
+
+export const getExercisesFromServer = () => get<Exercise[]>('/exercises');
+export const getUsersFromServer = () => get<User[]>('/users');
+export const getUserFromServer = (email: string) => get<User>(`/users`, { email });
 
 // To use this function, we need to always pass user3@gmail.com as an email and PassWord3! as password, to receive response from mock server
-export const createUser = (email: string, password: string) => post<User>(
+export const createNewUser = (email: string, password: string) => post<User>(
   '/users', 
   {email, password, userName: email.split('@')[0]},
 );
 
-export const updateUser = (email: string, password: string) => patch<User>(
+//these two function are currently in development with mock server / maybe  it will be even better just to wait for a ready server to make work easier
+
+export const updateUserInfo = (email: string, password: string) => patch<User>(
   '/users', 
   {email, password, userName: email.split('@')[0]},
 );
+
+export const deleteUserFromServer = () => remove('/users?userId=0');
