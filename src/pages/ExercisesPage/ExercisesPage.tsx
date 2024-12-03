@@ -3,75 +3,58 @@ import { ExercisesList } from "../../components/ExercisesList";
 import { PageLayout } from "../PageLayout";
 import { useEffect, useState } from "react";
 import { Exercise } from "../../types/ProductType";
-import { getExercises } from "../../api";
+import { getExercises } from "../../store/features/exercisesSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { selectExercises, setErrorMessageForMessages } from "../../store/features/exercisesSlice";
 
 type Props = {};
 
 export const ExercisesPage: React.FC<Props> = () => {
   const [molBioExercises, setMolBioExercises] = useState<Exercise[]>([]);
   const [pythonExercises, setPythonExercises] = useState<Exercise[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const exercises = useAppSelector(selectExercises);
+  const dispatch = useAppDispatch()
+
+  //CHECK OUT MyExercisesPage.tsx WHERE IS THE SAME CODE AS HERE
 
   useEffect(() => {
-    setIsLoading(true);
-
-    getExercises()
-      .then((readyExercises) =>
-        readyExercises.filter(
-          (exercise) => exercise.topic === "Molecular biology"
-        )
-      )
-      .then(setMolBioExercises)
-      .catch(() => {
-        setErrorMessage(
-          "No exercises available at the moment. Please check back later."
-        );
-      })
-      .finally(() => setIsLoading(false));
+    dispatch(getExercises());
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    getExercises()
-      .then((readyExercises) =>
-        readyExercises.filter(
-          (exercise) => exercise.topic === "Basics of Python"
-        )
-      )
-      .then(setPythonExercises)
-      .catch(() => {
-        setErrorMessage(
-          "No exercises available at the moment. Please check back later."
-        );
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
+    if (exercises.value) {
+      setMolBioExercises(exercises.value.filter(
+        (exercise) => exercise.topic === "Molecular biology"
+      ));
+      setPythonExercises(exercises.value.filter(
+        (exercise) => exercise.topic === "Basics of Python"
+      ));
+    }
+  }, [exercises.value])
 
   useEffect(() => {
     if (!molBioExercises.length && !pythonExercises.length) {
-      setErrorMessage(
+      dispatch(setErrorMessageForMessages(
         "No exercises available at the moment. Please check back later."
-      );
+      ))
     } else {
-      setErrorMessage("");
+      dispatch(setErrorMessageForMessages(""))
     }
   }, [molBioExercises, pythonExercises]);
 
   return (
     <PageLayout
       pageTitle="Exercises"
-      isLoading={isLoading}
-      errorMessage={errorMessage}
+      isLoading={exercises.isLoading}
+      errorMessage={exercises.errorMessage}
     >
-      {!isLoading && molBioExercises.length > 0 && (
+      {!exercises.isLoading && molBioExercises.length > 0 && (
         <ExercisesList
           listTitle="Molecular biology"
           exercises={molBioExercises}
         />
       )}
-      {!isLoading && pythonExercises.length > 0 && (
+      {!exercises.errorMessage && pythonExercises.length > 0 && (
         <ExercisesList
           listTitle="Basics of Python"
           exercises={pythonExercises}
