@@ -6,6 +6,8 @@ import { SignUpPage } from "./pages/SignUpPage/SignUpPage";
 import './styles/App.scss';
 import { ExercisesPage } from "./pages/ExercisesPage";
 import { MyExercisesPage } from "./pages/MyExercisesPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { Team } from "./pages/Team";
 
 export const App: React.FC = () => {
   return (
@@ -18,7 +20,9 @@ export const App: React.FC = () => {
         <Route path='sign-up' element={<SignUpPage/>}/>
         <Route path='reset' element={<ResetPasswordPage/>}/>
         <Route path='exercises' element={<ExercisesPage/>}/>
+        <Route path='dashboard' element={<DashboardPage/>}/>
         <Route path='my-exercises' element={<MyExercisesPage/>}/>
+        <Route path='team' element={<Team/>}/>
       </Routes>
     </div>
   )

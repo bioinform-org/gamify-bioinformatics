@@ -1,0 +1,77 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+.progress {
+  border-radius: 16px;
+  background-color: vars.$c-white;
+  padding: 24px;
+
+  &__title {
+    @extend %h4;
+    color: vars.$c-gray-100;
+    margin-bottom: 24px;
+  }
+
+  &__table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+
+    thead {
+      th {
+        background-color: transparent;
+        border: none;
+        padding: 0 0 24px;
+        @extend %secondary-text;
+        color: vars.$c-gray-50;
+      }
+
+      th:first-child {
+        text-align: left;
+      }
+      th:last-child {
+        text-align: right;
+      }
+    }
+
+    tbody {
+      tr {
+        &:first-child td:first-child {
+          border-top-left-radius: 6px;
+        }
+        &:first-child td:last-child {
+          border-top-right-radius: 6px;
+        }
+        &:last-child td:first-child {
+          border-bottom-left-radius: 6px;
+        }
+        &:last-child td:last-child {
+          border-bottom-right-radius: 6px;
+        }
+
+        td:first-child {
+          border-right: none;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        td:last-child {
+          border-left: none;
+          text-align: right;
+        }
+
+        td {
+          border: 1px solid vars.$c-gray-10;
+          text-align: left;
+          padding: 12px;
+          @extend %body-text;
+
+          .icon {
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+}
