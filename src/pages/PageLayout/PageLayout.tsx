@@ -3,9 +3,8 @@ import { Sidebar } from "../../components/Sidebar";
 import "./PageLayout.scss";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
-import { useAppSelector } from "../../store/hooks";
-import { selectUser } from "../../store/features/userSlice";
-import { User } from "../../types/ProductType";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { selectUser, setUser } from "../../store/features/userSlice";
 
 type Props = {
   children: React.ReactNode;
@@ -22,6 +21,7 @@ export const PageLayout: React.FC<Props> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="page-layout">
@@ -41,7 +41,7 @@ export const PageLayout: React.FC<Props> = ({
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {(user as User).userName}
+              {user.value?.userName}
             </button>
           </div>
           {isMenuOpen && (
@@ -65,7 +65,9 @@ export const PageLayout: React.FC<Props> = ({
               <li className="page-layout__user-menu-item">
                 <Link
                   className="page-layout__user-menu-btn page-layout__user-menu-btn--logout"
-                  to="#"
+                  to=""
+                  //adding logging out by setting user to null
+                  onClick={() => dispatch(setUser(null))}
                 >
                   Log Out
                 </Link>
