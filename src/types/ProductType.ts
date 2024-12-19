@@ -6,11 +6,16 @@ export type Exercise = {
   imagePath: string;
   progress: number | null;
   topic: string;
-}
+};
 
 export type User = {
-  userId: number,
-  userName: string,
-  email: string,
-  password: string,
-}
+  userId: number;
+  userName: string;
+  email: string;
+  password: string;
+};
+
+export type Reward = {
+  title: string;
+  imagePath: string;
+};

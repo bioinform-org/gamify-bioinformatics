@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Frontend Warriors",
+    "members": 5,
+    "createdAt": "2023-12-01"
+  },
+  {
+    "id": 2,
+    "name": "Backend Titans",
+    "members": 7,
+    "createdAt": "2023-11-20"
+  },
+  {
+    "id": 3,
+    "name": "Fullstack Avengers",
+    "members": 3,
+    "createdAt": "2023-10-15"
+  }
+]
