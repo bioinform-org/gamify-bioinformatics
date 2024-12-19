@@ -6,14 +6,8 @@ import { SignUpPage } from "./pages/SignUpPage/SignUpPage";
 import './styles/App.scss';
 import { ExercisesPage } from "./pages/ExercisesPage";
 import { MyExercisesPage } from "./pages/MyExercisesPage";
-<<<<<<< HEAD
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
-=======
-import { ResetPasswordEmailSendPage } from "./pages/ResetPasswordEmailSendPage";
-import { ResetPasswordSetNewPasswordPage } from "./pages/ResetPasswordSetNewPasswordPage";
-import { AuthComponent } from "./components/AuthComponent";
->>>>>>> 9d5e2573ed66b0d79811acca2485adc33bc1c9bb
 
 export const App: React.FC = () => {
   return (

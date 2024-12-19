@@ -9,8 +9,8 @@
   &__welcome {
     grid-column: 1 / 10;
     border-radius: 16px;
-    background-color: vars.$c-yellow;
     padding: 24px;
+    background-color: vars.$c-yellow;
   }
 
   &__rewards {
@@ -44,14 +44,14 @@
   }
 
   &__welcome-item {
-    background-color: vars.$c-white;
-    border-radius: 8px;
-    padding: 16px;
-    width: 176px;
-    height: 102px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 176px;
+    height: 102px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: vars.$c-white;
   }
 
   &__welcome-item-title {
