@@ -1,9 +1,9 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './PageCompilator.scss';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { createUser, getUser, selectUser } from '../../../store/features/userSlice';
+import { loginUser, regestrUser } from '../../../api';
+import { Role } from '../../../types/Roles';
 
 type PageCopilatorProps = {
   titlesText: {
@@ -27,39 +27,23 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   shouldBePassword = true,
 }) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
-
-  //will need to be implemented
-  //add email and password verification function
-  //add new styles on incorrect fields
-  //add incorrect email and password message during login (show message 'Email or password is incorrect. Please try again')
-  //add incorrect email and password message during signing up (show messages: 
-  //'this email is already used' - email
-  //'the password hasn't met requirements' - password
-  //)
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (pathname === '/sign-in' && email && password) {
-      dispatch(getUser({email, password}));
+      loginUser(email, password)
+        .then(res => console.log(res))
     }
 
     if (pathname === '/sign-up' && email && password) {
-      dispatch(createUser({email, password}))
+      regestrUser(email, password, 'testUser', Role.user, password)
+        .then(res => (console.log(res)));
     }
   }
-
-  useEffect(() => {
-    if (user.value) {
-      navigate('/exercises');
-    }
-  }, [user.value])
 
   return (
     <div className="page-compilator">
@@ -88,7 +72,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
 
           <img 
             src={imageLink} 
-            alt="Regestration Image" 
+            alt="Regestration img" 
             className='page-compilator__img'
           />
         </div>
@@ -137,11 +121,11 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
                   </input>
 
                   <img 
-                      src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
-                      alt="" 
-                      className='page-compilator__input-eye'
-                      onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                    />
+                    src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
+                    alt="" 
+                    className='page-compilator__input-eye'
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  />
                 </label>
               )}
     

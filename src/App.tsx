@@ -8,7 +8,11 @@ import { ExercisesPage } from "./pages/ExercisesPage";
 import { MyExercisesPage } from "./pages/MyExercisesPage";
 import { ResetPasswordEmailSendPage } from "./pages/ResetPasswordEmailSendPage";
 import { ResetPasswordSetNewPasswordPage } from "./pages/ResetPasswordSetNewPasswordPage";
-import { AuthComponent } from "./components/AuthComponent";
+import { SettingsPage } from "./pages/SettingsPage";
+import { SettingsAccountComponent } from "./components/SettingsAccountComponent";
+import { SettingsConnectedAccountsComponent } from "./components/SettingsConnectedAccountsComponent";
+import { SettingsPasswordComponent } from "./components/SettingsPasswordComponent";
+// import { AuthComponent } from "./components/AuthComponent";
 
 export const App: React.FC = () => {
   return (
@@ -16,18 +20,23 @@ export const App: React.FC = () => {
       className='app'
     >
       <Routes>
-        <Route path="/" element={<AuthComponent />}>
-          <Route path='/exercises' element={<ExercisesPage/>}/>
-          <Route path='/my-exercises' element={<MyExercisesPage/>}/>
+        {/* <Route path="/" element={<AuthComponent />}> */}
+          <Route path='exercises' element={<ExercisesPage/>}/>
+          <Route path='my-exercises' element={<MyExercisesPage/>}/>
+        {/* </Route> */}
+
+        <Route path='sign-in' element={<SignInPage/>} />
+        <Route path='sign-up' element={<SignUpPage/>}/>
+        <Route path='settings' element={<SettingsPage/>}>
+          <Route path='account' element={<SettingsAccountComponent />}/>
+          <Route path='password' element={<SettingsPasswordComponent />}/>
+          <Route path='connected-accounts' element={<SettingsConnectedAccountsComponent />}/>
         </Route>
 
-        <Route path='/sign-in' element={<SignInPage/>} />
-        <Route path='/sign-up' element={<SignUpPage/>}/>
-
-        <Route path='/reset'>
+        <Route path='reset'>
           <Route index element={<ResetPasswordPage/>} />
           <Route path='email-sent' element={<ResetPasswordEmailSendPage/>}/>
-          <Route path='set-password/:tokenId' element={<ResetPasswordSetNewPasswordPage/>}/>
+          <Route path='set-password' element={<ResetPasswordSetNewPasswordPage/>}/>
         </Route>
       </Routes>
     </div>

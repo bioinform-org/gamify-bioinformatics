@@ -3,8 +3,6 @@ import { Sidebar } from "../../components/Sidebar";
 import "./PageLayout.scss";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectUser, setUser } from "../../store/features/userSlice";
 
 type Props = {
   children: React.ReactNode;
@@ -20,8 +18,6 @@ export const PageLayout: React.FC<Props> = ({
   errorMessage,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
 
   return (
     <div className="page-layout">
@@ -40,16 +36,19 @@ export const PageLayout: React.FC<Props> = ({
               className="page-layout__user-btn"
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              //using setTimeout to give some time for a click on the link to be processed before closing
+              onBlur={() => setTimeout(() => setIsMenuOpen(false), 220)}
             >
-              {user.value?.userName}
+              UserName
             </button>
           </div>
+
           {isMenuOpen && (
             <ul className="page-layout__user-menu">
               <li className="page-layout__user-menu-item">
                 <Link
                   className="page-layout__user-menu-btn page-layout__user-menu-btn--settings"
-                  to="/settings"
+                  to="/settings/account"
                 >
                   Settings
                 </Link>
@@ -66,8 +65,6 @@ export const PageLayout: React.FC<Props> = ({
                 <Link
                   className="page-layout__user-menu-btn page-layout__user-menu-btn--logout"
                   to=""
-                  //adding logging out by setting user to null
-                  onClick={() => dispatch(setUser(null))}
                 >
                   Log Out
                 </Link>
