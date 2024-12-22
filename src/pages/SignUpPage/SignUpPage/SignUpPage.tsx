@@ -12,6 +12,10 @@ export const SignUpPage: React.FC<Props> = () => {
       }}
       imageLink={'../../../public/images/sign-up-girl.png'}
       submitMessage="Sign Up"
+      shouldBeForm={true}
+      shouldBeEmail={true}
+      shouldBePassword={true}
+      shouldBePasswordRules={true}
     />
   );
 };

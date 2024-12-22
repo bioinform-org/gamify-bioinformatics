@@ -14,6 +14,8 @@ export const ResetPasswordSetNewPasswordPage: React.FC<Props> = () => {
       submitMessage='Save'
       shouldBeForm={true}
       shouldBeEmail={false}
+      shouldBePassword={true}
+      shouldBePasswordRules={true}
     />
   );
 };

@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import './PageCompilator.scss';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { loginUser, regestrUser } from '../../../api';
-import { Role } from '../../../types/Roles';
+import { PasswordRules } from '../../../components/PasswordRules';
+// import { loginUser, regestrUser } from '../../../api';
+// import { Role } from '../../../types/Roles';
+
 
 type PageCopilatorProps = {
   titlesText: {
@@ -16,33 +18,51 @@ type PageCopilatorProps = {
   shouldBeForm?: boolean,
   shouldBeEmail?: boolean,
   shouldBePassword?: boolean,
+  shouldBePasswordRules?: boolean,
 }
 
 export const PageCompilator: React.FC<PageCopilatorProps> = ({
   titlesText,
   imageLink,
   submitMessage,
-  shouldBeForm = true,
-  shouldBeEmail = true,
-  shouldBePassword = true,
+  shouldBeForm,
+  shouldBeEmail,
+  shouldBePassword,
+  shouldBePasswordRules,
 }) => {
   const { pathname } = useLocation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const passwordPlaceholder = useMemo(() => {
+    switch(true) {
+      case pathname.includes('sign-in'):
+        return 'Enter your password';
+
+      case pathname.includes('sign-up'):
+        return 'Create password';
+      
+      case pathname.includes('reset'):
+        return 'Create your new password';
+
+      default: 
+        return '';
+    }
+  }, [pathname]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (pathname === '/sign-in' && email && password) {
-      loginUser(email, password)
-        .then(res => console.log(res))
-    }
+    //move those methods to their pages and prop them to pageCompilator component
+    // if (pathname === '/sign-in' && email && password) {
+    //   loginUser(email, password)
+    //     .then(res => console.log(res))
+    // }
 
-    if (pathname === '/sign-up' && email && password) {
-      regestrUser(email, password, 'testUser', Role.user, password)
-        .then(res => (console.log(res)));
-    }
+    // if (pathname === '/sign-up' && email && password) {
+    //   regestrUser(email, password, 'testUser', Role.user, password)
+    //     .then(res => (console.log(res)));
+    // }
   }
 
   return (
@@ -109,24 +129,34 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               )}
 
               {shouldBePassword && (
-                <label className="page-compilator__label">
-                  Password
-                  <input
-                    className="page-compilator__input"
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  >
-                  </input>
+                <>
+                  <label className="page-compilator__label">
+                    Password
+                    <input
+                      className="page-compilator__input"
+                      type={isPasswordVisible ? 'text' : 'password'}
+                      placeholder={passwordPlaceholder}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    >
+                    </input>
 
-                  <img 
-                    src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
-                    alt="" 
-                    className='page-compilator__input-eye'
-                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  />
-                </label>
+                    <img 
+                      src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
+                      alt="" 
+                      className='page-compilator__input-eye'
+                      onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    />
+                  </label>
+
+                  {shouldBePasswordRules && (
+                    <div className="page-compilator__password-rules-container">
+                      <PasswordRules 
+                        password={password}
+                      />
+                    </div>
+                  )}
+                </>
               )}
     
               {pathname.includes('/sign-in') && (
