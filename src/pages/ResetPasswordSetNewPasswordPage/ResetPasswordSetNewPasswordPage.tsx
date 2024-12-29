@@ -13,7 +13,10 @@ export const ResetPasswordSetNewPasswordPage: React.FC<Props> = () => {
       imageLink={'../../../public/images/reset-girl.png'}
       submitMessage='Save'
       shouldBeForm={true}
+      shouldBeUserName={false}
       shouldBeEmail={false}
+      shouldBePassword={true}
+      shouldBePasswordRules={true}
     />
   );
 };

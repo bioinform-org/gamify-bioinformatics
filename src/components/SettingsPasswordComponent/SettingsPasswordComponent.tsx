@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './SettingsPasswordComponent.scss';
 import eyeImg from '../../../public/images/eye.svg';
 import eyeSlashImg from '../../../public/images/eye-slash.svg';
-import React from 'react';
 
 interface Props {}
 
