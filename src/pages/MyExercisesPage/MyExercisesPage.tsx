@@ -4,7 +4,7 @@ import { PageLayout } from "../PageLayout";
 import "./MyExercisesPage.scss";;
 import { Exercise } from "../../types/ProductType";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getExercises, selectExercises, setErrorMessageForMessages } from "../../store/features/exercisesSlice";
+import { getExercises, selectExercises, setErrorMessageForExercises } from "../../store/features/exercisesSlice";
 
 type Props = {};
 
@@ -36,9 +36,9 @@ export const MyExercisesPage: React.FC<Props> = () => {
   //here is an updated additional check for possible empty states
   useEffect(() => {
     if (!onGoingExercises.length && !completedExercises.length) {
-      dispatch(setErrorMessageForMessages("No exercises available at the moment. Please check back later."))
+      dispatch(setErrorMessageForExercises("No exercises available at the moment. Please check back later."))
     } else {
-      dispatch(setErrorMessageForMessages(""));
+      dispatch(setErrorMessageForExercises(""));
     }
   }, [onGoingExercises, completedExercises]);
 

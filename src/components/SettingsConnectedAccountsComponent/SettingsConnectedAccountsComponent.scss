@@ -1,0 +1,113 @@
+@use "/src/styles/utils/vars";
+@use "/src/styles/utils/mixins";
+@use "/src/styles/utils/extends";
+
+.connected-accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__main-title  {
+    @extend %h4;
+    color: vars.$c-gray-100;
+  }
+
+  &__subtitle {
+    @extend %body-text;
+    color: vars.$c-gray-60;
+  }
+
+  &__accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 24px
+  }
+
+  &__account-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px
+  }
+
+  &__top {
+    display: flex;
+    gap: 16px;
+
+    &-icon-and-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &-icon {
+      height: 20px;
+      width: 20px;
+    }
+
+    &-title {
+      @extend %body-text;
+      color: vars.$c-gray-100;
+    }
+
+    &-email {
+      @extend %button-text;
+      color: vars.$c-gray-100;
+    }
+  }
+
+  &__button {
+    @extend %button-text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 203px;
+    height: 48px;
+    border: none;
+    border-radius: 4px;
+    color: vars.$c-white;
+    background-color: vars.$c-primary-teal;
+
+    &:hover {
+      background-color: vars.$c-teal-50;
+    }
+
+    &:active {
+      background-color: vars.$c-teal-dark-100;
+    }
+
+    &:disabled {
+      color: vars.$c-gray-40;
+      background-color: vars.$c-gray-10;
+    }
+
+    &--disconnected {
+      border: 1px solid vars.$c-gray-40;
+      color: vars.$c-gray-100;
+      background-color: vars.$c-gray-10;
+
+      &:hover {
+        border-color: vars.$c-primary-teal;
+        color: vars.$c-primary-teal;
+        background-color: vars.$c-light-teal-10;
+      }
+  
+      &:active {
+        border-color: transparent;
+        color: vars.$c-teal-dark-100;
+        background-color: vars.$c-light-teal-30;
+      }
+  
+      &:disabled {
+        border-color: vars.$c-gray-40;
+        color: vars.$c-gray-40;
+        background-color: vars.$c-white;
+      }
+    }
+  }
+}

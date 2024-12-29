@@ -1,0 +1,40 @@
+@use "/src/styles/utils/vars";
+@use "/src/styles/utils/mixins";
+@use "/src/styles/utils/extends";
+
+.settings-page {
+  height: 100%;
+  border-radius: 16px;
+  background-color: vars.$c-white;
+
+  &__tabs {
+    display: flex;
+    flex-direction: column;
+
+    &-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid vars.$c-gray-10;
+    }
+
+    &-content {
+      padding: 24px;
+    }
+  }
+
+  &__tab {
+    @extend %body-text;
+    padding: 13px 16px;
+    border-radius: 4px;
+    color: vars.$c-gray-100;
+    text-decoration: none;
+
+    &--active {
+      @extend %button-text;
+      color: vars.$c-primary-teal;
+      background-color: vars.$c-gray-10;
+    }
+  }
+}

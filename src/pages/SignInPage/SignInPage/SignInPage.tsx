@@ -12,6 +12,11 @@ export const SignInPage: React.FC<Props> = () => {
       }}
       imageLink={'../../../public/images/man-science.png'}
       submitMessage="Log In"
+      shouldBeForm={true}
+      shouldBeUserName={false}
+      shouldBeEmail={true}
+      shouldBePassword={true}
+      shouldBePasswordRules={false}
     />
   );
 };

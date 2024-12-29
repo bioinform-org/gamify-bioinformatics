@@ -1,3 +1,5 @@
+import { Role } from "./Roles";
+
 export type Exercise = {
   title: string;
   description: string;
@@ -9,11 +11,17 @@ export type Exercise = {
 };
 
 export type User = {
-  userId: number;
-  userName: string;
-  email: string;
-  password: string;
-};
+  id: number,
+  name: null,
+  username: string,
+  scorePoints: number,
+  email: string,
+  role: Role.user | Role.admin,
+}
+
+export type Token = {
+  token: string,
+}
 
 export type Reward = {
   title: string;

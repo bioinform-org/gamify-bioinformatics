@@ -1,9 +1,16 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './PageCompilator.scss';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
+import { PasswordRules } from '../../../components/PasswordRules';
+import eyeImg from '../../../../public/images/eye.svg';
+import eyeSlashImg from '../../../../public/images/eye-slash.svg';
+import { Role } from '../../../types/Roles';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { createUser, getUser, selectUser } from '../../../store/features/userSlice';
+import { getTokenFromLogin, getTokenFromRegestration, selectToken } from '../../../store/features/tokenSlice';
+import { getUser } from '../../../store/features/userSlice';
+import { Loader } from '../../../components/Loader';
+
 
 type PageCopilatorProps = {
   titlesText: {
@@ -14,52 +21,63 @@ type PageCopilatorProps = {
   imageLink: string,
   submitMessage?: string,
   shouldBeForm?: boolean,
+  shouldBeUserName?: boolean,
   shouldBeEmail?: boolean,
   shouldBePassword?: boolean,
+  shouldBePasswordRules?: boolean,
 }
 
 export const PageCompilator: React.FC<PageCopilatorProps> = ({
   titlesText,
   imageLink,
   submitMessage,
-  shouldBeForm = true,
-  shouldBeEmail = true,
-  shouldBePassword = true,
+  shouldBeForm,
+  shouldBeUserName,
+  shouldBeEmail,
+  shouldBePassword,
+  shouldBePasswordRules,
 }) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const user = useAppSelector(selectUser);
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
+  const passwordPlaceholder = useMemo(() => {
+    switch(true) {
+      case pathname.includes('sign-in'):
+        return 'Enter your password';
 
-  //will need to be implemented
-  //add email and password verification function
-  //add new styles on incorrect fields
-  //add incorrect email and password message during login (show message 'Email or password is incorrect. Please try again')
-  //add incorrect email and password message during signing up (show messages: 
-  //'this email is already used' - email
-  //'the password hasn't met requirements' - password
-  //)
+      case pathname.includes('sign-up'):
+        return 'Create password';
+      
+      case pathname.includes('reset'):
+        return 'Create your new password';
+
+      default: 
+        return '';
+    }
+  }, [pathname]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (pathname === '/sign-in' && email && password) {
-      dispatch(getUser({email, password}));
+      dispatch(getTokenFromLogin({ email, password }))
     }
 
-    if (pathname === '/sign-up' && email && password) {
-      dispatch(createUser({email, password}))
+    if (pathname === '/sign-up' && email && password && username) {
+      dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
     }
   }
 
   useEffect(() => {
-    if (user.value) {
+    if (token.value) {
       navigate('/exercises');
     }
-  }, [user.value])
+  }, [token.value])
 
   return (
     <div className="page-compilator">
@@ -88,7 +106,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
 
           <img 
             src={imageLink} 
-            alt="Regestration Image" 
+            alt="Regestration img" 
             className='page-compilator__img'
           />
         </div>
@@ -111,6 +129,19 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               className="page-compilator__form" 
               onSubmit={handleSubmit}
             >
+              {shouldBeUserName && (
+                <label className="page-compilator__label">
+                  Username
+                  <input
+                    className="page-compilator__input"
+                    type="text"
+                    placeholder="Create your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </label>
+              )}
+
               {shouldBeEmail && (
                 <label className="page-compilator__label">
                   Email
@@ -125,24 +156,34 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               )}
 
               {shouldBePassword && (
-                <label className="page-compilator__label">
-                  Password
-                  <input
-                    className="page-compilator__input"
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  >
-                  </input>
+                <>
+                  <label className="page-compilator__label">
+                    Password
+                    <input
+                      className="page-compilator__input"
+                      type={isPasswordVisible ? 'text' : 'password'}
+                      placeholder={passwordPlaceholder}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    >
+                    </input>
 
-                  <img 
-                      src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
-                      alt="" 
+                    <img 
+                      src={isPasswordVisible ? eyeSlashImg : eyeImg} 
+                      alt="Show password button" 
                       className='page-compilator__input-eye'
                       onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                     />
-                </label>
+                  </label>
+
+                  {shouldBePasswordRules && (
+                    <div className="page-compilator__password-rules-container">
+                      <PasswordRules 
+                        password={password}
+                      />
+                    </div>
+                  )}
+                </>
               )}
     
               {pathname.includes('/sign-in') && (
@@ -155,7 +196,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               )}
 
               <button type="submit" className="page-compilator__submit">
-                {submitMessage}
+                {token.isLoading ? <Loader shouldBeText={false}/> : submitMessage}
               </button>
             </form>
           )}

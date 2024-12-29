@@ -98,7 +98,7 @@
     display: block;
     width: 100%;
     margin-top: 4px;
-    padding: 13px 16px;
+    padding: 13px 52px 13px 16px;
     border: 1px solid vars.$c-gray-40;
     border-radius: 4px;
     color: vars.$c-gray-100;
@@ -108,8 +108,16 @@
       border-color: vars.$c-primary-teal;
     }
 
-    &:not(:placeholder-shown) {
+    :disabled {
       border-color: vars.$c-gray-40;
+    }
+
+    &::placeholder {
+      color: vars.$c-gray-50;
+    }
+
+    &:disabled::placeholder {
+      color: vars.$c-gray-40;
     }
   }
 
@@ -118,6 +126,10 @@
     bottom: 13px;
     right: 16px;
     cursor: pointer;
+  }
+
+  &__password-rules-container {
+    margin-top: 16px;
   }
 
   &__forgot-password {

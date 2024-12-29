@@ -1,7 +1,6 @@
-@use "../../styles/utils/vars";
-@use "../../styles/utils/mixins";
-@use "../../styles/utils/extends";
-
+@use "/src/styles/utils/vars";
+@use "/src/styles/utils/mixins";
+@use "/src/styles/utils/extends";
 .page-layout {
   @include mixins.grid;
 
