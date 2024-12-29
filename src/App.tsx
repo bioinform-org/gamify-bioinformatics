@@ -65,7 +65,6 @@ export const App: React.FC = () => {
           </Route>
         </Routes>
       )}
-      </Routes>
     </div>
   )
 };
