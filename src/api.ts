@@ -61,6 +61,7 @@ export const getUserInfo = (token: string) => get<User>(`/auth`, {
     'Authorization': 'Bearer ' + token
   }
 });
+export const getTeams = () => get<[]>("/teams");
 
 //there are no exercises currently on the server, we will add them with a progression
 //asked backend developer to remove some regulations regarding the size of a title and description
