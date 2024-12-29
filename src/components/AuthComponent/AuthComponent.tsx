@@ -1,17 +1,17 @@
-// import { Navigate, Outlet } from 'react-router-dom';
-// import { selectUser } from '../../store/features/userSlice';
-// import { useAppSelector } from '../../store/hooks';
-// import './AuthComponent.scss';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAppSelector } from '../../store/hooks';
+import './AuthComponent.scss';
+import { selectToken } from '../../store/features/tokenSlice';
 
-// //SIMPLE AUTH CHECK - IF USER HAS BEEN FETCHED FROM SERVER
-// interface Props {}
+//SIMPLE AUTH CHECK - IF USER HAS BEEN FETCHED FROM SERVER
+interface Props {}
 
-// export const AuthComponent: React.FC<Props> = () => {
-//   const user = useAppSelector(selectUser);
+export const AuthComponent: React.FC<Props> = () => {
+  const token = useAppSelector(selectToken);
 
-//   if (!user.value) {
-//     return (<Navigate to={'sign-in'}/>);
-//   }
+  if (!token.value) {
+    return (<Navigate to={'sign-in'}/>);
+  }
 
-//   return <Outlet />;
-// };
+  return <Outlet />;
+};

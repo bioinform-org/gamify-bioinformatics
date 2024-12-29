@@ -1,10 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './PageCompilator.scss';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { PasswordRules } from '../../../components/PasswordRules';
-// import { loginUser, regestrUser } from '../../../api';
-// import { Role } from '../../../types/Roles';
+import eyeImg from '../../../../public/images/eye.svg';
+import eyeSlashImg from '../../../../public/images/eye-slash.svg';
+import { Role } from '../../../types/Roles';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { getTokenFromLogin, getTokenFromRegestration, selectToken } from '../../../store/features/tokenSlice';
+import { getUser } from '../../../store/features/userSlice';
+import { Loader } from '../../../components/Loader';
 
 
 type PageCopilatorProps = {
@@ -16,6 +21,7 @@ type PageCopilatorProps = {
   imageLink: string,
   submitMessage?: string,
   shouldBeForm?: boolean,
+  shouldBeUserName?: boolean,
   shouldBeEmail?: boolean,
   shouldBePassword?: boolean,
   shouldBePasswordRules?: boolean,
@@ -26,6 +32,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   imageLink,
   submitMessage,
   shouldBeForm,
+  shouldBeUserName,
   shouldBeEmail,
   shouldBePassword,
   shouldBePasswordRules,
@@ -34,6 +41,10 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
   const passwordPlaceholder = useMemo(() => {
     switch(true) {
       case pathname.includes('sign-in'):
@@ -53,17 +64,20 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    //move those methods to their pages and prop them to pageCompilator component
-    // if (pathname === '/sign-in' && email && password) {
-    //   loginUser(email, password)
-    //     .then(res => console.log(res))
-    // }
+    if (pathname === '/sign-in' && email && password) {
+      dispatch(getTokenFromLogin({ email, password }))
+    }
 
-    // if (pathname === '/sign-up' && email && password) {
-    //   regestrUser(email, password, 'testUser', Role.user, password)
-    //     .then(res => (console.log(res)));
-    // }
+    if (pathname === '/sign-up' && email && password && username) {
+      dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
+    }
   }
+
+  useEffect(() => {
+    if (token.value) {
+      navigate('/exercises');
+    }
+  }, [token.value])
 
   return (
     <div className="page-compilator">
@@ -115,6 +129,19 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               className="page-compilator__form" 
               onSubmit={handleSubmit}
             >
+              {shouldBeUserName && (
+                <label className="page-compilator__label">
+                  Username
+                  <input
+                    className="page-compilator__input"
+                    type="text"
+                    placeholder="Create your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </label>
+              )}
+
               {shouldBeEmail && (
                 <label className="page-compilator__label">
                   Email
@@ -142,8 +169,8 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
                     </input>
 
                     <img 
-                      src={`../../../public/images/${isPasswordVisible ? 'eye-slash' : 'eye'}.svg`} 
-                      alt="" 
+                      src={isPasswordVisible ? eyeSlashImg : eyeImg} 
+                      alt="Show password button" 
                       className='page-compilator__input-eye'
                       onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                     />
@@ -169,7 +196,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               )}
 
               <button type="submit" className="page-compilator__submit">
-                {submitMessage}
+                {token.isLoading ? <Loader shouldBeText={false}/> : submitMessage}
               </button>
             </form>
           )}

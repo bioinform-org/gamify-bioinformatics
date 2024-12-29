@@ -3,6 +3,7 @@ import { Exercise } from "../../types/ProductType";
 import { getExercisesFromServer } from "../../api";
 import { RootState } from "../store";
 
+
 //this is an exercise slice (means slice of state), where we store exercises and manage it's fetching from the server with additional side 
 //effects, such as changing isLoading value when a request is in process (pending) and after finishing it (fulfilled or rejected)
 //and adding errorMessage
@@ -28,7 +29,7 @@ export const exercisesSlice = createSlice({
   name: 'exercises',
   initialState,
   reducers: {
-    setErrorMessageForMessages: (state, action) => {
+    setErrorMessageForExercises: (state, action) => {
       state.errorMessage = action.payload;
     }
   },
@@ -50,7 +51,7 @@ export const exercisesSlice = createSlice({
 })
 
 //exporting actions and action creators (they are one thing together)
-export const { setErrorMessageForMessages } = exercisesSlice.actions;
+export const { setErrorMessageForExercises } = exercisesSlice.actions;
 
 //exporting selectors - function to simplify what state we want to get
 //they can be ignored or not created, but they are usefull in DRY

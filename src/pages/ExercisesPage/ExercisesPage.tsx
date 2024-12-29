@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Exercise } from "../../types/ProductType";
 import { getExercises } from "../../store/features/exercisesSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectExercises, setErrorMessageForMessages } from "../../store/features/exercisesSlice";
+import { selectExercises, setErrorMessageForExercises } from "../../store/features/exercisesSlice";
 
 type Props = {};
 
@@ -34,11 +34,11 @@ export const ExercisesPage: React.FC<Props> = () => {
 
   useEffect(() => {
     if (!molBioExercises.length && !pythonExercises.length) {
-      dispatch(setErrorMessageForMessages(
+      dispatch(setErrorMessageForExercises(
         "No exercises available at the moment. Please check back later."
       ))
     } else {
-      dispatch(setErrorMessageForMessages(""))
+      dispatch(setErrorMessageForExercises(""))
     }
   }, [molBioExercises, pythonExercises]);
 

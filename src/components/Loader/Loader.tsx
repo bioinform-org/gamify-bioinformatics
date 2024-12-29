@@ -1,8 +1,14 @@
 import "./Loader.scss";
 
-export const Loader = () => (
+type LoaderProps = {
+  shouldBeText?: boolean
+}
+
+export const Loader: React.FC<LoaderProps> = ({
+  shouldBeText = true
+}) => (
   <div className="loader">
     <div className="loader__content"></div>
-    <span>Loading</span>
+    {shouldBeText && <span>Loading</span>}
   </div>
 );
