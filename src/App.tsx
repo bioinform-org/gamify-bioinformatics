@@ -16,6 +16,8 @@ import { AuthComponent } from "./components/AuthComponent";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { getTokenFromStorage, selectToken } from "./store/features/tokenSlice";
 import { Loader } from "./components/Loader";
+import { DashboardPage } from "./pages/DashboardPage";
+import { Team } from "./pages/Team";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -49,6 +51,8 @@ export const App: React.FC = () => {
               <Route path='password' element={<SettingsPasswordComponent />}/>
               <Route path='connected-accounts' element={<SettingsConnectedAccountsComponent />}/>
             </Route>
+            <Route path='dashboard' element={<DashboardPage/>}/>
+            <Route path='team' element={<Team/>}/>
           </Route>
 
           <Route path='sign-in' element={<SignInPage/>} />
@@ -61,6 +65,7 @@ export const App: React.FC = () => {
           </Route>
         </Routes>
       )}
+      </Routes>
     </div>
   )
 };

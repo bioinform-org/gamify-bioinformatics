@@ -1,0 +1,89 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+@use "../../styles/utils/mixins";
+
+.dashboard {
+  @include mixins.grid;
+  gap: 16px;
+
+  &__welcome {
+    grid-column: 1 / 10;
+    border-radius: 16px;
+    padding: 24px;
+    background-color: vars.$c-yellow;
+  }
+
+  &__rewards {
+    grid-column: 1 / 10;
+  }
+
+  &__progress {
+    grid-column: 1 / 6;
+  }
+
+  &__leaderboard {
+    grid-column: 6 / 10;
+  }
+
+  &__welcome-title {
+    @extend %h4;
+    color: vars.$c-gray-100;
+    margin-bottom: 8px;
+  }
+
+  &__welcome-text {
+    @extend %body-text;
+    color: vars.$c-gray-60;
+    margin-bottom: 24px;
+  }
+
+  &__welcome-list {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+  }
+
+  &__welcome-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 176px;
+    height: 102px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: vars.$c-white;
+  }
+
+  &__welcome-item-title {
+    @extend %contrast-text;
+  }
+
+  &__welcome-item-info {
+    @extend %h5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+
+    &--points {
+      &::after {
+        background-image: url("../../../public/images/reward-points.svg");
+      }
+    }
+
+    &--rank {
+      &::after {
+        background-image: url("../../../public/images/rank.svg");
+      }
+    }
+  }
+}

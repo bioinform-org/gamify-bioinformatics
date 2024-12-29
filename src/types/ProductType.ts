@@ -8,7 +8,7 @@ export type Exercise = {
   imagePath: string;
   progress: number | null;
   topic: string;
-}
+};
 
 export type User = {
   id: number,
@@ -22,3 +22,8 @@ export type User = {
 export type Token = {
   token: string,
 }
+
+export type Reward = {
+  title: string;
+  imagePath: string;
+};
