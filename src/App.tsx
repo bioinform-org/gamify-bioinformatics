@@ -62,7 +62,9 @@ export const App: React.FC = () => {
           <Route path='reset'>
             <Route index element={<ResetPasswordPage/>} />
             <Route path='email-sent' element={<ResetPasswordEmailSendPage/>}/>
-            <Route path='set-password' element={<ResetPasswordSetNewPasswordPage/>}/>
+            <Route path='set-password'>
+              <Route path=':tokenId' element={<ResetPasswordSetNewPasswordPage/>}/>
+            </Route>
           </Route>
         </Routes>
        )}

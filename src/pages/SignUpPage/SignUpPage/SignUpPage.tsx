@@ -12,6 +12,9 @@ import { getTokenFromRegestration, selectToken, setErorrMessageForToken } from '
 import { getUser, selectUser, setErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
+import { useGoogleLogin } from '@react-oauth/google';
+// import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 export const SignUpPage = () => {
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,38 @@ export const SignUpPage = () => {
 
     dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
   }
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: codeResponse => console.log(codeResponse),
+    onError: () => console.log('Login Failed'),
+    flow: 'auth-code',
+  })
+
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: async tokenResponse => {
+  //     console.log(tokenResponse);
+  //     // fetching userinfo can be done on the client or the server
+  //     const userInfo = await axios
+  //       .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+  //         headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+  //       })
+  //       .then(res => res.data);
+
+  //     console.log(userInfo);
+  //   },
+  // })
+
+
+  // const googleLoginBackend = useGoogleLogin({
+  //   onSuccess: async ({ code }) => {
+  //     const tokens = await axios.post('http://localhost:3001/auth/google', {  // http://localhost:3001/auth/google backend that will exchange the code
+  //       code,
+  //     });
+  
+  //     console.log(tokens);
+  //   },
+  //   flow: 'auth-code',
+  // });
 
   useEffect(() => {
     if (userNameRef.current) {
@@ -174,16 +209,41 @@ export const SignUpPage = () => {
         <span className="page-compilator__divider">or</span>
 
         <ul className="page-compilator__social-buttons">
-          {['Google', 'Facebook', 'Apple'].map((button, i) => {
+          <li 
+            className="page-compilator__button-container"
+          >
+            <button 
+              className="page-compilator__button page-compilator__button--top"
+              onClick={() => googleLogin()}
+            >
+              <div 
+                className="page-compilator__button-img page-compilator__button-img--google"
+              ></div>
+
+              <div className="page-compilator__button-text">
+                Continue with Google
+              </div>
+            </button>
+          </li>
+
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+              console.log(jwtDecode(credentialResponse.credential))
+            }}
+            onError={() => {
+              console.log('Login Failed')
+            }}
+          /> */}
+
+          {['Facebook', 'Apple'].map((button) => {
             return (
               <li 
                 className="page-compilator__button-container"
                 key={button}
               >
                 <button 
-                  className={classNames("page-compilator__button", {
-                    "page-compilator__button--top": !i
-                  })}
+                  className="page-compilator__button"
                 >
                   <div 
                     className={`page-compilator__button-img page-compilator__button-img--${button.toLowerCase()}`}
