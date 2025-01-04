@@ -2,22 +2,39 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 import { PageCompilator } from '../../PageCompilator/PageCompilator';
 import './ResetPasswordPage.scss';
 import classNames from 'classnames';
-import { useAppDispatch } from '../../../store/hooks';
 import { Loader } from '../../../components/Loader';
+import { sendEmailForPasswordReset } from '../../../api';
+import { validateEmail } from '../../../utils/validation';
+import { useNavigate } from 'react-router-dom';
 
 export const ResetPasswordPage = () => {
   const emailRef = useRef<HTMLInputElement>(null)
   const [email, setEmail] = useState('');
   //The three below states will be used instead of a slice for a password reseting page / slice can possibly be created, but is it actually going to be needed?
   const [isLoading, setIsLoading] = useState(false);
-  const [isEmailError, setIsEmailError] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+ 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const emailValidation = validateEmail(email);
 
-    //send an email to backend to sent a letter
+    if (!emailValidation) {
+      return setEmailError(() => 'Please enter a valid email');
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+    sendEmailForPasswordReset(email)
+      .then(() => navigate('/reset/email-sent'))
+      .catch(() => {
+        setEmailError(' ');
+        setErrorMessage('There is no account with such an email. Please check your typed email.')
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   }
 
   useEffect(() => {
@@ -42,7 +59,7 @@ export const ResetPasswordPage = () => {
           Email
           <input
             className={classNames("page-compilator__input", {
-              "page-compilator__input--error": isEmailError,
+              "page-compilator__input--error": emailError,
             })}
             type="text"
             ref={emailRef}
@@ -50,9 +67,11 @@ export const ResetPasswordPage = () => {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setIsEmailError(false);
+              setEmailError('');
             }}
           />
+
+          {emailError && <p className="page-compilator__error-message">{emailError}</p>}
         </label>
 
         {errorMessage && (

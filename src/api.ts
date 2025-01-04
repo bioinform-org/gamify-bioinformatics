@@ -6,6 +6,10 @@ type body = {
   [key: string]: string | number | Role[] | {},
 }
 
+interface UserAndToken extends User {
+  token: string | null
+}
+
 export const API_URL = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -69,7 +73,6 @@ export const regestrUser = (
   { email, password, username, roles: [roles] },
 );
 
-//changed endpoint from /auth to /user for receiving user`s info
 export const getUserInfo = (
   token: string,
 ) => get<User>(
@@ -80,6 +83,8 @@ export const getUserInfo = (
     }
   },
 );
+
+export const sendEmailForPasswordReset = (email: string) => post('/auth/forgot-password', { email });
 export const getTeams = () => get<[]>("/teams");
 
 //asked backend developer to remove some regulations regarding the size of a title and description
@@ -87,8 +92,7 @@ export const getExercisesFromServer = () => get<Exercise[]>('/exercises');
 
 //not usable currently
 export const getUsersFromServer = () => get<User[]>('/users');
-export const updateUserInfo = (email: string, password: string) => put<User>(
-  '/users', 
-  {email, password, userName: email.split('@')[0]},
+export const updateUserInfo = () => put<UserAndToken>(
+  '/users/update', 
 );
 export const deleteUserFromServer = () => remove('/users?userId=0');
