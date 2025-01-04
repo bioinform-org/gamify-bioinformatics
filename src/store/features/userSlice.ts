@@ -2,16 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../types/ProductType";
 import { RootState } from "../store";
 import { getUserInfo } from "../../api";
-
-//but You can notice that there are 3 addCases
-//There is also logOutUser function, which kinda helps in logging out just by setting user to null, which triggers AuthComponent (I guess)
-export interface userState {
+export interface UserState {
   value: User | null,
   isLoading: boolean,
   errorMessage: string,
 }
 
-const initialState: userState = {
+const initialState: UserState = {
   value: null,
   isLoading: false,
   errorMessage: '',
@@ -23,6 +20,9 @@ export const userSlice = createSlice({
   reducers: {
     logOutUser: (state) => {
       state.value = null;
+    },
+    setErrorMessageForUser: (state) => {
+      state.errorMessage = '';
     }
   },
   extraReducers: builder => {
@@ -37,12 +37,12 @@ export const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state) => {
         state.isLoading = false;
-        state.errorMessage = "";
+        state.errorMessage = "We are sorry, but there are some technical problems. Please try again later.";
       })
   },
 })
 
-export const { logOutUser } = userSlice.actions;
+export const { logOutUser, setErrorMessageForUser } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user
 

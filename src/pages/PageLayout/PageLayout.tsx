@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar";
 import "./PageLayout.scss";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getUser, selectUser } from "../../store/features/userSlice";
-import { removeToken, selectToken } from "../../store/features/tokenSlice";
+import { selectUser } from "../../store/features/userSlice";
+import { removeToken } from "../../store/features/tokenSlice";
 
 type Props = {
   children: React.ReactNode;
@@ -22,14 +22,7 @@ export const PageLayout: React.FC<Props> = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!user.value && token.value) {
-      dispatch(getUser(token.value));
-    }
-  }, [user.value, token.value])
 
   return (
     <div className="page-layout">
@@ -51,7 +44,11 @@ export const PageLayout: React.FC<Props> = ({
               //using setTimeout to give some time for a click on the link to be processed before closing
               onBlur={() => setTimeout(() => setIsMenuOpen(false), 220)}
             >
-              {user.value?.username}
+              {user.isLoading && <Loader shouldBeText={false}/>}
+              {(!user.isLoading && user.value) 
+                ? user.value.username
+                : 'User Name'
+              }
             </button>
           </div>
 
