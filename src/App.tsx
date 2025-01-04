@@ -29,13 +29,13 @@ export const App: React.FC = () => {
     if (!token.value) {
       dispatch(getTokenFromStorage());
     }
-  }, [token.value])
+  }, []);
 
   return (
     <div 
       className='app'
     >
-      {token.isLoading ? 
+      {token.isAppLoading ? 
         (
           <div className="app__loader-container">
             <Loader />
@@ -43,6 +43,7 @@ export const App: React.FC = () => {
         ) : (
         <Routes>
           <Route path="/" element={<AuthComponent />}>
+            <Route index element={<Navigate to={'exercises'}/>}/>
             <Route path='exercises' element={<ExercisesPage/>}/>
             <Route path='my-exercises' element={<MyExercisesPage/>}/>
             <Route path='settings' element={<SettingsPage/>}>
@@ -64,7 +65,7 @@ export const App: React.FC = () => {
             <Route path='set-password' element={<ResetPasswordSetNewPasswordPage/>}/>
           </Route>
         </Routes>
-      )}
+       )}
     </div>
   )
 };
