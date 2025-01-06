@@ -1,14 +1,24 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import './AuthViaGoogleFacebookApple.scss';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
+import facebookImg from '../../../public/images/facebook-logo.svg';
+import facebookDisabledImg from '../../../public/images/facebook-logo-grey.svg';
+import { useState } from 'react';
 
 interface Props {}
 
 export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
+  const [isFacebookButtonDisabled, setIsFacebookButtonDisabled] = useState(false)
   const googleLogin = useGoogleLogin({
     onSuccess: codeResponse => console.log(codeResponse),
     onError: () => console.log('Login Failed'),
     flow: 'auth-code',
   })
+
+  const facebookLogin = (response: ReactFacebookLoginInfo | ReactFacebookFailureResponse) => {
+    console.log(response);
+  }
 
   // token
 
@@ -40,6 +50,7 @@ export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
   //   flow: 'auth-code',
   // });
 
+
   return (
     <>
       <span className="page-compilator__divider">or</span>
@@ -65,6 +76,35 @@ export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
         <li 
           className="page-compilator__button-container"
         >
+          <FacebookLogin 
+            appId={import.meta.env.VITE_FACEBOOK_APP_ID}
+            fields='email,name,picture'
+            callback={facebookLogin}
+            autoLoad={false}
+            render={renderProps => (
+              <button 
+                className="page-compilator__button"
+                onClick={renderProps.onClick}
+                disabled={isFacebookButtonDisabled}
+              >
+                <img 
+                  src={isFacebookButtonDisabled ? facebookDisabledImg : facebookImg}
+                  alt="facebook"
+                  className='page-compilator__button-img page-compilator__button-img--facebook'
+                />
+    
+                <div className="page-compilator__button-text">
+                  Continue with Facebook
+                </div>
+              </button>
+            )}
+          />
+        </li>
+
+
+        {/* <li 
+          className="page-compilator__button-container"
+        >
           <button 
             className="page-compilator__button"
           >
@@ -76,7 +116,7 @@ export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
               Continue with Facebook
             </div>
           </button>
-        </li>
+        </li> */}
 
         <li 
           className="page-compilator__button-container"
