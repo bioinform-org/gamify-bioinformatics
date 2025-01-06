@@ -2,39 +2,54 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Loader } from '../../components/Loader';
 import { PageCompilator } from '../PageCompilator/PageCompilator';
 import './ResetPasswordSetNewPasswordPage.scss';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import classNames from 'classnames';
 import eyeImg from '../../../public/images/eye.svg';
 import eyeSlashImg from '../../../public/images/eye-slash.svg';
 import { PasswordRules } from '../../components/PasswordRules';
 import { validatePassword } from '../../utils/validation';
+import { selectUser, updateUser } from '../../store/features/userSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const ResetPasswordSetNewPasswordPage = () => {
-  const passwordRef = useRef<HTMLInputElement>(null)
-    const [password, setPassword] = useState('');
-    const [isVisiblePassword, setIsVisiblePassword] = useState(false);
-    //The three below states will be used instead of a slice for a password reseting page / slice can possibly be created, but is it actually going to be needed?
-    const [isLoading, setIsLoading] = useState(false);
-    const [isPasswordError, setIsPasswordError] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const dispatch = useAppDispatch();
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const { tokenId } = useParams()
+  const [password, setPassword] = useState('');
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState('');
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   
-    const handleSubmit = (e: FormEvent) => {
-      e.preventDefault();
-      const passwordValidation = validatePassword(password)
-    
-      if (!passwordValidation) {
-        setIsPasswordError(() => 'The password does not meet the requirements');
-      }
-      
-      //set new password request
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const passwordValidation = validatePassword(password)
+  
+    if (!passwordValidation) {
+      return setIsPasswordError(() => 'The password does not meet the requirements');
     }
-  
-    useEffect(() => {
-      if (passwordRef.current) {
-        passwordRef.current.focus();
-      }
-    }, [])
+
+    if (!tokenId) {
+      return;
+    }
+    
+    dispatch(updateUser({ 
+      body: { password },
+      propToken: tokenId,
+    }));
+  }
+
+  useEffect(() => {
+    if (passwordRef.current) {
+      passwordRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user.value) {
+      navigate('/sign-in');
+    }
+  }, [user.value])
     
   return (
     <PageCompilator
@@ -82,14 +97,14 @@ export const ResetPasswordSetNewPasswordPage = () => {
           />
         </div>
 
-        {errorMessage && (
+        {user.errorMessage && (
           <div className="page-compilator__server-error">
-            {errorMessage}
+            {user.errorMessage}
           </div>
         )}
 
         <button className="page-compilator__submit">
-          {isLoading? <Loader shouldBeText={false}/> : "Save"}
+          {user.isLoading? <Loader shouldBeText={false}/> : "Save"}
         </button>
       </form>
     </PageCompilator>

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar } from "../../components/Sidebar";
 import "./PageLayout.scss";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectUser } from "../../store/features/userSlice";
-import { removeToken } from "../../store/features/tokenSlice";
+import { getUser, removeErrorMessageForUser, selectUser } from "../../store/features/userSlice";
+import { removeToken, selectToken } from "../../store/features/tokenSlice";
 
 type Props = {
   children: React.ReactNode;
@@ -21,8 +21,15 @@ export const PageLayout: React.FC<Props> = ({
   errorMessage,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const token = useAppSelector(selectToken);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!user.value && token.value) {
+      dispatch(getUser(token.value));
+    }
+  }, [user.value])
 
   return (
     <div className="page-layout">
@@ -42,13 +49,10 @@ export const PageLayout: React.FC<Props> = ({
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               //using setTimeout to give some time for a click on the link to be processed before closing
-              onBlur={() => setTimeout(() => setIsMenuOpen(false), 220)}
+              onBlur={() => setTimeout(() => setIsMenuOpen(false), 240)}
             >
               {user.isLoading && <Loader shouldBeText={false}/>}
-              {(!user.isLoading && user.value) 
-                ? user.value.username
-                : 'User Name'
-              }
+              {!user.isLoading && (user.value ? user.value.username : 'Error')}
             </button>
           </div>
 
@@ -74,7 +78,10 @@ export const PageLayout: React.FC<Props> = ({
                 <Link
                   className="page-layout__user-menu-btn page-layout__user-menu-btn--logout"
                   to=""
-                  onClick={() => dispatch(removeToken())}
+                  onClick={() => {
+                    dispatch(removeToken());
+                    dispatch(removeErrorMessageForUser());
+                  }}
                 >
                   Log Out
                 </Link>

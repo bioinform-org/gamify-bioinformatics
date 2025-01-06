@@ -2,8 +2,19 @@ import { Exercise, Token, User } from "./types/ProductType";
 import axios from "axios";
 import { Role } from "./types/Roles";
 
-type body = {
-  [key: string]: string | number | Role[] | {},
+interface Body {
+  [key: string]: string | number | Role[] | {} | null,
+}
+export interface UserAndToken extends User {
+  token: string | null
+}
+
+export interface UpdateUserPropBody {
+  email?: string,
+  username?: string,
+  name?: string,
+  photo?: string,
+  password?: string,
 }
 
 export const API_URL = axios.create({
@@ -23,21 +34,21 @@ function wait(delay: number): Promise<void> {
   });
 }
 
-function get<T>(url: string, body: body = {}): Promise<T> {
+function get<T>(url: string, body: Body = {}): Promise<T> {
   return wait(300)
     .then(() => API_URL.get(url, body))
     .then(({ data }) => data);
 };
 
-function post<T>(url: string, body: body = {}): Promise<T> {
+function post<T>(url: string, body: Body = {}, headers = {}): Promise<T> {
   return wait(300)
-    .then(() => API_URL.post(url, body))
+    .then(() => API_URL.post(url, body, headers))
     .then(({ data }) => data)
 };
 
-function put<T>(url: string, body: body = {}): Promise<T> {
+function put<T>(url: string, body: Body = {}, headers = {}): Promise<T> {
   return wait(300)
-    .then(() => API_URL.put(url, body))
+    .then(() => API_URL.put(url, body, headers))
     .then(({ data }) => data);
 };
 
@@ -69,7 +80,6 @@ export const regestrUser = (
   { email, password, username, roles: [roles] },
 );
 
-//changed endpoint from /auth to /user for receiving user`s info
 export const getUserInfo = (
   token: string,
 ) => get<User>(
@@ -80,15 +90,21 @@ export const getUserInfo = (
     }
   },
 );
-export const getTeams = () => get<[]>("/teams");
 
+export const updateUserInfo = (body: UpdateUserPropBody, token: string) => put<UserAndToken>(
+  '/user/update', 
+  { ...body },
+  {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  },
+);
+
+export const deleteUserFromServer = () => remove('/users?userId=0');
+
+export const sendEmailForPasswordReset = (email: string) => post('/auth/forgot-password', { email });
+export const getTeams = () => get<[]>("/teams");
 //asked backend developer to remove some regulations regarding the size of a title and description
 export const getExercisesFromServer = () => get<Exercise[]>('/exercises');
-
-//not usable currently
 export const getUsersFromServer = () => get<User[]>('/users');
-export const updateUserInfo = (email: string, password: string) => put<User>(
-  '/users', 
-  {email, password, userName: email.split('@')[0]},
-);
-export const deleteUserFromServer = () => remove('/users?userId=0');

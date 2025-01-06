@@ -17,6 +17,7 @@ export type User = {
   scorePoints: number,
   email: string,
   role: Role.user | Role.admin,
+  photo: string | null
 }
 
 export type Token = {

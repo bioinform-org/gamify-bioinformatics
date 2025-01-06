@@ -3,8 +3,8 @@ import { PageCompilator } from "../../PageCompilator/PageCompilator";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { getTokenFromLogin, selectToken, setErorrMessageForToken } from "../../../store/features/tokenSlice";
-import { getUser, selectUser, setErrorMessageForUser } from "../../../store/features/userSlice";
+import { getTokenFromLogin, selectToken, removeErorrMessageForToken } from "../../../store/features/tokenSlice";
+import { getUser, selectUser, removeErrorMessageForUser } from "../../../store/features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import eyeImg from '../../../../public/images/eye.svg';
 import eyeSlashImg from '../../../../public/images/eye-slash.svg';
@@ -27,8 +27,8 @@ export const SignInPage = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    dispatch(setErorrMessageForToken());
-    dispatch(setErrorMessageForUser());
+    dispatch(removeErorrMessageForToken());
+    dispatch(removeErrorMessageForUser());
     dispatch(getTokenFromLogin({ email, password }))
   }
 
