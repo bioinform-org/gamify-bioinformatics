@@ -24,16 +24,20 @@ const tokenSlice = createSlice({
   reducers: {
     getTokenFromStorage: (state) => {
       state.isAppLoading = true;
-      const token = localStorage.getItem('token');
-      state.value = token;
+      state.value = localStorage.getItem('token');
       state.isAppLoading = false;
     },
     removeToken: (state) => {
       localStorage.removeItem('token');
       state.value = null;
-    },
-    setErorrMessageForToken: (state) => {
       state.errorMessage = '';
+    },
+    removeErorrMessageForToken: (state) => {
+      state.errorMessage = '';
+    },
+    setToken: (state, action) => {
+      localStorage.setItem('token', action.payload);
+      state.value = action.payload;
     }
   },
   extraReducers: builder => {
@@ -67,7 +71,7 @@ const tokenSlice = createSlice({
   }
 })
 
-export const { getTokenFromStorage, removeToken, setErorrMessageForToken } = tokenSlice.actions
+export const { getTokenFromStorage, removeToken, removeErorrMessageForToken, setToken } = tokenSlice.actions
 
 export const selectToken = (state: RootState) => state.token;
 

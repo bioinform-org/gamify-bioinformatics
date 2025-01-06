@@ -14,13 +14,15 @@ import { SettingsConnectedAccountsComponent } from "./components/SettingsConnect
 import { SettingsPasswordComponent } from "./components/SettingsPasswordComponent";
 import { AuthComponent } from "./components/AuthComponent";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { getTokenFromStorage, selectToken } from "./store/features/tokenSlice";
+import { getTokenFromStorage, selectToken, setToken } from "./store/features/tokenSlice";
 import { Loader } from "./components/Loader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
+import { selectUser } from "./store/features/userSlice";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   //checking if token is in the localStorage, if yes, then we will get it from localStorage and add to redux store
@@ -30,6 +32,12 @@ export const App: React.FC = () => {
       dispatch(getTokenFromStorage());
     }
   }, []);
+
+  useEffect(() => {
+    if (user.value && 'token' in user.value && user.value.token) {
+      dispatch(setToken(user.value.token));
+    }
+  }, [user.value])
 
   return (
     <div 

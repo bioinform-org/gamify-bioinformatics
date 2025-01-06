@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 export const ResetPasswordPage = () => {
   const emailRef = useRef<HTMLInputElement>(null)
   const [email, setEmail] = useState('');
-  //The three below states will be used instead of a slice for a password reseting page / slice can possibly be created, but is it actually going to be needed?
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -34,7 +33,7 @@ export const ResetPasswordPage = () => {
       })
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   }
 
   useEffect(() => {

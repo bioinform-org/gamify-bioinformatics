@@ -8,8 +8,8 @@ import eyeSlashImg from '../../../../public/images/eye-slash.svg';
 import { PasswordRules } from '../../../components/PasswordRules';
 import { Loader } from '../../../components/Loader';
 import { Link, useNavigate } from 'react-router-dom';
-import { getTokenFromRegestration, selectToken, setErorrMessageForToken } from '../../../store/features/tokenSlice';
-import { getUser, selectUser, setErrorMessageForUser } from '../../../store/features/userSlice';
+import { getTokenFromRegestration, selectToken, removeErorrMessageForToken } from '../../../store/features/tokenSlice';
+import { getUser, selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
 
@@ -35,8 +35,8 @@ export const SignUpPage = () => {
     const emailValidation = validateEmail(email);
     const passwordValidation = validatePassword(password)
 
-    dispatch(setErorrMessageForToken());
-    dispatch(setErrorMessageForUser());
+    dispatch(removeErorrMessageForToken());
+    dispatch(removeErrorMessageForUser());
   
 
     if (!userNameValidation) {
