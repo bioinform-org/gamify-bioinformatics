@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import eyeImg from '../../../../public/images/eye.svg';
 import eyeSlashImg from '../../../../public/images/eye-slash.svg';
 import { Loader } from "../../../components/Loader";
+import { AuthViaGoogleFacebookApple } from "../../../components/AuthViaGoogleFacebookApple";
 
 export const SignInPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -129,32 +130,7 @@ export const SignInPage = () => {
         </button>
       </form>
 
-      <span className="page-compilator__divider">or</span>
-
-      <ul className="page-compilator__social-buttons">
-        {['Google', 'Facebook', 'Apple'].map((button, i) => {
-          return (
-            <li 
-              className="page-compilator__button-container"
-              key={button}
-            >
-              <button 
-                className={classNames("page-compilator__button", {
-                  "page-compilator__button--top": !i
-                })}
-              >
-                <div 
-                  className={`page-compilator__button-img page-compilator__button-img--${button.toLowerCase()}`}
-                ></div>
-
-                <div className="page-compilator__button-text">
-                  Continue with {button}
-                </div>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+      <AuthViaGoogleFacebookApple />
 
       <div className="page-compilator__sign-up">
         <p className="page-compilator__sign-up-text">

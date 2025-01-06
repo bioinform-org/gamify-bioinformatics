@@ -12,11 +12,13 @@ import { getTokenFromRegestration, selectToken, removeErorrMessageForToken } fro
 import { getUser, selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
+import { useGoogleLogin } from '@react-oauth/google';
+// import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
 
 export const SignUpPage = () => {
   const userNameRef = useRef<HTMLInputElement>(null);
-  // serverErrorRef will be used for accessebility purposes later on for screen readers
-  // const serverErrorRef = useRef(null);
   const [username, setUsername] = useState('');
   const [isUserNameError, setIsUserNameError] = useState('');
   const [email, setEmail] = useState('');
@@ -57,6 +59,34 @@ export const SignUpPage = () => {
 
     dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
   }
+
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: async tokenResponse => {
+  //     console.log(tokenResponse);
+  //     // fetching userinfo can be done on the client or the server
+  //     const userInfo = await axios
+  //       .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+  //         headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+  //       })
+  //       .then(res => res.data);
+
+  //     console.log(userInfo);
+  //   },
+  // })
+
+
+  // code 
+
+  // const googleLoginBackend = useGoogleLogin({
+  //   onSuccess: async ({ code }) => {
+  //     const tokens = await axios.post('http://localhost:3001/auth/google', {
+  //       code,
+  //     });
+  
+  //     console.log(tokens);
+  //   },
+  //   flow: 'auth-code',
+  // });
 
   useEffect(() => {
     if (userNameRef.current) {
@@ -171,32 +201,7 @@ export const SignUpPage = () => {
           </button>
         </form>
 
-        <span className="page-compilator__divider">or</span>
-
-        <ul className="page-compilator__social-buttons">
-          {['Google', 'Facebook', 'Apple'].map((button, i) => {
-            return (
-              <li 
-                className="page-compilator__button-container"
-                key={button}
-              >
-                <button 
-                  className={classNames("page-compilator__button", {
-                    "page-compilator__button--top": !i
-                  })}
-                >
-                  <div 
-                    className={`page-compilator__button-img page-compilator__button-img--${button.toLowerCase()}`}
-                  ></div>
-
-                  <div className="page-compilator__button-text">
-                    Continue with {button}
-                  </div>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        <AuthViaGoogleFacebookApple />
 
         <div className="page-compilator__sign-up">
           <p className="page-compilator__sign-up-text">
