@@ -12,9 +12,6 @@ import { getTokenFromRegestration, selectToken, removeErorrMessageForToken } fro
 import { getUser, selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
-import { useGoogleLogin } from '@react-oauth/google';
-// import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
 import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
 
 export const SignUpPage = () => {
@@ -59,34 +56,6 @@ export const SignUpPage = () => {
 
     dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
   }
-
-  // const googleLogin = useGoogleLogin({
-  //   onSuccess: async tokenResponse => {
-  //     console.log(tokenResponse);
-  //     // fetching userinfo can be done on the client or the server
-  //     const userInfo = await axios
-  //       .get('https://www.googleapis.com/oauth2/v3/userinfo', {
-  //         headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-  //       })
-  //       .then(res => res.data);
-
-  //     console.log(userInfo);
-  //   },
-  // })
-
-
-  // code 
-
-  // const googleLoginBackend = useGoogleLogin({
-  //   onSuccess: async ({ code }) => {
-  //     const tokens = await axios.post('http://localhost:3001/auth/google', {
-  //       code,
-  //     });
-  
-  //     console.log(tokens);
-  //   },
-  //   flow: 'auth-code',
-  // });
 
   useEffect(() => {
     if (userNameRef.current) {
