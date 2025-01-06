@@ -15,11 +15,10 @@ import { validateEmail, validatePassword, validateUserName } from '../../../util
 import { useGoogleLogin } from '@react-oauth/google';
 // import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
 
 export const SignUpPage = () => {
   const userNameRef = useRef<HTMLInputElement>(null);
-  // serverErrorRef will be used for accessebility purposes later on for screen readers
-  // const serverErrorRef = useRef(null);
   const [username, setUsername] = useState('');
   const [isUserNameError, setIsUserNameError] = useState('');
   const [email, setEmail] = useState('');
@@ -61,12 +60,6 @@ export const SignUpPage = () => {
     dispatch(getTokenFromRegestration({ email, password, username, roles: Role.user }))
   }
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: codeResponse => console.log(codeResponse),
-    onError: () => console.log('Login Failed'),
-    flow: 'auth-code',
-  })
-
   // const googleLogin = useGoogleLogin({
   //   onSuccess: async tokenResponse => {
   //     console.log(tokenResponse);
@@ -82,9 +75,11 @@ export const SignUpPage = () => {
   // })
 
 
+  // code 
+
   // const googleLoginBackend = useGoogleLogin({
   //   onSuccess: async ({ code }) => {
-  //     const tokens = await axios.post('http://localhost:3001/auth/google', {  // http://localhost:3001/auth/google backend that will exchange the code
+  //     const tokens = await axios.post('http://localhost:3001/auth/google', {
   //       code,
   //     });
   
@@ -206,57 +201,7 @@ export const SignUpPage = () => {
           </button>
         </form>
 
-        <span className="page-compilator__divider">or</span>
-
-        <ul className="page-compilator__social-buttons">
-          <li 
-            className="page-compilator__button-container"
-          >
-            <button 
-              className="page-compilator__button page-compilator__button--top"
-              onClick={() => googleLogin()}
-            >
-              <div 
-                className="page-compilator__button-img page-compilator__button-img--google"
-              ></div>
-
-              <div className="page-compilator__button-text">
-                Continue with Google
-              </div>
-            </button>
-          </li>
-
-          {/* <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-              console.log(jwtDecode(credentialResponse.credential))
-            }}
-            onError={() => {
-              console.log('Login Failed')
-            }}
-          /> */}
-
-          {['Facebook', 'Apple'].map((button) => {
-            return (
-              <li 
-                className="page-compilator__button-container"
-                key={button}
-              >
-                <button 
-                  className="page-compilator__button"
-                >
-                  <div 
-                    className={`page-compilator__button-img page-compilator__button-img--${button.toLowerCase()}`}
-                  ></div>
-
-                  <div className="page-compilator__button-text">
-                    Continue with {button}
-                  </div>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        <AuthViaGoogleFacebookApple />
 
         <div className="page-compilator__sign-up">
           <p className="page-compilator__sign-up-text">
