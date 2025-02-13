@@ -11,6 +11,7 @@ export type Exercise = {
 };
 
 export type User = {
+<<<<<<< HEAD
   id: number;
   name: string | null;
   username: string;
@@ -18,6 +19,16 @@ export type User = {
   email: string;
   role: Role.user | Role.admin;
 };
+=======
+  id: number,
+  name: null,
+  username: string,
+  scorePoints: number,
+  email: string,
+  role: Role.user | Role.admin,
+  photo: string | null
+}
+>>>>>>> 2a8caecc0eb61a4325842b999cc04ce8cc5c4815
 
 export type Token = {
   token: string;

@@ -4,7 +4,7 @@ import closeImg from '../../../public/images/close-button.svg';
 import eyeImg from '../../../public/images/eye.svg';
 import eyeSlashImg from '../../../public/images/eye-slash.svg';
 import { PopUpContainer } from '../PopUpContainer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { selectUser } from '../../store/features/userSlice';
 
@@ -14,12 +14,20 @@ export const SettingsAccountComponent: React.FC<Props> = () => {
   const user = useAppSelector(selectUser);
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState(user.value?.username);
-  const [name, setName] = useState(user.value?.name || '');
-  const [email, setEmail] = useState(user.value?.email || '');
+  const [userName, setUserName] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   // const dispatch = useAppDispatch();
 
+
+  useEffect(() => {
+    if (user.value) {
+      setUserName(user.value.username);
+      setName(user.value.name ?? '');
+      setEmail(user.value.email);
+    }
+  }, [user.value])
   
   return (
     <div className="account">

@@ -1,9 +1,7 @@
 import { PageCompilator } from '../PageCompilator/PageCompilator';
 import './ResetPasswordEmailSendPage.scss';
 
-interface Props {}
-
-export const ResetPasswordEmailSendPage: React.FC<Props> = () => {
+export const ResetPasswordEmailSendPage = () => {
   return (
     <PageCompilator
       titlesText={{
@@ -12,7 +10,6 @@ export const ResetPasswordEmailSendPage: React.FC<Props> = () => {
         secondTitleBottom: 'Please check your spam or junk folder if you don’t see it.',
       }}
       imageLink={'../../../public/images/reset-girl.png'}
-      shouldBeForm={false}
     />
   );
 };

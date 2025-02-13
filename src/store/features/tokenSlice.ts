@@ -2,16 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { loginUser, regestrUser } from "../../api";
 import { Role } from "../../types/Roles";
+import { AxiosError } from "axios";
 
 export interface TokenState {
   value: string | null,
   isLoading: boolean,
+  isAppLoading: boolean,
   errorMessage: string,
 }
 
 const initialState: TokenState = {
   value: null,
   isLoading: false,
+  isAppLoading: true,
   errorMessage: '',
 }
 
@@ -20,18 +23,21 @@ const tokenSlice = createSlice({
   initialState,
   reducers: {
     getTokenFromStorage: (state) => {
-      state.isLoading = true;
-      const token = localStorage.getItem('token');
-
-      if (token) {
-        state.value = token;
-      }
-
-      state.isLoading = false;
+      state.isAppLoading = true;
+      state.value = localStorage.getItem('token');
+      state.isAppLoading = false;
     },
     removeToken: (state) => {
       localStorage.removeItem('token');
       state.value = null;
+      state.errorMessage = '';
+    },
+    removeErorrMessageForToken: (state) => {
+      state.errorMessage = '';
+    },
+    setToken: (state, action) => {
+      localStorage.setItem('token', action.payload);
+      state.value = action.payload;
     }
   },
   extraReducers: builder => {
@@ -41,31 +47,31 @@ const tokenSlice = createSlice({
         state.errorMessage = '';
       })
       .addCase(getTokenFromLogin.fulfilled, (state, action) => {
-        localStorage.setItem('token', action.payload.token),
+        localStorage.setItem('token', action.payload.token);
         state.isLoading = false;
         state.value = action.payload.token;
       })
       .addCase(getTokenFromLogin.rejected, (state) => {
         state.isLoading = false;
-        state.errorMessage = 'Unable to get a token from logging';
+        state.errorMessage = 'Incorrect email or password. Please try again.';
       })
       .addCase(getTokenFromRegestration.pending, (state) => {
         state.isLoading = true;
         state.errorMessage = '';
       })
       .addCase(getTokenFromRegestration.fulfilled, (state, action) => {
-        localStorage.setItem('token', action.payload.token),
+        localStorage.setItem('token', action.payload.token);
         state.isLoading = false;
         state.value = action.payload.token;
       })
-      .addCase(getTokenFromRegestration.rejected, (state) => {
+      .addCase(getTokenFromRegestration.rejected, (state, action) => {
         state.isLoading = false;
-        state.errorMessage = 'Unable to get a token from regestration';
+        state.errorMessage = (action.payload as { message: string }).message;
       })
   }
 })
 
-export const { getTokenFromStorage, removeToken } = tokenSlice.actions
+export const { getTokenFromStorage, removeToken, removeErorrMessageForToken, setToken } = tokenSlice.actions
 
 export const selectToken = (state: RootState) => state.token;
 
@@ -79,7 +85,17 @@ export const getTokenFromLogin = createAsyncThunk(
   }: {
     email: string,
     password: string,
-  }) => await loginUser(email, password),
+  }, { rejectWithValue }) => {
+    try {
+      return await loginUser(email, password);
+    } catch (err) {
+      if (!(err as AxiosError).response) {
+        throw err;
+      }
+
+      return rejectWithValue((err as AxiosError).response?.data)
+    }
+  },
 );
 
 export const getTokenFromRegestration = createAsyncThunk(
@@ -94,6 +110,16 @@ export const getTokenFromRegestration = createAsyncThunk(
     password: string,
     username: string,
     roles: Role.user | Role.admin,
-  }) => await regestrUser(email, password, username, roles),
+  }, { rejectWithValue }) => {
+    try {
+      return await regestrUser(email, password, username, roles);
+    } catch (err) {
+      if (!(err as AxiosError).response) {
+        throw err;
+      }
+
+      return rejectWithValue((err as AxiosError).response?.data)
+    }
+  },
 );
 

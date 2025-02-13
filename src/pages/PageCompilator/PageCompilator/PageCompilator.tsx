@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./PageCompilator.scss";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -29,18 +30,28 @@ type PageCopilatorProps = {
   shouldBePassword?: boolean;
   shouldBePasswordRules?: boolean;
 };
+=======
+import { Link, useLocation } from 'react-router-dom';
+import './PageCompilator.scss';
+
+type PageCopilatorProps = {
+  titlesText: {
+    titleTop: string,
+    titleBottom: string,
+    secondTitleBottom?: string,
+  },
+  imageLink: string,
+  children?: React.ReactNode,
+}
+>>>>>>> 2a8caecc0eb61a4325842b999cc04ce8cc5c4815
 
 export const PageCompilator: React.FC<PageCopilatorProps> = ({
   titlesText,
   imageLink,
-  submitMessage,
-  shouldBeForm,
-  shouldBeUserName,
-  shouldBeEmail,
-  shouldBePassword,
-  shouldBePasswordRules,
+  children,
 }) => {
   const { pathname } = useLocation();
+<<<<<<< HEAD
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,6 +99,8 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
       navigate("/exercises");
     }
   }, [token.value]);
+=======
+>>>>>>> 2a8caecc0eb61a4325842b999cc04ce8cc5c4815
 
   return (
     <div className="page-compilator">
@@ -122,7 +135,9 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
         </div>
 
         <div className="page-compilator__regestration">
-          <h1 className="page-compilator__greeting">{titlesText.titleTop}</h1>
+          <h1 className="page-compilator__greeting">
+            {titlesText.titleTop}
+          </h1>
 
           <p className="page-compilator__message">{titlesText.titleBottom}</p>
 
@@ -132,6 +147,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
             </p>
           )}
 
+<<<<<<< HEAD
           {shouldBeForm && (
             <form className="page-compilator__form" onSubmit={handleSubmit}>
               {shouldBeUserName && (
@@ -274,6 +290,9 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
               </p>
             </>
           )}
+=======
+          {children}
+>>>>>>> 2a8caecc0eb61a4325842b999cc04ce8cc5c4815
         </div>
       </div>
     </div>
