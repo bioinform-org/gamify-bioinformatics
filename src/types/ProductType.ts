@@ -11,17 +11,17 @@ export type Exercise = {
 };
 
 export type User = {
-  id: number,
-  name: null,
-  username: string,
-  scorePoints: number,
-  email: string,
-  role: Role.user | Role.admin,
-}
+  id: number;
+  name: string | null;
+  username: string;
+  scorePoints: number;
+  email: string;
+  role: Role.user | Role.admin;
+};
 
 export type Token = {
-  token: string,
-}
+  token: string;
+};
 
 export type Reward = {
   title: string;

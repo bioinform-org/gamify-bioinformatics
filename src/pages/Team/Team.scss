@@ -4,6 +4,7 @@
 
 .team {
   background-color: vars.$c-white;
+  flex-grow: 1;
 
   &__header {
     display: flex;
@@ -20,28 +21,25 @@
   }
 
   &__tab-button {
+    border-radius: 4px;
     display: flex;
     align-items: center;
     gap: 14px;
     height: 48px;
     padding: 13px 16px;
-    cursor: pointer;
     border: none;
     background-color: transparent;
-    color: vars.$c-gray-100;
-    transition: background-color vars.$transition-time;
-
-    &:hover {
-      background-color: vars.$c-gray-10;
-    }
+    @extend %text-icon-button;
 
     &--active {
+      @extend %contrast-text;
       color: vars.$c-primary-teal;
       background-color: vars.$c-gray-10;
     }
   }
 
   &__tab-button-info {
+    @extend %secondary-text;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,37 +51,96 @@
   }
 
   &__create-btn {
-    padding: 13px 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background-color: vars.$c-primary-teal;
-    color: vars.$c-white;
-    @extend %button-text;
-    transition: background-color vars.$transition-time;
-
-    &:hover {
-      background-color: vars.$c-teal-50;
-    }
-
-    &:active {
-      background-color: vars.$c-teal-dark-100;
-    }
+    @extend %primary-button;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 708px;
-    background-image: url("/public/images/no-teams.svg");
-    background-repeat: no-repeat;
-    background-position: center 56px;
+  }
+
+  &__content-img {
+    margin: 56px auto 0;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 24px;
   }
 
   &__content-message {
     @extend %h3;
+    text-align: center;
+  }
+
+  &__list-block {
+    padding: 8px 24px;
+  }
+
+  &__list-title {
+    @extend %large-contrast-text;
+    color: vars.$c-gray-100;
+    margin-bottom: 8px;
+  }
+
+  &__list {
+    list-style-type: none;
+  }
+
+  &__list-item {
+    @extend %large-body-text;
+    padding: 4px 16px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid vars.$c-gray-10;
+  }
+
+  &__list-item-button {
+    width: 40px;
+    height: 40px;
+    @extend %icon-button;
+    background-image: url("/public/images/arrow-right.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &--open {
+      background-image: url("/public/images/arrow-down-black.svg");
+    }
+  }
+
+  &__members {
+    list-style-type: none;
+  }
+
+  &__member {
+    padding: 12px 56px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__member-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin-right: 16px;
+  }
+
+  &__member-name {
+    @extend %button-text;
+    width: 228px;
+    margin-right: 16px;
+    color: vars.$c-gray-100;
+  }
+
+  &__member-role {
+    @extend %secondary-text;
+    color: vars.$c-gray-60;
+  }
+
+  &__member-delete {
+    margin-left: auto;
+    @extend %icon-button;
+    background-image: url("/public/images/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   &__modal {
@@ -97,34 +154,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 224px 24px 24px;
+    padding: 48px 24px 24px;
     border-radius: 16px;
     background-color: vars.$c-white;
-    background-image: url("/public/images/people.svg");
-    background-repeat: no-repeat;
-    background-position: center 48px;
   }
 
   &__modal-close {
+    @extend %icon-button;
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
     background-image: url("/public/images/close.svg");
     background-repeat: no-repeat;
     background-position: center;
-    transition: background-color vars.$transition-time;
-
-    &:hover {
-      background-color: vars.$c-gray-10;
-    }
   }
 
   &__modal-title {
@@ -132,14 +174,35 @@
     margin-bottom: 24px;
   }
 
-  &__modal-input {
+  &__modal-label {
+    position: relative;
     width: 100%;
-    height: 48px;
-    padding: 13px 16px;
+  }
+
+  // input
+
+  &__modal-input-counter {
+    position: absolute;
+    right: 16px;
+    top: 25%;
+    font-size: 14px;
+    color: vars.$c-gray-60;
+    text-align: right;
+
+    &--error {
+      color: vars.$c-red;
+    }
+  }
+
+  &__modal-input-message {
+    align-self: flex-start;
+    @extend %secondary-text;
     margin-bottom: 24px;
-    border: 1px solid vars.$c-gray-40;
-    border-radius: 4px;
-    @extend %body-text;
+    color: vars.$c-gray-60;
+
+    &--error {
+      color: vars.$c-red;
+    }
   }
 
   &__modal-actions {
@@ -148,41 +211,101 @@
   }
 
   &__modal-cancel {
-    padding: 13px 49px;
-    cursor: pointer;
-    border: 1px solid vars.$c-gray-40;
-    border-radius: 4px;
-    background-color: vars.$c-gray-10;
-    color: vars.$c-gray-100;
-    @extend %button-text;
-    transition: background-color vars.$transition-time;
-
-    &:hover {
-      background-color: vars.$c-light-teal-30;
-    }
-
-    &:active {
-      background-color: vars.$c-teal-dark-100;
-    }
+    @extend %outlined-button;
   }
 
   &__modal-create {
+    @extend %primary-button;
     padding: 13px 28px;
-    cursor: pointer;
-    border: none;
+  }
+
+  &__modal-input {
     border-radius: 4px;
-    background-color: vars.$c-primary-teal;
-    color: vars.$c-white;
-    @extend %button-text;
-    transition: background-color vars.$transition-time;
+    @extend %body-text;
+    border: 1px solid vars.$c-gray-40;
+    padding: 13px 16px;
+    width: 100%;
+    margin-bottom: 24px;
 
-    &:hover {
-      background-color: vars.$c-teal-50;
+    &--email {
+      outline: none;
+      flex: 1;
+      padding: 13px 0;
+      height: 48px;
+      border-radius: 0;
+      margin: 0;
+      border: none;
     }
 
-    &:active {
-      background-color: vars.$c-teal-dark-100;
-    }
+    // &--error {
+    //   border-color: vars.$c-red;
+    // }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid vars.$c-gray-40;
+    border-radius: 4px;
+    align-items: center;
+    min-height: 48px;
+    margin-bottom: 4px;
+  }
+
+  &__tag {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid vars.$c-gray-40;
+    padding: 4px 8px;
+    @extend %body-text;
+    border-radius: 100px;
+  }
+
+  &__tag-remove {
+    @extend %icon-button;
+    background-image: url("/public/images/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &__modal-suggestions {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    list-style-type: none;
+    background-color: vars.$c-white;
+    z-index: 10;
+  }
+
+  &__modal-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  &__modal-suggestion-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: gray;
+  }
+
+  &__modal-suggestion-info {
+  }
+
+  &__modal-suggestion-name {
+    @extend %secondary-text;
+  }
+
+  &__modal-suggestion-email {
+    @extend %small-description-text;
+    color: vars.$c-gray-60;
   }
 
   &__overlay {

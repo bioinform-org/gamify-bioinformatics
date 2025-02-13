@@ -147,9 +147,16 @@
 }
 
 %primary-button {
+  @extend %button-text;
+
   cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 13px 16px;
+
   color: vars.$c-white;
   background-color: vars.$c-primary-teal;
+
   transition: background-color vars.$transition-time,
     color vars.$transition-time;
 
@@ -163,7 +170,7 @@
 
   &:disabled {
     color: vars.$c-gray-40;
-    background-color: vars.$c-gray-40;
+    background-color: vars.$c-gray-10;
     cursor: not-allowed;
   }
 }
@@ -172,6 +179,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  @extend %body-text;
   color: vars.$c-gray-100;
   border: 1px solid transparent;
   transition: background-color vars.$transition-time,
@@ -228,6 +236,60 @@
 
   &:disabled {
     color: vars.$c-gray-40;
+  }
+}
+
+%outlined-button {
+  @extend %button-text;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 13px 46px;
+  color: vars.$c-gray-100;
+  border: 1px solid transparent;
+  transition: background-color vars.$transition-time,
+    border-color vars.$transition-time, color vars.$transition-time;
+
+  &:hover {
+    background-color: vars.$c-light-teal-10;
+    border-color: vars.$c-primary-teal;
+    color: vars.$c-primary-teal;
+  }
+
+  &:active {
+    background-color: vars.$c-light-teal-30;
+    border-color: transparent;
+    color: vars.$c-teal-dark-100;
+  }
+
+  &:disabled {
+    color: vars.$c-gray-40;
+    border-color: vars.$c-gray-40;
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+}
+
+%icon-button {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color vars.$transition-time;
+
+  &:hover {
+    background-color: vars.$c-gray-10;
+  }
+
+  &:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 

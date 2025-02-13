@@ -5,11 +5,11 @@ import classNames from "classnames";
 interface Props {}
 
 const navLinks = [
-  { name: 'Exercises', link: 'exercises'},
-  { name: 'Dashboard', link: 'dashboard'},
-  { name: 'My exercises', link: 'my-exercises'},
-  { name: 'Chats', link: 'chats'},
-  { name: 'Team management', link: 'team'},
+  { name: "Exercises", link: "exercises" },
+  { name: "Dashboard", link: "dashboard" },
+  { name: "My exercises", link: "my-exercises" },
+  { name: "Chats", link: "chats" },
+  { name: "Team management", link: "team" },
 ];
 
 export const Sidebar: React.FC<Props> = () => {
@@ -26,10 +26,7 @@ export const Sidebar: React.FC<Props> = () => {
         <nav className="side-bar__nav">
           <ul className="side-bar__list">
             {navLinks.map(({ name, link }) => (
-              <li 
-                key={name}
-                className="side-bar__item"
-              >
+              <li key={name} className="side-bar__item">
                 <NavLink
                   className={({ isActive }: { isActive: boolean }) =>
                     classNames(`side-bar__link side-bar__link--${link}`, {
@@ -39,6 +36,9 @@ export const Sidebar: React.FC<Props> = () => {
                   to={`/${link}`}
                 >
                   {name}
+                  {name === "Team management" && (
+                    <span className="side-bar__link-info">1</span>
+                  )}
                 </NavLink>
               </li>
             ))}

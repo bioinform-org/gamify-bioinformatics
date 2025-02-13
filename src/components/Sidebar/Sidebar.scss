@@ -44,6 +44,10 @@ $icons: (
     list-style-type: none;
   }
 
+  &__item {
+    position: relative;
+  }
+
   &__link {
     display: flex;
     gap: 8px;
@@ -51,7 +55,6 @@ $icons: (
     padding: 13px 8px;
     border: none;
     border-radius: 4px;
-    @extend %body-text;
     @extend %text-icon-button;
 
     @each $key, $icon in $icons {
@@ -66,39 +69,6 @@ $icons: (
       }
     }
 
-    &:hover {
-      background-color: vars.$c-light-teal-10;
-      color: vars.$c-primary-teal;
-
-      @each $key, $icon in $icons {
-        &.side-bar__link--#{$key}::before {
-          background-color: vars.$c-primary-teal;
-        }
-      }
-    }
-
-    &:active {
-      background-color: vars.$c-light-teal-30;
-      color: vars.$c-teal-dark-100;
-
-      @each $key, $icon in $icons {
-        &.side-bar__link--#{$key}::before {
-          background-color: vars.$c-teal-dark-100;
-        }
-      }
-    }
-
-    &:disabled {
-      background-color: transparent;
-      color: vars.$c-gray-40;
-
-      @each $key, $icon in $icons {
-        &.side-bar__link--#{$key}::before {
-          background-color: vars.$c-gray-40;
-        }
-      }
-    }
-
     &--active {
       background-color: vars.$c-gray-10;
       color: vars.$c-primary-teal;
@@ -110,5 +80,19 @@ $icons: (
         }
       }
     }
+  }
+
+  &__link-info {
+    @extend %secondary-text;
+    position: absolute;
+    right: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: vars.$c-red;
+    color: vars.$c-white;
   }
 }
