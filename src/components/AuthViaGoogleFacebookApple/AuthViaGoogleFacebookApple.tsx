@@ -1,6 +1,6 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import './AuthViaGoogleFacebookApple.scss';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
 import facebookImg from '../../../public/images/facebook-logo.svg';
 import facebookDisabledImg from '../../../public/images/facebook-logo-grey.svg';

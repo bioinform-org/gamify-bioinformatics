@@ -122,13 +122,8 @@
   }
 
   &__error-message {
-<<<<<<< HEAD
-    color: vars.$c-red;
-    @extend %h3;
-=======
     padding: 16px 24px;
     color: vars.$c-gray-60;
     @extend %body-text;
->>>>>>> 2a8caecc0eb61a4325842b999cc04ce8cc5c4815
   }
 }
