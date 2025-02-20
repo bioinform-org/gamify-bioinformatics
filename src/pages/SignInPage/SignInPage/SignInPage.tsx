@@ -130,7 +130,7 @@ export const SignInPage = () => {
         </button>
       </form>
 
-      <AuthViaGoogleFacebookApple />
+      {/* <AuthViaGoogleFacebookApple /> */}
 
       <div className="page-compilator__sign-up">
         <p className="page-compilator__sign-up-text">
