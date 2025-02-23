@@ -6,9 +6,11 @@ import facebookImg from '../../../public/images/facebook-logo.svg';
 import facebookDisabledImg from '../../../public/images/facebook-logo-grey.svg';
 import { useState } from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface Props {}
 
 export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isFacebookButtonDisabled, setIsFacebookButtonDisabled] = useState(false)
   const googleLogin = useGoogleLogin({
     onSuccess: codeResponse => console.log(codeResponse),
