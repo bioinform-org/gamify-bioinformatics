@@ -12,7 +12,7 @@ import { getTokenFromRegestration, selectToken, removeErorrMessageForToken } fro
 import { getUser, selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
-import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
+// import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
 
 export const SignUpPage = () => {
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -67,12 +67,14 @@ export const SignUpPage = () => {
     if (token.value) {
       dispatch(getUser(token.value));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token.value])
 
   useEffect(() => {
     if (token.value && user.value) {
       navigate('/exercises');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token.value, user.value])
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./SignInPage.scss";
 import { PageCompilator } from "../../PageCompilator/PageCompilator";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -9,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import eyeImg from '../../../../public/images/eye.svg';
 import eyeSlashImg from '../../../../public/images/eye-slash.svg';
 import { Loader } from "../../../components/Loader";
-import { AuthViaGoogleFacebookApple } from "../../../components/AuthViaGoogleFacebookApple";
+// import { AuthViaGoogleFacebookApple } from "../../../components/AuthViaGoogleFacebookApple";
 
 export const SignInPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
