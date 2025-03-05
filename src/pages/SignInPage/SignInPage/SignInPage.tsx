@@ -26,13 +26,20 @@ export const SignInPage = () => {
   //implement navigation to a previously opened page
   const navigate = useNavigate();
 
+  const isDevMode = import.meta.env.MODE === "development";
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     dispatch(removeErorrMessageForToken());
     dispatch(removeErrorMessageForUser());
-    dispatch(getTokenFromLogin({ email, password }))
-  }
+    if (isDevMode && email === "admin" && password === "admin") {
+      dispatch({ type: "token/setToken", payload: "test-admin-token" });
+      dispatch({ type: "user/setUser", payload: { id: 1, name: "Admin", email: "admin@test.com" } });
+      navigate("/exercises");
+      return;
+    }
+    dispatch(getTokenFromLogin({ email, password }));
+  };
+  
 
   useEffect(() => {
     if (emailRef.current) {
