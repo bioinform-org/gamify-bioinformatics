@@ -11,6 +11,7 @@
     align-items: center;
     background-color: vars.$c-white;
     border-radius: 16px;
+    margin-bottom: 16px;
 
     &-button {
       display: flex;
@@ -43,7 +44,7 @@
 
   &__content {
     @include mixins.grid;
-    margin-top: 16px;
+    margin-bottom: 16px;
     padding-block: 24px;
     border-radius: 16px;
     background-color: vars.$c-white;
@@ -74,22 +75,19 @@
   &__greeting {
     @extend %h1;
     color: vars.$c-gray-100;
+    margin-bottom: 16px;
   }
 
   &__message {
     @extend %body-text;
-    margin-top: 16px;
+    margin-bottom: 16px;
     color: vars.$c-gray-60;
-  }
-
-  &__form {
-    margin-top: 24px;
   }
 
   &__label {
     display: block;
     position: relative;
-    margin-top: 16px;
+    margin-bottom: 16px;
     color: vars.$c-gray-100;
   }
 
@@ -141,12 +139,12 @@
 
   &__error-message {
     @extend %secondary-text;
-    margin-top: 4px;
+    margin-bottom: 4px;
     color: vars.$c-red;
   }
 
   &__password-rules-container {
-    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   &__forgot-password {
@@ -157,7 +155,7 @@
     &:disabled {
       .page-compilator__forgot-password-link {
         color: vars.$c-gray-40;
-        
+
         &::after {
           width: 0;
         }
@@ -168,12 +166,12 @@
       @extend %button-text;
       display: block;
       position: relative;
-      margin-top: 8px;
+      margin-bottom: 8px;
       color: vars.$c-primary-teal;
       text-decoration: none;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 0;
         left: 0;
@@ -185,7 +183,7 @@
       }
 
       &:hover::after,
-      &:focus::after{
+      &:focus::after {
         width: 100%;
         opacity: 1;
       }
@@ -202,7 +200,7 @@
 
   &__server-error {
     @extend %body-text;
-    margin-top: 16px;
+    margin-bottom: 16px;
     padding: 4px 8px;
     border-radius: 4px;
     width: 100%;
@@ -217,8 +215,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 24px;
     padding: 13px;
+    margin-bottom: 24px;
     border: none;
     border-radius: 4px;
     background-color: vars.$c-primary-teal;
@@ -238,122 +236,9 @@
     }
   }
 
-  &__divider {
-    @extend %secondary-text;
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    margin-top: 24px;
-    color: vars.$c-gray-60;
-
-    &::before,
-    &::after {
-      content: " ";
-      position: absolute;
-      width: 193px;
-      height: 1px;
-      background-color: vars.$c-gray-40;
-    }
-
-    &::before {
-      left: 0;
-    }
-
-    &::after {
-      right: 0;
-    }
-  }
-
-  &__social-buttons {
-    list-style: none;
-    margin-top: 24px;
-  }
-
-  &__button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 48px;
-    margin-top: 16px;
-    padding-block: 13px;
-    border: 1px solid vars.$c-gray-40;
-    border-radius: 4px;
-    background-color: vars.$c-gray-10;
-    cursor: pointer;
-
-    &--top {
-      margin-top: 24px;
-    }
-
-    &-text {
-      @extend %button-text;
-      color: vars.$c-teal-dark-100;
-    }
-
-    &-img {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-    }
-
-    // for future refactor this code into @function
-    $logos-color: ('google' : '/public/images/google-logo.svg', 
-    'facebook' : '/public/images/facebook-logo.svg',
-    'apple' : '/public/images/apple-logo.svg');
-
-    @each $logo, $url in $logos-color {
-      .page-compilator__button-img--#{$logo} {
-        background-image: url($url);
-      }
-    }
-
-    &:hover {
-      border-color: vars.$c-teal-dark-100;
-      background-color: vars.$c-light-teal-10;
-
-      .page-compilator__button-text {
-        color: vars.$c-teal-dark-100;
-      }
-    }
-
-    &:active {
-      border-color: transparent;
-      background-color: vars.$c-light-teal-30;
-
-      .page-compilator__button-text {
-        color: vars.$c-teal-dark-100;
-      }
-    }
-
-    &:disabled {
-      border-color: vars.$c-gray-40;
-      background-color: vars.$c-white;
-
-      .page-compilator__button-text {
-        color: vars.$c-gray-40;
-      }
-
-      $logos-grey: ('google' : '/public/images/google-logo-grey.svg', 
-      'facebook' : '/public/images/facebook-logo-grey.svg',
-      'apple' : '/public/images/apple-logo-grey.svg');
-
-      @each $logo, $url in $logos-grey {
-        .page-compilator__button-img--#{$logo} {
-          background-image: url($url);
-        }
-      }
-    }
-  }
-
   &__sign-up {
     display: flex;
     gap: 8px;
-    margin-top: 24px;
 
     &-text {
       @extend %body-text;
@@ -368,7 +253,7 @@
       &:disabled {
         .page-compilator__sign-up-link {
           color: vars.$c-gray-40;
-          
+
           &::after {
             width: 0;
           }
@@ -383,7 +268,7 @@
       text-decoration: none;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: -2px;
         left: 0;
@@ -395,7 +280,7 @@
       }
 
       &:hover::after,
-      &:focus::after{
+      &:focus::after {
         width: 100%;
         opacity: 1;
       }
@@ -410,7 +295,6 @@
       }
     }
   }
-
 
   &__terms {
     @extend %secondary-text;
@@ -427,7 +311,7 @@
       &:disabled {
         .page-compilator__terms-link {
           color: vars.$c-gray-40;
-          
+
           &::after {
             width: 0;
           }
@@ -442,7 +326,7 @@
       overflow: hidden;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 0;
         left: 0;
@@ -450,11 +334,11 @@
         height: 1px;
         background-color: vars.$c-blue;
         opacity: 0;
-        transition: all 300ms
+        transition: all 300ms;
       }
 
       &:hover::after,
-      &:focus::after{
+      &:focus::after {
         width: 100%;
         opacity: 1;
       }

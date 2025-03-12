@@ -31,16 +31,16 @@ export const App: React.FC = () => {
     if (!token.value) {
       dispatch(getTokenFromStorage());
     }
-  }, []);
+  }, [dispatch, token.value]);
 
   useEffect(() => {
     if (user.value && 'token' in user.value && user.value.token) {
       dispatch(setToken(user.value.token));
     }
-  }, [user.value])
+  }, [dispatch, user.value])
 
   return (
-    <div 
+    <div
       className='app'
     >
       {token.isAppLoading ? 
