@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../PageLayout";
-import "./team.scss";
+import "./Team.scss";
 // import { getTeams } from "../../api";
 import { TeamType } from "../../types/TeamType";
 import classNames from "classnames";

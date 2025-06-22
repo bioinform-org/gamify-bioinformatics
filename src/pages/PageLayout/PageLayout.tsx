@@ -29,7 +29,7 @@ export const PageLayout: React.FC<Props> = ({
     if (!user.value && token.value) {
       dispatch(getUser(token.value));
     }
-  }, [user.value])
+  }, [dispatch, token.value, user.value])
 
   return (
     <div className="page-layout">

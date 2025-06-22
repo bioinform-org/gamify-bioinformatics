@@ -5,7 +5,7 @@
   @include mixins.grid;
 
   &__content {
-    grid-column: span 9;
+    grid-column: span 8;
     display: flex;
     flex-direction: column;
     gap: 16px;

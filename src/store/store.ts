@@ -4,6 +4,7 @@ import userReducer from '../store/features/userSlice';
 import usersReducer from '../store/features/usersSlice';
 import exercisesReducer from '../store/features/exercisesSlice';
 import tokenReducer from '../store/features/tokenSlice';
+import testExercisesReducer from '../store/features/testExercisesSlice';
 
 //main state, which looks like this: state: {user, users, exercises}
 //every reducer(userReducer, etc) inside reducer only responsible for their state
@@ -14,6 +15,7 @@ export const store = configureStore({
     users: usersReducer,
     exercises: exercisesReducer,
     token: tokenReducer,
+    testExercises: testExercisesReducer,
   }
 })
 

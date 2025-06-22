@@ -4,14 +4,18 @@ import { PageLayout } from "../PageLayout";
 import "./MyExercisesPage.scss";;
 import { Exercise } from "../../types/ProductType";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getExercises, selectExercises, setErrorMessageForExercises } from "../../store/features/exercisesSlice";
+import {
+  testSelectExercises,
+  setErrorMessageForExercises,
+  testGetExercises,
+} from "../../store/features/testExercisesSlice";
 
 type Props = {};
 
 export const MyExercisesPage: React.FC<Props> = () => {
   const [onGoingExercises, setOnGoingExercises] = useState<Exercise[]>([]);
   const [completedExercises, setCompletedExercises] = useState<Exercise[]>([]);
-  const exercises = useAppSelector(selectExercises);
+  const exercises = useAppSelector(testSelectExercises);
   const dispatch = useAppDispatch()
 
   //updated logic:
@@ -19,7 +23,7 @@ export const MyExercisesPage: React.FC<Props> = () => {
   //made it more readible: basically when page is rendered, we are calling for dispatch(getExercises) to get them
   //in the exercisesSlice: loading and errorMessage ARE ALREADY HANDLED by slices, so we only import them from there ;)))))
   useEffect(() => {
-    dispatch(getExercises());
+    dispatch(testGetExercises());
   }, []);
 
   //here we are checking if exercises.value changed from null to Exercises[] and if yes, we set appropriate exercises
