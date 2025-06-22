@@ -124,3 +124,4 @@ export const getTeams = () => get<[]>("/teams");
 export const getExercisesFromServer = () => get<Exercise[]>('/exercises');
 export const getUsersFromServer = () => get<User[]>('/users');
 export const getExercisesFromLocal = () => testGet<Exercise[]>('/exercises.json');
+export const getUsersFromLocal = () => testGet<User[]>('/users.json');
