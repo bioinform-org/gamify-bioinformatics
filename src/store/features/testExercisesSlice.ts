@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Exercise } from "../../types/ProductType";
-import { getExercisesFromLocal } from "../../api";
+import { getExercisesFromLocal } from "../../testApi";
 import { RootState } from "../store";
 
 
