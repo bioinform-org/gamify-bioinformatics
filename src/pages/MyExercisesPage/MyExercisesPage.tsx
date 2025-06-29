@@ -9,6 +9,7 @@ import {
   setErrorMessageForExercises,
   testGetExercises,
 } from "../../store/features/testExercisesSlice";
+import { ExerciseDetails } from "../../components/ExerciseDetails";
 
 type Props = {};
 
@@ -52,12 +53,13 @@ export const MyExercisesPage: React.FC<Props> = () => {
       isLoading={exercises.isLoading}
       errorMessage={exercises.errorMessage}
     >
-      {onGoingExercises.length > 0 && (
+      <ExerciseDetails />
+      {/* {onGoingExercises.length > 0 && (
         <ExercisesList listTitle="Ongoing" exercises={onGoingExercises} />
       )}
       {completedExercises.length > 0 && (
         <ExercisesList listTitle="Completed" exercises={completedExercises} />
-      )}
+      )} */}
     </PageLayout>
   );
 };
