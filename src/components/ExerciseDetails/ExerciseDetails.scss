@@ -22,6 +22,7 @@
 
   &__text {
     @extend %secondary-text;
+    color: vars.$c-gray-60;
     padding-bottom: 24px;
   }
 
