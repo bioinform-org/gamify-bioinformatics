@@ -11,6 +11,7 @@ import {
 } from "../../store/features/testExercisesSlice";
 import { ExerciseDetails } from "../../components/ExerciseDetails";
 import { InfoBlock } from "../../components/InfoBlock";
+import { ExerciseSideBar } from "../../components/ExerciseSideBar";
 
 type Props = {};
 
@@ -55,7 +56,7 @@ export const MyExercisesPage: React.FC<Props> = () => {
       errorMessage={exercises.errorMessage}
     >
       <ExerciseDetails />
-      <InfoBlock />
+      <ExerciseSideBar />
       {/* {onGoingExercises.length > 0 && (
         <ExercisesList listTitle="Ongoing" exercises={onGoingExercises} />
       )}
