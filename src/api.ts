@@ -26,6 +26,8 @@ export const API_URL = axios.create({
   withCredentials: true,
 });
 
+
+
 // This function creates a promise
 // that is resolved after a given delay
 

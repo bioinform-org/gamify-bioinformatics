@@ -29,7 +29,7 @@ export const PageLayout: React.FC<Props> = ({
     if (!user.value && token.value) {
       dispatch(getUser(token.value));
     }
-  }, [user.value])
+  }, [dispatch, token.value, user.value])
 
   return (
     <div className="page-layout">
@@ -52,7 +52,7 @@ export const PageLayout: React.FC<Props> = ({
               onBlur={() => setTimeout(() => setIsMenuOpen(false), 240)}
             >
               {user.isLoading && <Loader shouldBeText={false}/>}
-              {!user.isLoading && (user.value ? user.value.username : 'Error')}
+              {!user.isLoading && 'Admin'}
             </button>
           </div>
 

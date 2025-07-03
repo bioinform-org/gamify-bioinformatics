@@ -3,22 +3,22 @@ import { ExercisesList } from "../../components/ExercisesList";
 import { PageLayout } from "../PageLayout";
 import { useEffect, useState } from "react";
 import { Exercise } from "../../types/ProductType";
-import { getExercises } from "../../store/features/exercisesSlice";
+import { testGetExercises } from "../../store/features/testExercisesSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectExercises, setErrorMessageForExercises } from "../../store/features/exercisesSlice";
+import { testSelectExercises, setErrorMessageForExercises } from "../../store/features/testExercisesSlice";
 
 type Props = {};
 
 export const ExercisesPage: React.FC<Props> = () => {
   const [molBioExercises, setMolBioExercises] = useState<Exercise[]>([]);
   const [pythonExercises, setPythonExercises] = useState<Exercise[]>([]);
-  const exercises = useAppSelector(selectExercises);
+  const exercises = useAppSelector(testSelectExercises);
   const dispatch = useAppDispatch()
 
   //CHECK OUT MyExercisesPage.tsx WHERE IS THE SAME CODE AS HERE
 
   useEffect(() => {
-    dispatch(getExercises());
+    dispatch(testGetExercises());
   }, []);
 
   useEffect(() => {
