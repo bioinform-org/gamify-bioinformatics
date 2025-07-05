@@ -5,12 +5,12 @@ export const InfoBlock = () => {
     <div className="info-block">
       <div className="info-block__text-container">
         <p className="info-block__text">Topic:</p>
-        <p className="info-block__text--bold">Name</p>
+        <p className="info-block__text--bold">Molecular biology</p>
       </div>
 
       <div className="info-block__text-container">
         <p className="info-block__text">Estimated time:</p>
-        <p className="info-block__text--bold">Number</p>
+        <p className="info-block__text--bold">1 hour</p>
       </div>
       <p className="info-block__progress-bar-text">Exercise progress</p>
       <div className="info-block__progress-bar">

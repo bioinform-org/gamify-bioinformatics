@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import "./ExerciseCard.scss";
+import { Link } from "react-router-dom";
 
 type Props = {
   title: string;
@@ -47,14 +48,14 @@ export const ExerciseCard: React.FC<Props> = ({
         </div>
       )}
 
-      <a
+      <Link
         className={classNames("exercise-card__btn", {
           "exercise-card__btn--completed": progress === 100,
         })}
-        href="#"
+        to="/the-poisonous-milkshake"
       >
         {progress === 100 ? "Completed!" : !progress ? "Start" : "Continue"}
-      </a>
+      </Link>
     </article>
   );
 };

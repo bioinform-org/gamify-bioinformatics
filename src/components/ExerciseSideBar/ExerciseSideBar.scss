@@ -25,7 +25,6 @@ $icons: (
     height: inherit;
     background-color: vars.$c-white;
     border-radius: 16px;
-    // position: fixed;
   }
 
   &__header {
@@ -39,6 +38,7 @@ $icons: (
 
   &__list {
     display: flex;
+    padding-top: 16px;
     flex-direction: column;
     gap: 8px;
     list-style-type: none;

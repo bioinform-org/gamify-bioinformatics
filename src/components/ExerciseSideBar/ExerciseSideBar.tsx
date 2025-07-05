@@ -3,14 +3,17 @@ import './ExerciseSideBar.scss';
 import classNames from 'classnames';
 import { InfoBlock } from '../InfoBlock';
 
-const chapters = [
-  { name: "Introduction", link: "introduction" },
-  { name: "Species identification", link: "species" },
-  { name: "Protein identification", link: "protein" },
-  { name: "Suspect identification", link: "suspect" },
-];
+type Chapter = {
+  id: number;
+  name: string;
+  link: string;
+};
 
-export const ExerciseSideBar = () => {
+type Props = {
+  chapters: Chapter[];
+}
+
+export const ExerciseSideBar = ({ chapters }: Props) => {
   return (
     <aside className="exercise-sidebar">
       <div className="exercise-sidebar__container">
@@ -24,7 +27,7 @@ export const ExerciseSideBar = () => {
         <nav className="exercise-sidebar__nav">
           <InfoBlock />
           <ul className="exercise-sidebar__list">
-            {chapters.map(({ name, link }, index) => (
+            {chapters?.map(({ name, link }, index) => (
               <li key={name} className="exercise-sidebar__item">
                 <NavLink
                   className={({ isActive }: { isActive: boolean }) =>
@@ -38,9 +41,6 @@ export const ExerciseSideBar = () => {
                   to={`/${link}`}
                 >
                   {`${index + 1} ${name}`}
-                  {name === "Team management" && (
-                    <span className="exercise-sidebar__link-info">1</span>
-                  )}
                 </NavLink>
               </li>
             ))}

@@ -19,6 +19,7 @@ import { Loader } from "./components/Loader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
+import { ThePoisonousMilkshakePage } from "./pages/ThePoisonousMilkshakePage";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -40,42 +41,49 @@ export const App: React.FC = () => {
   }, [user.value])
 
   return (
-    <div 
-      className='app'
-    >
-      {token.isAppLoading ? 
-        (
-          <div className="app__loader-container">
-            <Loader />
-          </div>
-        ) : (
+    <div className="app">
+      {token.isAppLoading ? (
+        <div className="app__loader-container">
+          <Loader />
+        </div>
+      ) : (
         <Routes>
           <Route path="/" element={<AuthComponent />}>
-            <Route index element={<Navigate to={'exercises'}/>}/>
-            <Route path='exercises' element={<ExercisesPage/>}/>
-            <Route path='my-exercises' element={<MyExercisesPage/>}/>
-            <Route path='settings' element={<SettingsPage/>}>
-              <Route index element={<Navigate to={'account'}/>}/>
-              <Route path='account' element={<SettingsAccountComponent />}/>
-              <Route path='password' element={<SettingsPasswordComponent />}/>
-              <Route path='connected-accounts' element={<SettingsConnectedAccountsComponent />}/>
+            <Route index element={<Navigate to={"exercises"} />} />
+            <Route path="exercises" element={<ExercisesPage />} />
+            <Route
+              path="the-poisonous-milkshake"
+              element={<ThePoisonousMilkshakePage />}
+            />
+            <Route path="my-exercises" element={<MyExercisesPage />} />
+            <Route path="settings" element={<SettingsPage />}>
+              <Route index element={<Navigate to={"account"} />} />
+              <Route path="account" element={<SettingsAccountComponent />} />
+              <Route path="password" element={<SettingsPasswordComponent />} />
+              <Route
+                path="connected-accounts"
+                element={<SettingsConnectedAccountsComponent />}
+              />
             </Route>
-            <Route path='dashboard' element={<DashboardPage/>}/>
-            <Route path='team' element={<Team/>}/>
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="team" element={<Team />} />
           </Route>
 
-          <Route path='sign-in' element={<SignInPage/>} />
-          <Route path='sign-up' element={<SignUpPage/>}/>
+          <Route path="sign-in" element={<SignInPage />} />
+          <Route path="sign-up" element={<SignUpPage />} />
 
-          <Route path='reset'>
-            <Route index element={<ResetPasswordPage/>} />
-            <Route path='email-sent' element={<ResetPasswordEmailSendPage/>}/>
-            <Route path='set-password'>
-              <Route path=':tokenId' element={<ResetPasswordSetNewPasswordPage/>}/>
+          <Route path="reset">
+            <Route index element={<ResetPasswordPage />} />
+            <Route path="email-sent" element={<ResetPasswordEmailSendPage />} />
+            <Route path="set-password">
+              <Route
+                path=":tokenId"
+                element={<ResetPasswordSetNewPasswordPage />}
+              />
             </Route>
           </Route>
         </Routes>
-       )}
+      )}
     </div>
-  )
+  );
 };
