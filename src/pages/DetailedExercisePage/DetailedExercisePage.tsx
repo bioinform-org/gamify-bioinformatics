@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./DetailedExercisePage.scss";
 import { Link } from "react-router-dom";
-import { Loader } from "../../components/Loader/Loader";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getUser, removeErrorMessageForUser, selectUser } from "../../store/features/userSlice";
-import { removeToken, selectToken } from "../../store/features/tokenSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { removeErrorMessageForUser } from "../../store/features/userSlice";
+import { removeToken } from "../../store/features/tokenSlice";
 import { ExerciseSideBar } from "../../components/ExerciseSideBar";
 
 type Chapter = {
   id: number;
   name: string;
   link: string;
+  completed: boolean;
 }
 
 type Props = {
@@ -20,15 +20,15 @@ type Props = {
 
 export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const token = useAppSelector(selectToken);
-  const user = useAppSelector(selectUser);
+  // const token = useAppSelector(selectToken);
+  // const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!user.value && token.value) {
-      dispatch(getUser(token.value));
-    }
-  }, [dispatch, token.value, user.value])
+  // useEffect(() => {
+  //   if (!user.value && token.value) {
+  //     dispatch(getUser(token.value));
+  //   }
+  // }, [dispatch, token.value, user.value])
 
   return (
     <div className="detailed-exercise">
@@ -50,8 +50,7 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
               //using setTimeout to give some time for a click on the link to be processed before closing
               onBlur={() => setTimeout(() => setIsMenuOpen(false), 240)}
             >
-              {user.isLoading && <Loader shouldBeText={false} />}
-              {!user.isLoading && "Admin"}
+              Admin
             </button>
           </div>
 

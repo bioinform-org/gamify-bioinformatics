@@ -19,12 +19,14 @@ import { Loader } from "./components/Loader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
+import { Introduction } from "./pages/ThePoisonousMilkshakePage/components/Introduction";
 import { ThePoisonousMilkshakePage } from "./pages/ThePoisonousMilkshakePage";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+
 
   //checking if token is in the localStorage, if yes, then we will get it from localStorage and add to redux store
   //while we are waiting for it, we will show loading
@@ -54,7 +56,10 @@ export const App: React.FC = () => {
             <Route
               path="the-poisonous-milkshake"
               element={<ThePoisonousMilkshakePage />}
-            />
+            >
+              <Route index element={<Navigate to={"introduction"} />} />
+              <Route path="introduction" element={<Introduction />} />
+            </Route>
             <Route path="my-exercises" element={<MyExercisesPage />} />
             <Route path="settings" element={<SettingsPage />}>
               <Route index element={<Navigate to={"account"} />} />

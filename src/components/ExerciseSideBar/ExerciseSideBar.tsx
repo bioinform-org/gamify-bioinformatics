@@ -7,6 +7,7 @@ type Chapter = {
   id: number;
   name: string;
   link: string;
+  completed: boolean;
 };
 
 type Props = {
@@ -38,7 +39,7 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
                       }
                     )
                   }
-                  to={`/${link}`}
+                  to={`${link}`}
                 >
                   {`${index + 1} ${name}`}
                 </NavLink>
@@ -54,7 +55,7 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
                     }
                   )
                 }
-                to={"/answer"}
+                to={"answer"}
               >
                 Answer page
               </NavLink>
