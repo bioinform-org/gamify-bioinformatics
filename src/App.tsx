@@ -21,8 +21,9 @@ import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
 import { Introduction } from "./pages/ThePoisonousMilkshakePage/components/Introduction/Introduction";
 import { ThePoisonousMilkshakePage } from "./pages/ThePoisonousMilkshakePage";
-import { SpeciesIdentification } from "./pages/ThePoisonousMilkshakePage/SpeciesIdentification/SpeciesIdentification";
-import { ProteinIdentification } from "./pages/ThePoisonousMilkshakePage/ProteinIdentification/ProteinIdentification";
+import { SpeciesIdentification } from "./pages/ThePoisonousMilkshakePage/components/SpeciesIdentification/SpeciesIdentification";
+import { ProteinIdentification } from "./pages/ThePoisonousMilkshakePage/components/ProteinIdentification/ProteinIdentification";
+import { SuspectIdentification } from "./pages/ThePoisonousMilkshakePage/components/SuspectIdentification/SuspectIdentification";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -69,10 +70,10 @@ export const App: React.FC = () => {
                 path="protein-identification"
                 element={<ProteinIdentification />}
               />
-              {/* <Route
+              <Route
                 path="suspect-identification"
                 element={<SuspectIdentification />}
-              /> */}
+              />
               {/* <Route path="answer" element={<Answer />} /> */}
             </Route>
             <Route path="my-exercises" element={<MyExercisesPage />} />

@@ -1,9 +1,10 @@
-import { ExerciseDetails } from "../../../components/ExerciseDetails"
+import { ExerciseDetails } from "../../../../components/ExerciseDetails"
 
 export const SpeciesIdentification = () => {
   return (
     <ExerciseDetails>
       <img
+        loading="lazy"
         className="exercise-details__img"
         src="../../../public/images/milkshake-image.png"
         alt="exercise image"
