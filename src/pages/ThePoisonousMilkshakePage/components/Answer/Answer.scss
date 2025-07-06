@@ -1,0 +1,48 @@
+@use "/src/styles/utils/vars";
+@use "/src/styles/utils/mixins";
+@use "/src/styles/utils/extends";
+
+.answer {
+  background-color: vars.$c-white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  border: none;
+
+  &__title {
+    @extend %h3;
+  }
+
+  &__text {
+    @extend %body-text;
+  }
+
+  &__checkbox {
+    display: flex;
+    gap: 8px;
+    border: 1px solid vars.$c-gray-10;
+    border-radius: 4px;
+    padding: 16px
+  }
+
+  &__input {
+    height: 24px;
+    width: 24px;
+
+    &:checked {
+      color: vars.$c-teal-50;
+    }
+  }
+
+  &__label {
+    @extend %body-text;
+  }
+
+  &__button {
+    @extend %primary-button;
+    width: 203px;
+    height: 48px;
+  }
+}
