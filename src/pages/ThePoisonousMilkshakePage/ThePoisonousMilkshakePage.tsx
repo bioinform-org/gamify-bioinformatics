@@ -7,7 +7,7 @@ const chapters = [
       id: 1, 
       name: "Introduction", 
       link: "introduction", 
-      completed: false },
+      completed: true },
     {
       id: 2,
       name: "Species identification",

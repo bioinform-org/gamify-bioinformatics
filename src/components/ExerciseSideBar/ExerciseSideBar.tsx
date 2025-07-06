@@ -28,7 +28,7 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
         <nav className="exercise-sidebar__nav">
           <InfoBlock />
           <ul className="exercise-sidebar__list">
-            {chapters?.map(({ name, link }, index) => (
+            {chapters?.map(({ name, link, completed }, index) => (
               <li key={name} className="exercise-sidebar__item">
                 <NavLink
                   className={({ isActive }: { isActive: boolean }) =>
@@ -41,11 +41,14 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
                   }
                   to={`${link}`}
                 >
-                  {`${index + 1} ${name}`}
+                  <p>{`${index + 1} ${name}`}{" "}</p>
+                  {completed && (
+                    <img src="../../../../public/images/check-filled.svg" />
+                  )}
                 </NavLink>
               </li>
             ))}
-            <li key={'answer'} className="exercise-sidebar__item">
+            <li key={"answer"} className="exercise-sidebar__item">
               <NavLink
                 className={({ isActive }: { isActive: boolean }) =>
                   classNames(

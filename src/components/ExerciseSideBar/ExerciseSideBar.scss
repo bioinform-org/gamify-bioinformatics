@@ -3,13 +3,6 @@
 
 $side-bar-padding: 24px;
 
-$icons: (
-  "exercises": "/public/images/cases-black.svg",
-  "dashboard": "/public/images/dashboard-black.svg",
-  "my-exercises": "/public/images/chatbar-black.svg",
-  "chats": "/public/images/chat-black.svg",
-  "team": "/public/images/users-black.svg",
-);
 
 .exercise-sidebar {
   grid-column: 1 / 4;
@@ -44,10 +37,6 @@ $icons: (
     list-style-type: none;
   }
 
-  &__item {
-    position: relative;
-  }
-
   &__link {
     display: flex;
     gap: 8px;
@@ -57,42 +46,10 @@ $icons: (
     border-radius: 4px;
     @extend %text-icon-button;
 
-    @each $key, $icon in $icons {
-      &.side-bar__link--#{$key}::before {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 20px;
-        background-color: vars.$c-gray-100;
-        -webkit-mask-image: url(#{$icon});
-        mask-image: url(#{$icon});
-      }
-    }
-
     &--active {
       background-color: vars.$c-gray-10;
       color: vars.$c-primary-teal;
       @extend %contrast-text;
-
-      @each $key, $icon in $icons {
-        &.side-bar__link--#{$key}::before {
-          background-color: vars.$c-primary-teal;
-        }
-      }
     }
-  }
-
-  &__link-info {
-    @extend %secondary-text;
-    position: absolute;
-    right: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    background-color: vars.$c-red;
-    color: vars.$c-white;
   }
 }

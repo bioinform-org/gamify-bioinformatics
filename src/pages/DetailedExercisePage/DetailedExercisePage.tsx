@@ -41,7 +41,7 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
             <img
               className="detailed-exercise__user-img"
               src="../../../public/images/avatar_by_default.svg"
-              alt=""
+              alt="image"
             />
             <button
               className="detailed-exercise__user-btn"

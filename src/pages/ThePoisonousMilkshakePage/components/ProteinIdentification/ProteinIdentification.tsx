@@ -1,6 +1,7 @@
 import { ExerciseDetails } from "../../../../components/ExerciseDetails"
 
 export const ProteinIdentification = () => {
+
   return (
     <ExerciseDetails>
       <img
