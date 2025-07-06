@@ -3,23 +3,27 @@ import { DetailedExercisePage } from "../DetailedExercisePage";
 
 
 const chapters = [
-    { id: 1, name: "Introduction", link: "introduction", completed: false },
+    { 
+      id: 1, 
+      name: "Introduction", 
+      link: "introduction", 
+      completed: false },
     {
       id: 2,
       name: "Species identification",
-      link: "species",
+      link: "species-identification",
       completed: false,
     },
     {
       id: 3,
       name: "Protein identification",
-      link: "protein",
+      link: "protein-identification",
       completed: false,
     },
     {
       id: 4,
       name: "Suspect identification",
-      link: "suspect",
+      link: "suspect-identification",
       completed: false,
     },
   ];
