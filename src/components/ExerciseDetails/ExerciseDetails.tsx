@@ -38,7 +38,6 @@ export const ExerciseDetails = ({ children }: Props) => {
   const index = chapters.findIndex(chapter => pathname === `/the-poisonous-milkshake/${chapter.link}`)
   const nextPage = index === chapters.length - 1 ? 'answer' : chapters[index + 1].link;
   const previousPage = index === 0 ? chapters[0].link : chapters[index-1].link;
-  console.log(pathname, index);
 
   return (
     <div className="exercise-details">
@@ -54,8 +53,7 @@ export const ExerciseDetails = ({ children }: Props) => {
         <Link
           to={`/the-poisonous-milkshake/${nextPage}`}
           className="exercise-details__button"
-          onClick={() => (chapters[index].completed = true)}
-        >
+        > 
           Next
         </Link>
       </div>

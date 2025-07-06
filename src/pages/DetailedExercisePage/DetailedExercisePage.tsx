@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { removeErrorMessageForUser } from "../../store/features/userSlice";
 import { removeToken } from "../../store/features/tokenSlice";
 import { ExerciseSideBar } from "../../components/ExerciseSideBar";
+import { ExerciseNotes } from "../../components/ExerciseNotes";
 
 type Chapter = {
   id: number;
@@ -32,16 +33,18 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
 
   return (
     <div className="detailed-exercise">
-      <ExerciseSideBar chapters={chapters}/>
+      <ExerciseSideBar chapters={chapters} />
 
       <div className="detailed-exercise__content">
         <div className="detailed-exercise__header">
-          <Link to={"/exercises"} className="detailed-exercise__breadcrumbs">Back to Exercises</Link>
+          <Link to={"/exercises"} className="detailed-exercise__breadcrumbs">
+            Back to Exercises
+          </Link>
           <div className="detailed-exercise__user">
             <img
               className="detailed-exercise__user-img"
               src="../../../public/images/avatar_by_default.svg"
-              alt="image"
+              alt=""
             />
             <button
               className="detailed-exercise__user-btn"
@@ -89,8 +92,8 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
         </div>
 
         {children}
-        
       </div>
+      <ExerciseNotes />
     </div>
   );
 };
