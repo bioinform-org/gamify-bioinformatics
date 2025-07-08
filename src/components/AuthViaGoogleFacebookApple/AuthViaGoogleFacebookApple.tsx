@@ -11,7 +11,7 @@ interface Props {}
 
 export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isFacebookButtonDisabled, setIsFacebookButtonDisabled] = useState(false)
+  const [isFacebookButtonDisabled] = useState(false)
   const googleLogin = useGoogleLogin({
     onSuccess: codeResponse => console.log(codeResponse),
     onError: () => console.log('Login Failed'),
