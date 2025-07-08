@@ -7,7 +7,7 @@ export const ProteinIdentification = () => {
       <img
         loading="lazy"
         className="exercise-details__img"
-        src="../../../public/images/milkshake-image.png"
+        src="../../../images/milkshake-image.png"
         alt="exercise image"
       />
       <p className="exercise-details__text">
