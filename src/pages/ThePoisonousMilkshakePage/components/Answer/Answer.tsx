@@ -20,7 +20,7 @@ export const Answer = () => {
       <span className="answer__text">Atempts available: 3</span>
       {suspects.map((suspect, index) => {
         return (
-          <div className="answer__checkbox">
+          <div key={suspect} className="answer__checkbox">
             <input
               className="answer__input"
               type="checkbox"
