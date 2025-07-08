@@ -56,12 +56,12 @@ export const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<AuthComponent />}>
             <Route index element={<Navigate to={"exercises"} />} />
-            <Route path="exercises" element={<ExercisesPage />} />
+            <Route path="/exercises" element={<ExercisesPage />} />
             <Route
-              path="the-poisonous-milkshake"
+              path="/the-poisonous-milkshake"
               element={<ThePoisonousMilkshakePage />}
             >
-              <Route index element={<Navigate to={"introduction"} />} />
+              <Route index element={<Introduction />} />
               <Route path="introduction" element={<Introduction />} />
               <Route
                 path="species-identification"
@@ -77,8 +77,8 @@ export const App: React.FC = () => {
               />
               <Route path="answer" element={<Answer />} />
             </Route>
-            <Route path="my-exercises" element={<MyExercisesPage />} />
-            <Route path="settings" element={<SettingsPage />}>
+            <Route path="/my-exercises" element={<MyExercisesPage />} />
+            <Route path="/settings" element={<SettingsPage />}>
               <Route index element={<Navigate to={"account"} />} />
               <Route path="account" element={<SettingsAccountComponent />} />
               <Route path="password" element={<SettingsPasswordComponent />} />
@@ -87,8 +87,8 @@ export const App: React.FC = () => {
                 element={<SettingsConnectedAccountsComponent />}
               />
             </Route>
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="team" element={<Team />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/team" element={<Team />} />
           </Route>
 
           <Route path="sign-in" element={<SignInPage />} />

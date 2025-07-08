@@ -52,7 +52,7 @@ export const ExerciseCard: React.FC<Props> = ({
         className={classNames("exercise-card__btn", {
           "exercise-card__btn--completed": progress === 100,
         })}
-        to="/the-poisonous-milkshake"
+        to="/the-poisonous-milkshake/introduction"
       >
         {progress === 100 ? "Completed!" : !progress ? "Start" : "Continue"}
       </Link>

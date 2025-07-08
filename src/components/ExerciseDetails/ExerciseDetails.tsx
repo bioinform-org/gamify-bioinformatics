@@ -36,8 +36,8 @@ export const ExerciseDetails = ({ children }: Props) => {
 
   const { pathname } = useLocation();
   const index = chapters.findIndex(chapter => pathname === `/the-poisonous-milkshake/${chapter.link}`)
-  const nextPage = index === chapters.length - 1 ? 'answer' : chapters[index + 1].link;
-  const previousPage = index === 0 ? chapters[0].link : chapters[index-1].link;
+  const nextPage = chapters && index === chapters.length - 1 ? 'answer' : chapters[index + 1].link;
+  const previousPage = chapters && index === 0 ? chapters[0].link : chapters[index-1].link;
 
   return (
     <div className="exercise-details">
@@ -53,7 +53,7 @@ export const ExerciseDetails = ({ children }: Props) => {
         <Link
           to={`/the-poisonous-milkshake/${nextPage}`}
           className="exercise-details__button"
-        > 
+        >
           Next
         </Link>
       </div>
