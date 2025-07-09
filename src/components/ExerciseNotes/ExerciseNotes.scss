@@ -1,0 +1,29 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+.notes {
+  grid-column: 10 / 13;
+
+  &__text {
+    @extend %sall-contrast-text;
+    background-color: vars.$c-yellow;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+    padding: 8px 16px;
+  }
+
+  &__container {
+    width: 100%;
+    background-color: vars.$c-white;
+    padding: 16px;
+  }
+
+  &__textarea {
+    height: 100%;
+    background-color: vars.$c-gray-10;
+    resize: none;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
+}

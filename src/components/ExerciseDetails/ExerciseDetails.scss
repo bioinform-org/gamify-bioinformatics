@@ -1,0 +1,44 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/mixins";
+@use "../../styles/utils/extends";
+
+.exercise-details {
+  box-sizing: border-box;
+  width: 680px;
+  padding: 24px;
+  background-color: vars.$c-white;
+  border-radius: 16px;
+
+  &__title {
+    @extend %h4;
+    color: vars.$c-gray-100;
+    padding-bottom: 24px;
+  }
+
+  &__img {
+    width: 632px;
+    padding-bottom: 24px;
+  }
+
+  &__text {
+    @extend %secondary-text;
+    color: vars.$c-gray-60;
+    padding-bottom: 24px;
+  }
+
+  &__buttons {
+    border-top: 1px solid vars.$c-gray-10;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0;
+  }
+
+    &__button {
+      @extend %button-text;
+      @extend %primary-button;
+      width: 203px;
+      height: 48px;
+      text-decoration: none;
+      text-align: center;
+    }
+}

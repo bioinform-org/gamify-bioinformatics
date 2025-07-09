@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { Sidebar } from "../../components/Sidebar";
-import "./PageLayout.scss";
+import "./DetailedExercisePage.scss";
 import { Link } from "react-router-dom";
-import { Loader } from "../../components/Loader/Loader";
 import { useAppDispatch } from "../../store/hooks";
 import { removeErrorMessageForUser } from "../../store/features/userSlice";
 import { removeToken } from "../../store/features/tokenSlice";
+import { ExerciseSideBar } from "../../components/ExerciseSideBar";
+import { ExerciseNotes } from "../../components/ExerciseNotes";
+
+type Chapter = {
+  id: number;
+  name: string;
+  link: string;
+  completed: boolean;
+}
 
 type Props = {
   children: React.ReactNode;
-  pageTitle: string;
-  isLoading: boolean;
-  errorMessage: string;
+  chapters: Chapter[];
 };
 
-export const PageLayout: React.FC<Props> = ({
-  children,
-  pageTitle,
-  isLoading,
-  errorMessage,
-}) => {
+export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const token = useAppSelector(selectToken);
   // const user = useAppSelector(selectUser);
@@ -32,51 +32,52 @@ export const PageLayout: React.FC<Props> = ({
   // }, [dispatch, token.value, user.value])
 
   return (
-    <div className="page-layout">
-      <Sidebar />
+    <div className="detailed-exercise">
+      <ExerciseSideBar chapters={chapters} />
 
-      <div className="page-layout__content">
-        <div className="page-layout__header">
-          <h2 className="page-layout__title">{pageTitle}</h2>
-          <div className="page-layout__user">
+      <div className="detailed-exercise__content">
+        <div className="detailed-exercise__header">
+          <Link to={"/exercises"} className="detailed-exercise__breadcrumbs">
+            Back to Exercises
+          </Link>
+          <div className="detailed-exercise__user">
             <img
-              className="page-layout__user-img"
+              className="detailed-exercise__user-img"
               src="../../../public/images/avatar_by_default.svg"
               alt=""
             />
             <button
-              className="page-layout__user-btn"
+              className="detailed-exercise__user-btn"
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               //using setTimeout to give some time for a click on the link to be processed before closing
               onBlur={() => setTimeout(() => setIsMenuOpen(false), 240)}
             >
-              {/* {user.isLoading && <Loader shouldBeText={false}/>} */}
               Admin
             </button>
           </div>
 
           {isMenuOpen && (
-            <ul className="page-layout__user-menu">
-              <li className="page-layout__user-menu-item">
+            <ul className="detailed-exercise__user-menu">
+              <li className="detailed-exercise__user-menu-item">
                 <Link
-                  className="page-layout__user-menu-btn page-layout__user-menu-btn--settings"
+                  className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--settings"
                   to="/settings/account"
                 >
                   Settings
                 </Link>
               </li>
-              <li className="page-layout__user-menu-item">
+              <li className="detailed-exercise__user-menu-item">
                 <Link
-                  className="page-layout__user-menu-btn page-layout__user-menu-btn--help"
+                  className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--help"
                   to="/help-center"
                 >
                   Help Center
                 </Link>
               </li>
-              <li className="page-layout__user-menu-item">
+              <li className="detailed-exercise__user-menu-item">
                 <Link
-                  className="page-layout__user-menu-btn page-layout__user-menu-btn--logout"
+                  className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--logout"
                   to=""
                   onClick={() => {
                     dispatch(removeToken());
@@ -91,21 +92,8 @@ export const PageLayout: React.FC<Props> = ({
         </div>
 
         {children}
-
-        {isLoading && (
-          <div className="page-layout__loader">
-            <p className="page-layout__loader-text">
-              Please wait a moment while the page loads.
-            </p>
-
-            <Loader />
-          </div>
-        )}
-
-        {!isLoading && errorMessage && (
-          <div className="page-layout__error-message">{errorMessage}</div>
-        )}
       </div>
+      <ExerciseNotes />
     </div>
   );
 };

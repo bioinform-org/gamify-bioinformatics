@@ -10,6 +10,7 @@ import {
   testGetExercises,
 } from "../../store/features/testExercisesSlice";
 
+
 type Props = {};
 
 export const MyExercisesPage: React.FC<Props> = () => {
@@ -52,6 +53,8 @@ export const MyExercisesPage: React.FC<Props> = () => {
       isLoading={exercises.isLoading}
       errorMessage={exercises.errorMessage}
     >
+      {/* <ExerciseDetails />
+      <ExerciseSideBar /> */}
       {onGoingExercises.length > 0 && (
         <ExercisesList listTitle="Ongoing" exercises={onGoingExercises} />
       )}

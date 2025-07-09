@@ -1,0 +1,58 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/mixins";
+@use "../../styles/utils/extends";
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 284px;
+  background-color: vars.$c-yellow;
+  padding: 24px;
+  gap: 24px;
+  border-radius: 8px;
+
+  &__text-container {
+    display: flex; 
+    gap: 4px;
+  }
+
+  &__text {
+    @extend %body-text;
+    color: vars.$c-gray-60;
+  }
+
+  &__text--bold {
+    @extend %contrast-text
+  }
+
+  &__progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  
+    &__progress-bar-line {
+      width: 100%;
+      height: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+  
+      position: relative;
+  
+      background-color: vars.$c-gray-10;
+    }
+  
+    &__progress-bar-fill {
+      height: 100%;
+  
+      background-color: vars.$c-green;
+  
+      transition: width vars.$transition-time ease-in-out;
+    }
+  
+    &__progress-bar-label {
+      @extend %button-text;
+      color: vars.$c-gray-100;
+    }
+}
