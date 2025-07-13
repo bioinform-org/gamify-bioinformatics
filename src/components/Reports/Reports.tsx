@@ -23,12 +23,19 @@ export const Reports = () => {
         return (
           <div key={index} className="reports__items">
             <div className="reports__info">
-              <p>{`Report reason: ${report.reason}`}</p>
-              <p>{`Reported by ${report.userName} ${report.date} ${report.chatName}`}</p>
+              <p className="reports__title">{`Report reason: ${report.reason}`}</p>
+              <p className="reports__details">
+                Reported by <a href="#">{report.userName}</a> {report.date}{" "}
+                <a href="#">{report.chatName}</a>
+              </p>
             </div>
             <div className="reports__actions">
-              <Link to={"#"}>Delete report</Link>
-              <Link to={"#"}>View</Link>
+              <Link className="reports__delete-btn" to={"#"}>
+                Delete report
+              </Link>
+              <Link className="reports__view-btn" to={"#"}>
+                View
+              </Link>
             </div>
           </div>
         );

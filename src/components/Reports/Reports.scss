@@ -1,0 +1,50 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+.reports {
+  box-sizing: border-box;
+  height: 700px;
+
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  &__info {
+
+  }
+
+  &__details {
+    @extend %secondary-text;
+  }
+
+  &__title {
+    @extend %button-text;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__delete-btn {
+    @extend %outlined-button;
+    height: 48px;
+    width: 148px;
+    text-decoration: none;
+    padding: 13px 16px;
+    justify-content: center;
+    background-color: vars.$c-gray-10;
+  }
+
+  &__view-btn {
+    @extend %primary-button;
+    text-decoration: none;
+    height: 48px;
+    width: 148px;
+    text-align: center;
+  }
+}
