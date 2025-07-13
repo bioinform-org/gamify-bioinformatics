@@ -11,9 +11,9 @@ const blockedUsers = [
 export const BlockedUsers = () => {
   return (
     <div className="blocked-users">
-      {blockedUsers.map(user => {
+      {blockedUsers.map((user, index) => {
         return (
-          <div className="blocked-users__item">
+          <div key={index} className="blocked-users__item">
             <img
               className="blocked-users__image"
               src="/public/images/avatar_by_default.svg"

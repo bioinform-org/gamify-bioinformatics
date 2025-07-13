@@ -19,9 +19,9 @@ const reports = [
 export const Reports = () => {
   return (
     <div className="reports">
-      {reports.map((report) => {
+      {reports.map((report, index) => {
         return (
-          <div className="reports__items">
+          <div key={index} className="reports__items">
             <div className="reports__info">
               <p>{`Report reason: ${report.reason}`}</p>
               <p>{`Reported by ${report.userName} ${report.date} ${report.chatName}`}</p>
