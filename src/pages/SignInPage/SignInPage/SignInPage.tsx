@@ -38,6 +38,20 @@ export const SignInPage = () => {
     e.preventDefault();
     dispatch(removeErorrMessageForToken());
     dispatch(removeErrorMessageForUser());
+    /*
+    if statement below is crucial to being able to log in into test mode,
+    I believe not including isDevMode variable inside condition is enought to log in
+    in development mode and also in build mode
+    */
+    if (email === "admin" && password === "admin") {
+      dispatch({ type: "token/setToken", payload: "test-admin-token" });
+      dispatch({
+        type: "user/setUser",
+        payload: { id: 1, name: "Admin", email: "admin@test.com" },
+      });
+      navigate("/exercises");
+      return;
+    }
     dispatch(getTokenFromLogin({ email, password }))
   }
 
