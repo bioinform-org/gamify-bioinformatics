@@ -1,0 +1,25 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+.blocked-users {
+  
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid vars.$c-gray-10;
+    padding: 8px 24px;
+  }
+
+  &__info {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__name {
+    align-content: center;
+  }
+
+  &__button {
+    @extend %outlined-button;
+  }
+}
