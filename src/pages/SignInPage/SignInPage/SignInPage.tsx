@@ -26,7 +26,7 @@ export const SignInPage = () => {
   //implement navigation to a previously opened page
   const navigate = useNavigate();
 
-  const isDevMode = import.meta.env.MODE === "development";
+  const isDevMode = import.meta.env.MODE === "development" && "build";
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(removeErorrMessageForToken());
