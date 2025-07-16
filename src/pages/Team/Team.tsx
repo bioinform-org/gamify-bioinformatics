@@ -329,7 +329,7 @@ export const Team: React.FC<Props> = () => {
                   <>
                     <img
                       className="team__content-img"
-                      src="/public/images/no-teams.svg"
+                      src="/images/no-teams.svg"
                       alt="no teams"
                     />
                     <p className="team__content-message">No teams were added</p>
@@ -362,7 +362,7 @@ export const Team: React.FC<Props> = () => {
                     {!isTeamNameSuccess ? (
                       <>
                         <img
-                          src="/public/images/people.svg"
+                          src="/images/people.svg"
                           alt="People image"
                         />
 
@@ -407,7 +407,7 @@ export const Team: React.FC<Props> = () => {
                     ) : (
                       <>
                         <img
-                          src="/public/images/avatars.svg"
+                          src="/images/avatars.svg"
                           alt="Avatars image"
                         />
 
@@ -512,7 +512,7 @@ export const Team: React.FC<Props> = () => {
                   </>
                 ) : (
                   <>
-                    <img src="/public/images/done-icon.svg" alt="Done icon" />
+                    <img src="/images/done-icon.svg" alt="Done icon" />
 
                     <h2 className="team__modal-title">
                       Your team was successfully created

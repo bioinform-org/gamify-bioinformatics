@@ -1,5 +1,5 @@
-import chechImg from '../../../public/images/check.svg'
-import chechFilledImg from '../../../public/images/check-filled.svg'
+import chechImg from '/images/check.svg'
+import chechFilledImg from '/images/check-filled.svg'
 import { passwordHasDigit, passwordHasLowerCaseLetter, passwordHasSpecialChar, passwordHasUpperCaseLetter, passwordLongEnough } from '../../utils/regex';
 import './PasswordRules.scss';
 

@@ -6,7 +6,7 @@ import { Reward } from "../../types/ProductType";
 import { Leaderboard } from "../../components/Leaderboard";
 import { Progress } from "../../components/Progress";
 
-interface Props {}
+// interface Props {}
 
 export const DashboardPage: React.FC<Props> = () => {
   const [rewards, setRewards] = useState<Reward[]>([]);
@@ -16,7 +16,7 @@ export const DashboardPage: React.FC<Props> = () => {
   useEffect(() => {
     setIsLoading(true);
     // DON`T forget to use axios here instead fetch
-    fetch("../../../public/api/rewards.json")
+    fetch("/api/rewards.json")
       .then((response) => {
         return response.json();
       })

@@ -4,8 +4,8 @@ import { PageCompilator } from '../PageCompilator/PageCompilator';
 import './ResetPasswordSetNewPasswordPage.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import classNames from 'classnames';
-import eyeImg from '../../../public/images/eye.svg';
-import eyeSlashImg from '../../../public/images/eye-slash.svg';
+import eyeImg from '/images/eye.svg';
+import eyeSlashImg from '/images/eye-slash.svg';
 import { PasswordRules } from '../../components/PasswordRules';
 import { validatePassword } from '../../utils/validation';
 import { selectUser, updateUser } from '../../store/features/userSlice';
@@ -57,7 +57,7 @@ export const ResetPasswordSetNewPasswordPage = () => {
         titleTop: 'Set a New Password',
         titleBottom: `Create a password that you'll use to log into your account`,
       }}
-      imageLink={'../../../public/images/reset-girl.png'}
+      imageLink={'/images/reset-girl.png'}
     >
       <form 
         className="page-compilator__form" 

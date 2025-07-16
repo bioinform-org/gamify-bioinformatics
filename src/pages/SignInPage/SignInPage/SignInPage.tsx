@@ -15,8 +15,8 @@ import {
   removeErrorMessageForUser,
 } from "../../../store/features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import eyeImg from "../../../../public/images/eye.svg";
-import eyeSlashImg from "../../../../public/images/eye-slash.svg";
+import eyeImg from "/images/eye.svg";
+import eyeSlashImg from "/images/eye-slash.svg";
 import { Loader } from "../../../components/Loader";
 // import { AuthViaGoogleFacebookApple } from "../../../components/AuthViaGoogleFacebookApple";
 
@@ -72,7 +72,7 @@ export const SignInPage = () => {
         titleTop: "Welcome back!",
         titleBottom: "Log in to continue your learning journey",
       }}
-      imageLink={"../../../public/images/man-science.png"}
+      imageLink={"/images/man-science.png"}
     >
       <form className="page-compilator__form" onSubmit={handleSubmit}>
         <label className="page-compilator__label">

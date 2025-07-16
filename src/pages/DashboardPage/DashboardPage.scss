@@ -76,13 +76,13 @@
 
     &--points {
       &::after {
-        background-image: url("../../../public/images/reward-points.svg");
+        background-image: url("/images/reward-points.svg");
       }
     }
 
     &--rank {
       &::after {
-        background-image: url("../../../public/images/rank.svg");
+        background-image: url("/images/rank.svg");
       }
     }
   }

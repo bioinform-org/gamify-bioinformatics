@@ -19,7 +19,7 @@ export const Sidebar: React.FC<Props> = () => {
         <div className="side-bar__header">
           <img
             className="side-bar__logo"
-            src="../../../public/images/Logo.svg"
+            src="/images/Logo.svg"
             alt="Bioinformatics logo"
           />
         </div>

@@ -41,7 +41,7 @@ export const PageLayout: React.FC<Props> = ({
           <div className="page-layout__user">
             <img
               className="page-layout__user-img"
-              src="../../../public/images/avatar_by_default.svg"
+              src="/images/avatar_by_default.svg"
               alt=""
             />
             <button

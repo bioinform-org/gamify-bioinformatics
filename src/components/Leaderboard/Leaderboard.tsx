@@ -21,14 +21,14 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/1st-place-medal.svg"
+                src="/images/1st-place-medal.svg"
                 alt="1st place medal"
               />
             </td>
             <td>
               <img
                 className="avatar"
-                src="./public/images/emma-johnson.jpg"
+                src="/images/emma-johnson.jpg"
                 alt="Emma Johnson"
               />
               Emma Johnson
@@ -38,14 +38,14 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/2nd-place-medal.svg"
+                src="/images/2nd-place-medal.svg"
                 alt="2st place medal"
               />
             </td>
             <td>
               <img
                 className="avatar"
-                src="./public/images/emma-johnson.jpg"
+                src="/images/emma-johnson.jpg"
                 alt="Liam Smith"
               />
               Liam Smith
@@ -55,14 +55,14 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/3rd-place-medal.svg"
+                src="/images/3rd-place-medal.svg"
                 alt="3st place medal"
               />
             </td>
             <td>
               <img
                 className="avatar"
-                src="./public/images/emma-johnson.jpg"
+                src="/images/emma-johnson.jpg"
                 alt="Lucas Martinez"
               />
               Lucas Martinez
@@ -74,7 +74,7 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
             <td>
               <img
                 className="avatar"
-                src="./public/images/emma-johnson.jpg"
+                src="/images/emma-johnson.jpg"
                 alt="Noah Brown"
               />
               Noah Brown
@@ -86,7 +86,7 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
             <td>
               <img
                 className="avatar"
-                src="./public/images/emma-johnson.jpg"
+                src="/images/emma-johnson.jpg"
                 alt="Isabella Garcia"
               />
               Isabella Garcia

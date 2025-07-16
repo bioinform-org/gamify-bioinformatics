@@ -3,8 +3,8 @@ import { PageCompilator } from '../../PageCompilator/PageCompilator';
 import './SignUpPage.scss';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import eyeImg from '../../../../public/images/eye.svg';
-import eyeSlashImg from '../../../../public/images/eye-slash.svg';
+import eyeImg from '/images/eye.svg';
+import eyeSlashImg from '/images/eye-slash.svg';
 import { PasswordRules } from '../../../components/PasswordRules';
 import { Loader } from '../../../components/Loader';
 import { Link, useNavigate } from 'react-router-dom';
@@ -83,7 +83,7 @@ export const SignUpPage = () => {
           titleTop: 'Join our community of young scientists!',
           titleBottom: 'Create an account to start learning with us',
         }}
-        imageLink={'../../../public/images/sign-up-girl.png'}
+        imageLink={'/images/sign-up-girl.png'}
       >
         <form 
           className="page-compilator__form" 

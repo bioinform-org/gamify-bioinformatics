@@ -55,12 +55,12 @@
       display: block;
       min-width: 20px;
       height: 20px;
-      background-image: url("/public/images/arrow-down.svg");
+      background-image: url("/images/arrow-down.svg");
     }
 
     &:active {
       &::after {
-        background-image: url("/public/images/arrow-down-dark.svg");
+        background-image: url("/images/arrow-down-dark.svg");
       }
     }
   }
@@ -95,15 +95,15 @@
     }
 
     &--settings::before {
-      background-image: url("/public/images/gearsix.svg");
+      background-image: url("/images/gearsix.svg");
     }
 
     &--help::before {
-      background-image: url("/public/images/question.svg");
+      background-image: url("/images/question.svg");
     }
 
     &--logout::before {
-      background-image: url("/public/images/logout.svg");
+      background-image: url("/images/logout.svg");
     }
   }
 

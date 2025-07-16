@@ -19,7 +19,7 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/molecular-biology.svg"
+                src="/images/molecular-biology.svg"
                 alt="Molecular biology icon"
                 className="icon"
               />
@@ -30,7 +30,7 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/basics-of-python.svg"
+                src="/images/basics-of-python.svg"
                 alt="Python icon"
                 className="icon"
               />
@@ -41,7 +41,7 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/protein-structure.svg"
+                src="/images/protein-structure.svg"
                 alt="Protein structure icon"
                 className="icon"
               />
@@ -52,7 +52,7 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/molecular-sequence.svg"
+                src="/images/molecular-sequence.svg"
                 alt="Molecular sequence icon"
                 className="icon"
               />
@@ -63,7 +63,7 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           <tr>
             <td>
               <img
-                src="./public/images/image-analysis.svg"
+                src="/images/image-analysis.svg"
                 alt="Image analysis icon"
                 className="icon"
               />
