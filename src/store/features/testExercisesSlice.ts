@@ -5,6 +5,7 @@ import { RootState } from "../store";
 
 
 export interface ExercisesState {
+  channels: any;
   value: Exercise[] | null,
   isLoading: boolean,
   errorMessage: string,

@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.scss";
 import classNames from "classnames";
+import { useChatInfo } from "../../store/ChatContext";
 
 interface Props {}
 
@@ -13,13 +14,15 @@ const navLinks = [
 ];
 
 export const Sidebar: React.FC<Props> = () => {
+  const { totalMessages } = useChatInfo();
+
   return (
     <aside className="side-bar">
       <div className="side-bar__container">
         <div className="side-bar__header">
           <img
             className="side-bar__logo"
-            src="../../../public/images/Logo.svg"
+            src="/images/Logo.svg"
             alt="Bioinformatics logo"
           />
         </div>
@@ -36,8 +39,8 @@ export const Sidebar: React.FC<Props> = () => {
                   to={`/${link}`}
                 >
                   {name}
-                  {name === "Team management" && (
-                    <span className="side-bar__link-info">1</span>
+                  {name === "Chats" && totalMessages > 0 && (
+                    <span className="side-bar__link-info">{totalMessages}</span>
                   )}
                 </NavLink>
               </li>

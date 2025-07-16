@@ -19,6 +19,8 @@ import { Loader } from "./components/Loader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
+import { ChatPage } from "./pages/ChatPage";
+import { ChatInfoProvider } from "./store/ChatInfoProvider";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -49,11 +51,13 @@ export const App: React.FC = () => {
             <Loader />
           </div>
         ) : (
+          <ChatInfoProvider>
         <Routes>
           <Route path="/" element={<AuthComponent />}>
             <Route index element={<Navigate to={'exercises'}/>}/>
             <Route path='exercises' element={<ExercisesPage/>}/>
             <Route path='my-exercises' element={<MyExercisesPage/>}/>
+            <Route path='chats' element={<ChatPage/>}/>
             <Route path='settings' element={<SettingsPage/>}>
               <Route index element={<Navigate to={'account'}/>}/>
               <Route path='account' element={<SettingsAccountComponent />}/>
@@ -75,6 +79,7 @@ export const App: React.FC = () => {
             </Route>
           </Route>
         </Routes>
+        </ChatInfoProvider>
        )}
     </div>
   )
