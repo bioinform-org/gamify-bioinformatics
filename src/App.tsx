@@ -25,6 +25,9 @@ import { SpeciesIdentification } from "./pages/ThePoisonousMilkshakePage/compone
 import { ProteinIdentification } from "./pages/ThePoisonousMilkshakePage/components/ProteinIdentification";
 import { SuspectIdentification } from "./pages/ThePoisonousMilkshakePage/components/SuspectIdentification";
 import { Answer } from "./pages/ThePoisonousMilkshakePage/components/Answer";
+import { ControlPanel } from "./pages/ControlPanel";
+import { Reports } from "./components/Reports";
+import { BlockedUsers } from "./components/BlockedUsers";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -89,6 +92,10 @@ export const App: React.FC = () => {
             </Route>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/control-panel" element={<ControlPanel />}>
+              <Route path="reports" element={<Reports />} />
+              <Route path="blocked-users" element={<BlockedUsers />} />
+            </Route>
           </Route>
 
           <Route path="sign-in" element={<SignInPage />} />

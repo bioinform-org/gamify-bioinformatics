@@ -10,6 +10,7 @@ const navLinks = [
   { name: "My exercises", link: "my-exercises" },
   { name: "Chats", link: "chats" },
   { name: "Team management", link: "team" },
+  { name: "Control panel", link: "control-panel" },
 ];
 
 export const Sidebar: React.FC<Props> = () => {
