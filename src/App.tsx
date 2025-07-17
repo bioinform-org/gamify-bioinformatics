@@ -93,8 +93,7 @@ export const App: React.FC = () => {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/team" element={<Team />} />
             <Route path="/control-panel" element={<ControlPanel />}>
-              {/* <Route element={<Reports />} /> */}
-              <Route index path="reports" element={<Reports />} />
+              <Route path="reports" element={<Reports />} />
               <Route path="blocked-users" element={<BlockedUsers />} />
             </Route>
           </Route>

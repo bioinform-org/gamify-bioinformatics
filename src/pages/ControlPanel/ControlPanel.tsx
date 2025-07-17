@@ -19,7 +19,7 @@ export const ControlPanel = () => {
             Reports
           </NavLink>
           <NavLink
-            className={({ isActive=true }: { isActive: boolean }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               classNames(`control-panel__button`, {
                 "control-panel__button--active": isActive,
               })

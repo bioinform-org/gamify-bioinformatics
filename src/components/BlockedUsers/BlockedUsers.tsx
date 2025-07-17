@@ -17,7 +17,7 @@ export const BlockedUsers = () => {
             <div className="blocked-users__info">
               <img
                 className="blocked-users__image"
-                src="/public/images/avatar_by_default.svg"
+                src="images/avatar_by_default.svg"
                 alt=""
               />
               <p className="blocked-users__name">{user.name}</p>
