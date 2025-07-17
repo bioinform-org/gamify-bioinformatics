@@ -8,7 +8,7 @@ interface Body {
 }
 
 export const TEST_API_URL = axios.create({
-  baseURL: 'public/api',
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
   },

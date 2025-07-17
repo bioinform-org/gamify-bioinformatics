@@ -97,12 +97,12 @@
     width: 40px;
     height: 40px;
     @extend %icon-button;
-    background-image: url("/public/images/arrow-right.svg");
+    background-image: url("/images/arrow-right.svg");
     background-repeat: no-repeat;
     background-position: center;
 
     &--open {
-      background-image: url("/public/images/arrow-down-black.svg");
+      background-image: url("/images/arrow-down-black.svg");
     }
   }
 
@@ -138,7 +138,7 @@
   &__member-delete {
     margin-left: auto;
     @extend %icon-button;
-    background-image: url("/public/images/close.svg");
+    background-image: url("/images/close.svg");
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -164,7 +164,7 @@
     position: absolute;
     top: 8px;
     right: 8px;
-    background-image: url("/public/images/close.svg");
+    background-image: url("/images/close.svg");
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -267,7 +267,7 @@
 
   &__tag-remove {
     @extend %icon-button;
-    background-image: url("/public/images/close.svg");
+    background-image: url("/images/close.svg");
     background-repeat: no-repeat;
     background-position: center;
   }

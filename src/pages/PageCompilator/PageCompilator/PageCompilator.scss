@@ -302,9 +302,9 @@
     }
 
     // for future refactor this code into @function
-    $logos-color: ('google' : '/public/images/google-logo.svg', 
-    'facebook' : '/public/images/facebook-logo.svg',
-    'apple' : '/public/images/apple-logo.svg');
+    $logos-color: ('google' : '/images/google-logo.svg', 
+    'facebook' : '/images/facebook-logo.svg',
+    'apple' : '/images/apple-logo.svg');
 
     @each $logo, $url in $logos-color {
       .page-compilator__button-img--#{$logo} {
@@ -338,9 +338,9 @@
         color: vars.$c-gray-40;
       }
 
-      $logos-grey: ('google' : '/public/images/google-logo-grey.svg', 
-      'facebook' : '/public/images/facebook-logo-grey.svg',
-      'apple' : '/public/images/apple-logo-grey.svg');
+      $logos-grey: ('google' : '/images/google-logo-grey.svg', 
+      'facebook' : '/images/facebook-logo-grey.svg',
+      'apple' : '/images/apple-logo-grey.svg');
 
       @each $logo, $url in $logos-grey {
         .page-compilator__button-img--#{$logo} {

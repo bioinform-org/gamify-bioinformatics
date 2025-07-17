@@ -21,7 +21,7 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
         <div className="exercise-sidebar__header">
           <img
             className="exercise-sidebar__logo"
-            src="../../../public/images/Logo.svg"
+            src="/images/Logo.svg"
             alt="Bioinformatics logo"
           />
         </div>
@@ -43,7 +43,7 @@ export const ExerciseSideBar = ({ chapters }: Props) => {
                 >
                   <p>{`${index + 1} ${name}`}{" "}</p>
                   {completed && (
-                    <img src="../../../../public/images/check-filled.svg" />
+                    <img src="/images/check-filled.svg" />
                   )}
                 </NavLink>
               </li>

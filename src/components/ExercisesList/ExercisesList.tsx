@@ -1,7 +1,7 @@
 import { Exercise } from "../../types/ProductType";
 import { ExerciseCard } from "../ExerciseCard";
 import "./ExercisesList.scss";
-import defaultExercisesImage from '../../../public/images/milkshake-image.png';
+import defaultExercisesImage from '/images/milkshake-image.png';
 
 type Props = {
   listTitle: string;
