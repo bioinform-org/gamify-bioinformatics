@@ -1,20 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Exercise } from "../../types/ProductType";
-import { getExercisesFromLocal } from "../../api";
+import { getExercisesFromLocal } from "../../testApi";
 import { RootState } from "../store";
+import { Channel } from "./channelSlice";
 
 
 export interface ExercisesState {
-  channels: any;
+  channels: Channel[];
   value: Exercise[] | null,
   isLoading: boolean,
   errorMessage: string,
 }
 
 const initialState: ExercisesState = {
-  value: null, 
+  value: null,
   isLoading: false,
   errorMessage: '',
+  channels: []
 }
 
 export const testExercisesSlice = createSlice({

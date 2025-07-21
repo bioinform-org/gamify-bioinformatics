@@ -1,7 +1,7 @@
 import './SettingsConnectedAccountsComponent.scss';
-import googleImg from '../../../public/images/google-logo.svg';
-import facebookImg from '../../../public/images/facebook-logo.svg';
-import appleImg from '../../../public/images/apple-logo.svg';
+import googleImg from '/images/google-logo.svg';
+import facebookImg from '/images/facebook-logo.svg';
+import appleImg from '/images/apple-logo.svg';
 
 interface Props {}
 

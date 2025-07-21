@@ -26,13 +26,7 @@ export const API_URL = axios.create({
   withCredentials: true,
 });
 
-export const TEST_API_URL = axios.create({
-  baseURL: 'public/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
+
 
 // This function creates a promise
 // that is resolved after a given delay
@@ -46,12 +40,6 @@ function wait(delay: number): Promise<void> {
 function get<T>(url: string, body: Body = {}): Promise<T> {
   return wait(300)
     .then(() => API_URL.get(url, body))
-    .then(({ data }) => data);
-}
-
-function testGet<T>(url: string, body: Body = {}): Promise<T> {
-  return wait(300)
-    .then(() => TEST_API_URL.get(url, body))
     .then(({ data }) => data);
 }
 
@@ -123,5 +111,3 @@ export const getTeams = () => get<[]>("/teams");
 //asked backend developer to remove some regulations regarding the size of a title and description
 export const getExercisesFromServer = () => get<Exercise[]>('/exercises');
 export const getUsersFromServer = () => get<User[]>('/users');
-export const getExercisesFromLocal = () => testGet<Exercise[]>('/exercises.json');
-export const getUsersFromLocal = () => testGet<User[]>('/users.json');

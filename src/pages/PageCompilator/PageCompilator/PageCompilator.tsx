@@ -22,7 +22,7 @@ export const PageCompilator: React.FC<PageCopilatorProps> = ({
     <div className="page-compilator">
       <div className="page-compilator__nav">
         <img
-          src="../../../public/images/Logo.svg"
+          src="/images/Logo.svg"
           alt="Navigation Logo"
           className="page-compilator__nav-logo"
         />

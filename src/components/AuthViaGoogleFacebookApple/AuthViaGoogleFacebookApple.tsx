@@ -2,16 +2,15 @@ import { useGoogleLogin } from '@react-oauth/google';
 import './AuthViaGoogleFacebookApple.scss';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
-import facebookImg from '../../../public/images/facebook-logo.svg';
-import facebookDisabledImg from '../../../public/images/facebook-logo-grey.svg';
+import facebookImg from '/images/facebook-logo.svg';
+import facebookDisabledImg from '/images/facebook-logo-grey.svg';
 import { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface Props {}
 
 export const AuthViaGoogleFacebookApple: React.FC<Props> = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isFacebookButtonDisabled, setIsFacebookButtonDisabled] = useState(false)
+  const [isFacebookButtonDisabled] = useState(false)
   const googleLogin = useGoogleLogin({
     onSuccess: codeResponse => console.log(codeResponse),
     onError: () => console.log('Login Failed'),

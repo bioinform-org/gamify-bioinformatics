@@ -1,0 +1,55 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+$side-bar-padding: 24px;
+
+
+.exercise-sidebar {
+  grid-column: 1 / 4;
+  width: 332px;
+  height: calc(100vh - 48px);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &__container {
+    width: inherit;
+    height: inherit;
+    background-color: vars.$c-white;
+    border-radius: 16px;
+  }
+
+  &__header {
+    padding: $side-bar-padding;
+    border-bottom: 1px solid rgba(241, 242, 242, 1);
+  }
+
+  &__nav {
+    padding: $side-bar-padding;
+  }
+
+  &__list {
+    display: flex;
+    padding-top: 16px;
+    flex-direction: column;
+    gap: 8px;
+    list-style-type: none;
+  }
+
+  &__link {
+    display: flex;
+    gap: 8px;
+    text-decoration: none;
+    padding: 13px 8px;
+    border: none;
+    border-radius: 4px;
+    @extend %text-icon-button;
+
+    &--active {
+      background-color: vars.$c-gray-10;
+      color: vars.$c-primary-teal;
+      @extend %contrast-text;
+    }
+  }
+}

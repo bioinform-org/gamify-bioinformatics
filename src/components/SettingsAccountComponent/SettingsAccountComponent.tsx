@@ -1,8 +1,8 @@
 import './SettingsAccountComponent.scss';
-import avatarImg from '../../../public/images/avatar_by_default.svg';
-import closeImg from '../../../public/images/close-button.svg';
-import eyeImg from '../../../public/images/eye.svg';
-import eyeSlashImg from '../../../public/images/eye-slash.svg';
+import avatarImg from '/images/avatar_by_default.svg';
+import closeImg from '/images/close-button.svg';
+import eyeImg from '/images/eye.svg';
+import eyeSlashImg from '/images/eye-slash.svg';
 import { PopUpContainer } from '../PopUpContainer';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../store/hooks';

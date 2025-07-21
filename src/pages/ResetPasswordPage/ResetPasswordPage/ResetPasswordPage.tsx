@@ -48,7 +48,7 @@ export const ResetPasswordPage = () => {
         titleTop: 'Forgot password',
         titleBottom: 'Enter your email to reset your password',
       }}
-      imageLink={'../../../public/images/reset-girl.png'}
+      imageLink={'/images/reset-girl.png'}
     >
       <form 
         className="page-compilator__form" 

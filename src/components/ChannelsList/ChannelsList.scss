@@ -1,3 +1,6 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
 .channels_list {
   width: 100%;
   padding-left: 16px;
@@ -29,9 +32,9 @@
     padding-left: 8px;
 
     &--clicked {
-      background-color: #c6dddd;
+      background-color: vars.$c-light-teal-30;
       font-weight: bold;
-      color: #006666;
+      color: vars.$c-primary-teal;
     }
   }
 }

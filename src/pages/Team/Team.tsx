@@ -9,40 +9,40 @@ import { User } from "../../types/ProductType";
 // import { selectToken } from "../../store/features/tokenSlice";
 // import { useAppSelector } from "../../store/hooks";
 
-const mockUsers: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    username: "johndoe",
-    scorePoints: 120,
-    email: "john.doe@example.com",
-    role: Role.user,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    username: "janesmith",
-    scorePoints: 100,
-    email: "jane.smith@example.com",
-    role: Role.admin,
-  },
-  {
-    id: 3,
-    name: "Mike Brown",
-    username: "mikebrown",
-    scorePoints: 90,
-    email: "mike.brown@example.com",
-    role: Role.user,
-  },
-  {
-    id: 4,
-    name: "Brad Pitt",
-    username: "braddy",
-    scorePoints: 90,
-    email: "bradpitt@example.com",
-    role: Role.user,
-  },
-];
+// const mockUsers: User[] = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     username: "johndoe",
+//     scorePoints: 120,
+//     email: "john.doe@example.com",
+//     role: Role.user,
+//   },
+//   {
+//     id: 2,
+//     name: "Jane Smith",
+//     username: "janesmith",
+//     scorePoints: 100,
+//     email: "jane.smith@example.com",
+//     role: Role.admin,
+//   },
+//   {
+//     id: 3,
+//     name: "Mike Brown",
+//     username: "mikebrown",
+//     scorePoints: 90,
+//     email: "mike.brown@example.com",
+//     role: Role.user,
+//   },
+//   {
+//     id: 4,
+//     name: "Brad Pitt",
+//     username: "braddy",
+//     scorePoints: 90,
+//     email: "bradpitt@example.com",
+//     role: Role.user,
+//   },
+// ];
 
 const mockOwnerTeams: TeamType[] = [
   {
@@ -56,6 +56,7 @@ const mockOwnerTeams: TeamType[] = [
         scorePoints: 120,
         email: "john.doe@example.com",
         role: Role.user,
+        photo: null,
       },
       {
         id: 2,
@@ -64,6 +65,7 @@ const mockOwnerTeams: TeamType[] = [
         scorePoints: 100,
         email: "jane.smith@example.com",
         role: Role.admin,
+        photo: null,
       },
       {
         id: 3,
@@ -72,6 +74,7 @@ const mockOwnerTeams: TeamType[] = [
         scorePoints: 90,
         email: "mike.brown@example.com",
         role: Role.user,
+        photo: null,
       },
     ],
   },
@@ -90,6 +93,7 @@ const mockMemberTeams: TeamType[] = [
         scorePoints: 120,
         email: "john.doe@example.com",
         role: Role.user,
+        photo: null,
       },
       {
         id: 2,
@@ -98,6 +102,7 @@ const mockMemberTeams: TeamType[] = [
         scorePoints: 100,
         email: "jane.smith@example.com",
         role: Role.admin,
+        photo: null,
       },
       {
         id: 3,
@@ -106,6 +111,7 @@ const mockMemberTeams: TeamType[] = [
         scorePoints: 90,
         email: "mike.brown@example.com",
         role: Role.user,
+        photo: null,
       },
     ],
   },
@@ -323,7 +329,7 @@ export const Team: React.FC<Props> = () => {
                   <>
                     <img
                       className="team__content-img"
-                      src="/public/images/no-teams.svg"
+                      src="/images/no-teams.svg"
                       alt="no teams"
                     />
                     <p className="team__content-message">No teams were added</p>
@@ -356,7 +362,7 @@ export const Team: React.FC<Props> = () => {
                     {!isTeamNameSuccess ? (
                       <>
                         <img
-                          src="/public/images/people.svg"
+                          src="/images/people.svg"
                           alt="People image"
                         />
 
@@ -401,7 +407,7 @@ export const Team: React.FC<Props> = () => {
                     ) : (
                       <>
                         <img
-                          src="/public/images/avatars.svg"
+                          src="/images/avatars.svg"
                           alt="Avatars image"
                         />
 
@@ -506,7 +512,7 @@ export const Team: React.FC<Props> = () => {
                   </>
                 ) : (
                   <>
-                    <img src="/public/images/done-icon.svg" alt="Done icon" />
+                    <img src="/images/done-icon.svg" alt="Done icon" />
 
                     <h2 className="team__modal-title">
                       Your team was successfully created
