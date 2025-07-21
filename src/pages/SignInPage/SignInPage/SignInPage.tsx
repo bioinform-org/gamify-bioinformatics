@@ -8,11 +8,13 @@ import {
   getTokenFromLogin,
   selectToken,
   removeErorrMessageForToken,
+  setToken,
 } from "../../../store/features/tokenSlice";
 import {
   getUser,
   selectUser,
   removeErrorMessageForUser,
+  setUser,
 } from "../../../store/features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import eyeImg from "/images/eye.svg";
@@ -38,7 +40,17 @@ export const SignInPage = () => {
     e.preventDefault();
     dispatch(removeErorrMessageForToken());
     dispatch(removeErrorMessageForUser());
-    dispatch(getTokenFromLogin({ email, password }))
+    if (email === "admin" && password === "admin") {
+      dispatch(setToken("mock-admin-token"));
+      dispatch(setUser({
+        id: "admin-id",
+        name: "Admin",
+        role: "admin",
+        email: "admin@example.com",
+      }));
+    } else {
+      dispatch(getTokenFromLogin({ email, password }));
+    }
   }
 
   useEffect(() => {

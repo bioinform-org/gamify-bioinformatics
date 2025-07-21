@@ -26,7 +26,11 @@ export const userSlice = createSlice({
     },
     removeErrorMessageForUser: (state) => {
       state.errorMessage = '';
-    }
+    },
+    //for working netlify version untill we connect backend
+    setUser: (state, action) => {
+      state.value = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -57,7 +61,7 @@ export const userSlice = createSlice({
   },
 })
 
-export const { logOutUser, removeErrorMessageForUser } = userSlice.actions;
+export const { logOutUser, removeErrorMessageForUser, setUser } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user
 

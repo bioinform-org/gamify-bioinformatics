@@ -8,7 +8,7 @@ import { Progress } from "../../components/Progress";
 
 // interface Props {}
 
-export const DashboardPage: React.FC<Props> = () => {
+export const DashboardPage: React.FC = () => {
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
