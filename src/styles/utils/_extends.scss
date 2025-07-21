@@ -293,4 +293,28 @@
   }
 }
 
+%request-button {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: 1px solid vars.$c-gray-60;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transition: border vars.$transition-time background-color vars.$transition-time;
+
+  &:hover {
+    border: 1px solid vars.$c-gray-100;
+    background-color: vars.$c-gray-10;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: 1px solid vars.$c-gray-30;
+  }
+}
+
 /*#endregion Button styles */

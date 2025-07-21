@@ -57,6 +57,7 @@
   &__content {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
   }
 
   &__content-img {
@@ -91,6 +92,83 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid vars.$c-gray-10;
+    position: relative;
+
+    &--pending {
+      padding: 16px 24px;
+      justify-content: space-between;
+    }
+  }
+
+  &__pending-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__pending-btn-wrapper {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__pending-btn {
+    @extend %request-button;
+  }
+
+  &__options {
+    margin-left: auto;
+    @extend %icon-button;
+    background-image: url("/images/dots.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+
+    &--active{
+      background-color: vars.$c-gray-10;
+    }
+  }
+
+  &__options-menu {
+    box-shadow: 0px 4px 24px 0px #333A4A29;
+    position: absolute;
+    right: 25px;
+    top: 40px;
+    list-style: none;
+    background-color: vars.$c-white;
+    padding: 4px 0;
+    width: 169px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+  }
+
+  &__options-menu-option {
+    display: flex;
+    gap: 8px;
+    height: 40px;
+    width: 100%;
+    padding-left: 16px;
+
+    &:hover {
+      background-color: vars.$c-light-teal-10;
+
+      &:hover .team__options-button {
+        color: vars.$c-teal-100;
+      }
+
+      &:hover img {
+        filter: brightness(2) saturate(100%) invert(16%) sepia(32%) saturate(1249%) hue-rotate(138deg) brightness(94%) contrast(92%);
+      }
+    }
+  }
+
+  &__options-button {
+    @extend %secondary-text;
+    outline: none;
+    border: none;
+    background-color: transparent;
   }
 
   &__list-item-button {
@@ -121,6 +199,11 @@
     height: 32px;
     border-radius: 100%;
     margin-right: 16px;
+
+    &--pending {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   &__member-name {
@@ -128,6 +211,18 @@
     width: 228px;
     margin-right: 16px;
     color: vars.$c-gray-100;
+
+    &--pending {
+      font-weight: 700;
+      font-size: 18px;
+      width: auto;
+      margin-right: 8px;
+    }
+  }
+
+  &__pending-text {
+    @extend %large-body-text;
+    margin-right: 8px;
   }
 
   &__member-role {
@@ -172,10 +267,19 @@
   &__modal-title {
     @extend %h2;
     margin-bottom: 24px;
+
+    &--success {
+      margin-bottom: 8px;
+    }
+
+    &--remove {
+      margin-bottom: 8px;
+    }
   }
 
   &__modal-label {
     position: relative;
+    height: 100%;
     width: 100%;
   }
 
@@ -184,7 +288,8 @@
   &__modal-input-counter {
     position: absolute;
     right: 16px;
-    top: 25%;
+    transform-origin: 50% 50%;
+    transform: translateY(100%);
     font-size: 14px;
     color: vars.$c-gray-60;
     text-align: right;
@@ -195,6 +300,8 @@
   }
 
   &__modal-input-message {
+    position: relative;
+    width: 100%;
     align-self: flex-start;
     @extend %secondary-text;
     margin-bottom: 24px;
@@ -226,32 +333,50 @@
     padding: 13px 16px;
     width: 100%;
     margin-bottom: 24px;
+    transition: none;
 
     &--email {
-      outline: none;
-      flex: 1;
-      padding: 13px 0;
-      height: 48px;
-      border-radius: 0;
-      margin: 0;
+      flex: 1 1 150px;
+      min-width: 120px;
       border: none;
+      background: transparent;
+      padding: 8px 4px;
+      font: inherit;
+      outline: none;
     }
 
-    // &--error {
-    //   border-color: vars.$c-red;
-    // }
+    &--error {
+      margin-bottom: 0;
+      border: 1px solid vars.$c-red;
+
+      &:focus-visible {
+        outline: 1px solid vars.$c-red;
+      }
+    }
   }
 
   &__tags {
+    position: relative;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 9px 16px;
+    align-items: center;
+    padding: 8px 12px;
     border: 1px solid vars.$c-gray-40;
     border-radius: 4px;
-    align-items: center;
     min-height: 48px;
-    margin-bottom: 4px;
+    box-sizing: border-box;
+
+    &--error {
+      border: 1px solid vars.$c-red;
+      margin: 0;
+
+      &:focus-visible {
+        outline: 1px solid vars.$c-red;
+      }
+    }
   }
 
   &__tag {
@@ -270,16 +395,20 @@
     background-image: url("/images/close.svg");
     background-repeat: no-repeat;
     background-position: center;
+    width: 20px;
+    height: 20px;
   }
 
   &__modal-suggestions {
+    box-sizing: border-box;
+    width: 100%;
     position: absolute;
-    bottom: -100%;
-    left: 0;
-    right: 0;
+    transform: translateY(-19px);
     list-style-type: none;
     background-color: vars.$c-white;
     z-index: 10;
+    max-height: 250px;
+    overflow-y: auto;
   }
 
   &__modal-suggestion {
@@ -306,6 +435,21 @@
   &__modal-suggestion-email {
     @extend %small-description-text;
     color: vars.$c-gray-60;
+  }
+
+  &__modal-done {
+    margin-bottom: 24px;
+  }
+
+  &__modal-description {
+    @extend %body-text;
+    color: vars.$c-gray-60;
+    margin-bottom: 24px;
+  }
+
+  &__modal-continue {
+    @extend %primary-button;
+    width: 100%;
   }
 
   &__overlay {
