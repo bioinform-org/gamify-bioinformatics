@@ -40,6 +40,7 @@ export const SignInPage = () => {
     e.preventDefault();
     dispatch(removeErorrMessageForToken());
     dispatch(removeErrorMessageForUser());
+
     if (email === "admin" && password === "admin") {
       dispatch(setToken("mock-admin-token"));
       dispatch(setUser({
@@ -51,6 +52,7 @@ export const SignInPage = () => {
     } else {
       dispatch(getTokenFromLogin({ email, password }));
     }
+
   }
 
   useEffect(() => {

@@ -19,12 +19,17 @@ import { Loader } from "./components/Loader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
+import { ChatPage } from "./pages/ChatPage";
+import { ChatInfoProvider } from "./store/ChatInfoProvider";
 import { Introduction } from "./pages/ThePoisonousMilkshakePage/components/Introduction/Introduction";
 import { ThePoisonousMilkshakePage } from "./pages/ThePoisonousMilkshakePage";
 import { SpeciesIdentification } from "./pages/ThePoisonousMilkshakePage/components/SpeciesIdentification";
 import { ProteinIdentification } from "./pages/ThePoisonousMilkshakePage/components/ProteinIdentification";
 import { SuspectIdentification } from "./pages/ThePoisonousMilkshakePage/components/SuspectIdentification";
 import { Answer } from "./pages/ThePoisonousMilkshakePage/components/Answer";
+import { ControlPanel } from "./pages/ControlPanel";
+import { Reports } from "./components/Reports";
+import { BlockedUsers } from "./components/BlockedUsers";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -53,6 +58,7 @@ export const App: React.FC = () => {
           <Loader />
         </div>
       ) : (
+        <ChatInfoProvider>
         <Routes>
           <Route path="/" element={<AuthComponent />}>
             <Route index element={<Navigate to={"exercises"} />} />
@@ -78,6 +84,7 @@ export const App: React.FC = () => {
               <Route path="answer" element={<Answer />} />
             </Route>
             <Route path="/my-exercises" element={<MyExercisesPage />} />
+            <Route path="/chats" element={<ChatPage/>}/>
             <Route path="/settings" element={<SettingsPage />}>
               <Route index element={<Navigate to={"account"} />} />
               <Route path="account" element={<SettingsAccountComponent />} />
@@ -89,6 +96,10 @@ export const App: React.FC = () => {
             </Route>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/control-panel" element={<ControlPanel />}>
+              <Route path="reports" element={<Reports />} />
+              <Route path="blocked-users" element={<BlockedUsers />} />
+            </Route>
           </Route>
 
           <Route path="sign-in" element={<SignInPage />} />
@@ -105,6 +116,7 @@ export const App: React.FC = () => {
             </Route>
           </Route>
         </Routes>
+        </ChatInfoProvider>
       )}
     </div>
   );
