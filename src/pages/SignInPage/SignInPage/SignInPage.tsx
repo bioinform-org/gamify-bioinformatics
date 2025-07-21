@@ -8,11 +8,13 @@ import {
   getTokenFromLogin,
   selectToken,
   removeErorrMessageForToken,
+  setToken,
 } from "../../../store/features/tokenSlice";
 import {
   getUser,
   selectUser,
   removeErrorMessageForUser,
+  setUser,
 } from "../../../store/features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import eyeImg from "/images/eye.svg";
@@ -38,21 +40,19 @@ export const SignInPage = () => {
     e.preventDefault();
     dispatch(removeErorrMessageForToken());
     dispatch(removeErrorMessageForUser());
-    /*
-    if statement below is crucial to being able to log in into test mode,
-    I believe not including isDevMode variable inside condition is enought to log in
-    in development mode and also in build mode
-    */
+
     if (email === "admin" && password === "admin") {
-      dispatch({ type: "token/setToken", payload: "test-admin-token" });
-      dispatch({
-        type: "user/setUser",
-        payload: { id: 1, name: "Admin", email: "admin@test.com" },
-      });
-      navigate("/exercises");
-      return;
+      dispatch(setToken("mock-admin-token"));
+      dispatch(setUser({
+        id: "admin-id",
+        name: "Admin",
+        role: "admin",
+        email: "admin@example.com",
+      }));
+    } else {
+      dispatch(getTokenFromLogin({ email, password }));
     }
-    dispatch(getTokenFromLogin({ email, password }))
+
   }
 
   useEffect(() => {
