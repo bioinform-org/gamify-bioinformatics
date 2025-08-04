@@ -7,6 +7,7 @@ import tokenReducer from '../store/features/tokenSlice';
 import testExercisesReducer from '../store/features/testExercisesSlice';
 import channelsReducer from '../store/features/channelSlice';
 import messagesReducer from '../store/features/messageSlice';
+import chatCategoriesReducer from "./features/chatCategorySlice";
 
 //main state, which looks like this: state: {user, users, exercises}
 //every reducer(userReducer, etc) inside reducer only responsible for their state
@@ -20,6 +21,7 @@ export const store = configureStore({
     testExercises: testExercisesReducer,
     channels: channelsReducer,
     messages: messagesReducer,
+    chatCategories: chatCategoriesReducer,
   }
 })
 

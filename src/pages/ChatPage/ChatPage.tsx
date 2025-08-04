@@ -1,5 +1,5 @@
 import "./ChatPage.scss";
-import { ProfilePopup } from '../../components/ProfilePopup'
+import { ProfilePopup } from "../../components/ProfilePopup";
 import { PageLayout } from "../PageLayout";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
@@ -10,13 +10,14 @@ import { fetchMessages } from "../../store/features/messageSlice";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useRef } from "react";
+import { selectUnreadCountByCategory } from "../../store/features/messageSlice";
 
 type Props = {};
 
 const BUTTONS = [
-  { id: "channels", label: "Channels", info: 1 },
-  { id: "team", label: "Team chats", info: 0 },
-  { id: "direct", label: "Direct messages", info: 2 },
+  { id: "channels", label: "Channels" },
+  { id: "team", label: "Team chats" },
+  { id: "direct", label: "Direct messages" },
 ];
 
 export const ChatPage: React.FC<Props> = () => {
@@ -74,29 +75,35 @@ export const ChatPage: React.FC<Props> = () => {
             <h1 className="chat-page__menu-header">Messages</h1>
             <div className="chat-page__boxes">
               <ul className="chat-page__list">
-                {BUTTONS.map(({ id, label, info }) => (
-                  <li key={id} className="chat-page__element">
-                    <div className="chat-page__element-header">
-                      <button
-                        type="button"
-                        className={classNames({
-                          "chat-page__element-button": !clickedButtons[id],
-                          "chat-page__element-button--clicked":
-                            clickedButtons[id],
-                        })}
-                        onClick={() => toggleButton(id)}
-                      />
-                      {label}
-                      {info > 0 && (
-                        <span className="chat-page__element-info">{info}</span>
+                {BUTTONS.map(({ id, label }) => {
+                  const unreadCount = useAppSelector(
+                    selectUnreadCountByCategory(id)
+                  );
+                  return (
+                    <li key={id} className="chat-page__element">
+                      <div className="chat-page__element-header">
+                        <button
+                          type="button"
+                          className={classNames({
+                            "chat-page__element-button": !clickedButtons[id],
+                            "chat-page__element-button--clicked":
+                              clickedButtons[id],
+                          })}
+                          onClick={() => toggleButton(id)}
+                        />
+                        {label}
+                        {unreadCount > 0 && (
+                          <span className="chat-page__element-info">
+                            {unreadCount}
+                          </span>
+                        )}
+                      </div>
+                      {id === "channels" && clickedButtons["channels"] && (
+                        <ChannelsList onChannelSelect={setActiveChannelId} />
                       )}
-                    </div>
-
-                    {id === "channels" && clickedButtons["channels"] && (
-                      <ChannelsList onChannelSelect={setActiveChannelId} />
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </section>
@@ -289,9 +296,7 @@ export const ChatPage: React.FC<Props> = () => {
           )}
         </div>
       </PageLayout>
-      {isPopupOpen && (
-        <ProfilePopup setIsOpen={setIsPopupOpen}/>
-      )}
+      {isPopupOpen && <ProfilePopup setIsOpen={setIsPopupOpen} />}
     </>
   );
 };

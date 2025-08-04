@@ -20,7 +20,6 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { Team } from "./pages/Team";
 import { selectUser } from "./store/features/userSlice";
 import { ChatPage } from "./pages/ChatPage";
-import { ChatInfoProvider } from "./store/ChatInfoProvider";
 import { Introduction } from "./pages/ThePoisonousMilkshakePage/components/Introduction/Introduction";
 import { ThePoisonousMilkshakePage } from "./pages/ThePoisonousMilkshakePage";
 import { SpeciesIdentification } from "./pages/ThePoisonousMilkshakePage/components/SpeciesIdentification";
@@ -58,7 +57,6 @@ export const App: React.FC = () => {
           <Loader />
         </div>
       ) : (
-        <ChatInfoProvider>
         <Routes>
           <Route path="/" element={<AuthComponent />}>
             <Route index element={<Navigate to={"exercises"} />} />
@@ -116,7 +114,6 @@ export const App: React.FC = () => {
             </Route>
           </Route>
         </Routes>
-        </ChatInfoProvider>
       )}
     </div>
   );
