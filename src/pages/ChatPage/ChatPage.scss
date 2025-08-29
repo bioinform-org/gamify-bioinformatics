@@ -263,9 +263,18 @@
     }
   }
 
-  &__input {
+  &__aaa {
     display: flex;
     align-items: center;
+    gap: 8px;
+    padding: 8px;
+    position: relative;
+    width: 100%;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
     padding: 8px;
     border-top: 1px solid #f1f2f2;
@@ -295,5 +304,72 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
+  }
+
+  &__selected-attachments {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+  
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+    }
+  
+    .attachment-img,
+    .attachment-pdf {
+      position: relative;
+      flex: 0 0 auto;
+      display: inline-block;
+  
+      img {
+        display: block;
+        max-width: 64px;
+        max-height: 64px;
+        border-radius: 4px;
+      }
+  
+      .attachment-pdf--item {
+        width: 50px;
+        height: 50px;
+        margin-right: 4px;
+      }
+  
+      .attachment-img__remove,
+      .attachment-pdf__remove {
+        display: none;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: #ff4d4f;
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: center;
+        cursor: pointer;
+      }
+  
+      &:hover .attachment-img__remove,
+      &:hover .attachment-pdf__remove {
+        display: block;
+      }
+    }
+  
+    .attachment-pdf {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #f1f1f1;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
   }
 }
