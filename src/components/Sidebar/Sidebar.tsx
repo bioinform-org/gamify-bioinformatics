@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import "./Sidebar.scss";
 import classNames from "classnames";
 import { useChatInfo } from "../../store/ChatContext";
+import { useAppSelector } from "../../store/hooks";
+import { selectPendingCountForUser } from "../../store/features/pendingSlice";
 
 interface Props {}
 
@@ -16,6 +18,7 @@ const navLinks = [
 
 export const Sidebar: React.FC<Props> = () => {
   const { totalMessages } = useChatInfo();
+  const pendingCount = useAppSelector(selectPendingCountForUser);
 
   return (
     <aside className="side-bar">
@@ -42,6 +45,9 @@ export const Sidebar: React.FC<Props> = () => {
                   {name}
                   {name === "Chats" && totalMessages > 0 && (
                     <span className="side-bar__link-info">{totalMessages}</span>
+                  )}
+                  {name === "Team management" && pendingCount > 0 && (
+                    <span className="side-bar__link-info">{pendingCount}</span>
                   )}
                 </NavLink>
               </li>

@@ -1,14 +1,14 @@
-import { User } from "./ProductType";
-
 export type TeamType = {
   id: string;
   name: string;
-  members: User[];
+  ownerId: number;
+  memberIds: number[];
+  createdAt: string;
 };
 
-export type Pending = {
+export interface Pending {
   id: string;
-  team: TeamType;
-  sender: User;
-  status: boolean;
-};
+  teamId: string;
+  senderId: number;
+  status: 'pending' | 'accepted' | 'rejected';
+}

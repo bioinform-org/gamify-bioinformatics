@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Exercise } from "../../types/ProductType";
-import { getExercisesFromServer } from "../../api";
 import { RootState } from "../store";
 
 
@@ -71,7 +70,11 @@ export default exercisesSlice.reducer;
 //exercises/getExercises/(pending/fulfilled/rejected) and approriate action payload
 //to work with those action we use extraReduces with builder and it's build-in function addCases
 //there are also defaultCase and CaseMatchers, but I haven`t read about them yet
-export const getExercises = createAsyncThunk(
-  'exercises/getExercises',
-  async () => await getExercisesFromServer(),
-)
+export const getExercises = createAsyncThunk<Exercise[]>(
+  "exercises/getExercises",
+  async () => {
+    const res = await fetch("/api/exercises.json");
+    if (!res.ok) throw new Error("Failed to fetch exercises");
+    return (await res.json()) as Exercise[];
+  }
+);

@@ -27,7 +27,7 @@ export const ChatPage: React.FC<Props> = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const [, setAttachedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);

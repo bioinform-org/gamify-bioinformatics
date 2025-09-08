@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "reason": "Abuse or harassment",
+    "userName": "John",
+    "chatName": "bioinformatic-learning",
+    "date": "2025-09-08T10:20:00.000Z"
+  },
+  {
+    "id": 2,
+    "reason": "Spam",
+    "userName": "Anna",
+    "chatName": "python-learning",
+    "date": "2025-09-08T11:00:00.000Z"
+  }
+]
