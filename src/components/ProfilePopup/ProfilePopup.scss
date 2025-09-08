@@ -1,0 +1,114 @@
+@use "/src/styles/utils/vars";
+
+.profile {
+    background-color: vars.$c-white;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 364px;
+    height: 100%;
+    padding: 24px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 1010;
+  
+    &__close {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+  
+      &--button {
+        display: flex;
+        background: none;
+        border: none;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        background-image: url("/images/close.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
+  
+    &__main {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 24px;
+  
+      &--avatar {
+        height: 90px;
+      }
+  
+      &--info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+  
+        &-name {
+          font-weight: 500;
+          font-size: 24px;
+          line-height: 120%;
+        }
+  
+        &-mail {
+          display: flex;
+          gap: 8px;
+        }
+  
+        &-mail-icon {
+          width: 24px;
+          height: 24px;
+        }
+  
+        &-mail-address {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 140%;
+        }
+      }
+    }
+  
+    &__secondary-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+  
+      &--button {
+        border-radius: 4px;
+        border: none;
+        height: 48px;
+        background: vars.$c-primary-teal;
+        color: vars.$c-white;
+        font-weight: 500;
+      }
+  
+      &--rewards {
+        gap: 16px;
+  
+        &-subject {
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 140%;
+        }
+  
+        &-icons{
+          display: flex;
+          gap: 23px;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+  

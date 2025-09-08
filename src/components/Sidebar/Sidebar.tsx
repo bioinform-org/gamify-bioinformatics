@@ -4,6 +4,8 @@ import classNames from "classnames";
 import { useChatInfo } from "../../store/ChatContext";
 import { useAppSelector } from "../../store/hooks";
 import { selectPendingCountForUser } from "../../store/features/pendingSlice";
+import { useAppSelector } from "../../store/hooks";  // import hooka Redux
+import { selectUnreadMessagesCount } from "../../store/features/messageSlice";
 
 interface Props {}
 
@@ -19,6 +21,8 @@ const navLinks = [
 export const Sidebar: React.FC<Props> = () => {
   const { totalMessages } = useChatInfo();
   const pendingCount = useAppSelector(selectPendingCountForUser);
+  // Pobieramy totalną liczbę nieprzeczytanych wiadomości z Reduxa
+  const totalMessages = useAppSelector(selectUnreadMessagesCount);
 
   return (
     <aside className="side-bar">
