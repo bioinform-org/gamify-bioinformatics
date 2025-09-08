@@ -10,6 +10,7 @@ import messagesReducer from '../store/features/messageSlice';
 import teamsReducer from '../store/features/teamsSlice';
 import pendingReducer from '../store/features/pendingSlice';
 import reportsReducer from '../store/features/reportsSlice';
+import chatCategoriesReducer from "./features/chatCategorySlice";
 
 //main state, which looks like this: state: {user, users, exercises}
 //every reducer(userReducer, etc) inside reducer only responsible for their state
@@ -26,6 +27,7 @@ export const store = configureStore({
     teams: teamsReducer,
     pending: pendingReducer,
     reports: reportsReducer,
+    chatCategories: chatCategoriesReducer,
   }
 })
 

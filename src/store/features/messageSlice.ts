@@ -1,11 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export interface Message {
     id: number;
-    sender: string,
-    content: string,
-    time: string,
-    position: string
+    sender: string;
+    content: string;
+    time: string;
+    position: string;
+    read: boolean;
+    category: string
 }
 
 interface MessageState {
@@ -25,6 +28,17 @@ export const fetchMessages = createAsyncThunk("messages/fetch", async () => {
     if (!response.ok) throw new Error("Failed to fetch messages");
     return await response.json();
 });
+
+export const selectUnreadMessagesCount = createSelector(
+    (state: RootState) => state.messages.messages,
+    (messages) => messages.filter((msg) => !msg.read).length
+  );
+
+export const selectUnreadCountByCategory = (categoryId: string) =>
+    createSelector(
+        (state: RootState) => state.messages.messages,
+        (messages) => messages.filter(msg => msg.category === categoryId && !msg.read).length
+    );
 
 const messageSlice = createSlice({
     name: "messages",
