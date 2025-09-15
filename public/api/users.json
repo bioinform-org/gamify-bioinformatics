@@ -1,14 +1,62 @@
 [
   {
-    "userId": 0,
-    "userName": "user1",
-    "email": "user1@gmail.com",
-    "password": "Test1234%"
+    "id": 1,
+    "name": "John Doe",
+    "username": "johndoe",
+    "scorePoints": 120,
+    "email": "john.doe@example.com",
+    "role": "user",
+    "photo": null,
+    "password": "password123"
   },
   {
-    "userId": 1,
-    "userName": "user2",
-    "email": "user2@gmail.com",
-    "password": "Test5678%"
+    "id": 2,
+    "name": "Jane Smith",
+    "username": "janesmith",
+    "scorePoints": 100,
+    "email": "jane.smith@example.com",
+    "role": "admin",
+    "photo": null,
+    "password": "securePass!2"
+  },
+  {
+    "id": 3,
+    "name": "Mike Brown",
+    "username": "mikebrown",
+    "scorePoints": 90,
+    "email": "mike.brown@example.com",
+    "role": "user",
+    "photo": null,
+    "password": "mikePass#90"
+  },
+  {
+    "id": 4,
+    "name": "Brad Pitt",
+    "username": "braddy",
+    "scorePoints": 90,
+    "email": "brad.pitt@example.com",
+    "role": "user",
+    "photo": null,
+    "password": "bradPitt!90"
+  },
+  {
+    "id": 5,
+    "name": "Albert Einstein",
+    "username": "emce",
+    "scorePoints": 120,
+    "email": "albert.einstein@example.com",
+    "role": "user",
+    "photo": null,
+    "password": "relativity42!"
+  },
+  {
+    "id": 6,
+    "name": "Jhon Prince",
+    "username": "prince",
+    "scorePoints": 120,
+    "email": "jhon.prince@example.com",
+    "role": "user",
+    "photo": null,
+    "password": "princePass2024"
   }
 ]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "p1",
+    "teamId": "2242",
+    "senderId": 2,
+    "status": "pending"
+  },
+  {
+    "id": "p2",
+    "teamId": "2241",
+    "senderId": 3,
+    "status": "pending"
+  }
+]

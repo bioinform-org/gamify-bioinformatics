@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import "./Leaderboard.scss";
 
 type Props = {
@@ -5,6 +7,16 @@ type Props = {
 };
 
 export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
+  const users = useSelector((state: RootState) => state.users.value);
+
+  const sorted = [...users].sort((a, b) => b.scorePoints - a.scorePoints);
+
+  const medals = [
+    "/images/1st-place-medal.svg",
+    "/images/2nd-place-medal.svg",
+    "/images/3rd-place-medal.svg",
+  ];
+
   return (
     <div className={`leaderboard ${className}`.trim()}>
       <h4 className="leaderboard__title">Leaderboard</h4>
@@ -18,81 +30,31 @@ export const Leaderboard: React.FC<Props> = ({ className = "" }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <img
-                src="/images/1st-place-medal.svg"
-                alt="1st place medal"
-              />
-            </td>
-            <td>
-              <img
-                className="avatar"
-                src="/images/emma-johnson.jpg"
-                alt="Emma Johnson"
-              />
-              Emma Johnson
-            </td>
-            <td>155</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/2nd-place-medal.svg"
-                alt="2st place medal"
-              />
-            </td>
-            <td>
-              <img
-                className="avatar"
-                src="/images/emma-johnson.jpg"
-                alt="Liam Smith"
-              />
-              Liam Smith
-            </td>
-            <td>144</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/3rd-place-medal.svg"
-                alt="3st place medal"
-              />
-            </td>
-            <td>
-              <img
-                className="avatar"
-                src="/images/emma-johnson.jpg"
-                alt="Lucas Martinez"
-              />
-              Lucas Martinez
-            </td>
-            <td>80</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>
-              <img
-                className="avatar"
-                src="/images/emma-johnson.jpg"
-                alt="Noah Brown"
-              />
-              Noah Brown
-            </td>
-            <td>40</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>
-              <img
-                className="avatar"
-                src="/images/emma-johnson.jpg"
-                alt="Isabella Garcia"
-              />
-              Isabella Garcia
-            </td>
-            <td>25</td>
-          </tr>
+          {sorted.map((user, index) => {
+            const rank = index + 1;
+            const medal = medals[index];
+
+            return (
+              <tr key={user.id}>
+                <td>
+                  {medal ? (
+                    <img src={medal} alt={`${rank} place medal`} />
+                  ) : (
+                    rank
+                  )}
+                </td>
+                <td>
+                  <img
+                    className="avatar"
+                    src={user.photo ?? "/images/default-avatar.png"}
+                    alt={user.name}
+                  />
+                  {user.name}
+                </td>
+                <td>{user.scorePoints}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

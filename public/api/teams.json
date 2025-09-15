@@ -1,20 +1,44 @@
 [
   {
-    "id": 1,
-    "name": "Frontend Warriors",
-    "members": 5,
-    "createdAt": "2023-12-01"
+    "id": "1",
+    "name": "Team Alpha",
+    "ownerId": 1,
+    "memberIds": [1, 2, 3],
+    "createdAt": "2024-01-15T10:30:00.000Z"
   },
   {
-    "id": 2,
-    "name": "Backend Titans",
-    "members": 7,
-    "createdAt": "2023-11-20"
+    "id": "2",
+    "name": "Team Beta",
+    "ownerId": 1,
+    "memberIds": [1],
+    "createdAt": "2024-02-20T14:45:00.000Z"
   },
   {
-    "id": 3,
-    "name": "Fullstack Avengers",
-    "members": 3,
-    "createdAt": "2023-10-15"
+    "id": "3",
+    "name": "Team Frontend",
+    "ownerId": 2,
+    "memberIds": [1, 2, 3],
+    "createdAt": "2024-03-05T09:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "name": "Team Backend",
+    "ownerId": 2,
+    "memberIds": [2],
+    "createdAt": "2024-03-10T11:20:00.000Z"
+  },
+  {
+    "id": "2242",
+    "name": "Team Fullstack",
+    "ownerId": 2,
+    "memberIds": [2],
+    "createdAt": "2024-04-01T12:00:00.000Z"
+  },
+  {
+    "id": "2241",
+    "name": "Team QA",
+    "ownerId": 3,
+    "memberIds": [3],
+    "createdAt": "2024-04-03T08:15:00.000Z"
   }
 ]

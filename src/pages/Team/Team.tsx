@@ -1,408 +1,373 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PageLayout } from "../PageLayout";
 import "./Team.scss";
-// import { getTeams } from "../../api";
-import { Pending, TeamType } from "../../types/TeamType";
 import classNames from "classnames";
-import { Role } from "../../types/Roles";
 import { User } from "../../types/ProductType";
-// import { selectToken } from "../../store/features/tokenSlice";
-// import { useAppSelector } from "../../store/hooks";
+import { TeamType, Pending } from "../../types/TeamType";
 
-const mockUsers: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    username: "johndoe",
-    scorePoints: 120,
-    email: "john.doe@example.com",
-    role: Role.user,
-    photo: null
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    username: "janesmith",
-    scorePoints: 100,
-    email: "jane.smith@example.com",
-    role: Role.admin,
-    photo: null
-  },
-  {
-    id: 3,
-    name: "Mike Brown",
-    username: "mikebrown",
-    scorePoints: 90,
-    email: "mike.brown@example.com",
-    role: Role.user,
-    photo: null
-  },
-  {
-    id: 4,
-    name: "Brad Pitt",
-    username: "braddy",
-    scorePoints: 90,
-    email: "brad.pitt@example.com",
-    role: Role.user,
-    photo: null
-  },
-  {
-    id: 5,
-    name: "Albert Einstein",
-    username: "emce",
-    scorePoints: 120,
-    email: "albert.einstein@example.com",
-    role: Role.user,
-    photo: null
-  },
-  {
-    id: 6,
-    name: "Jhon Prince",
-    username: "prince",
-    scorePoints: 120,
-    email: "jhon.prince@example.com",
-    role: Role.user,
-    photo: null
-  },
-];
-
-const mockOwnerTeams: TeamType[] = [
-  {
-    id: "1",
-    name: "Team Alpha",
-    members: [
-      {
-        id: 1,
-        name: "John Doe",
-        username: "johndoe",
-        scorePoints: 120,
-        email: "john.doe@example.com",
-        role: Role.user,
-        photo: null,
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        username: "janesmith",
-        scorePoints: 100,
-        email: "jane.smith@example.com",
-        role: Role.admin,
-        photo: null,
-      },
-      {
-        id: 3,
-        name: "Mike Brown",
-        username: "mikebrown",
-        scorePoints: 90,
-        email: "mike.brown@example.com",
-        role: Role.user,
-        photo: null,
-      },
-    ],
-  },
-  { id: "2", name: "Team Beta", members: [] },
-];
-
-const mockMemberTeams: TeamType[] = [
-  {
-    id: "3",
-    name: "Team Frontend",
-    members: [
-      {
-        id: 1,
-        name: "John Doe",
-        username: "johndoe",
-        scorePoints: 120,
-        email: "john.doe@example.com",
-        role: Role.user,
-        photo: null,
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        username: "janesmith",
-        scorePoints: 100,
-        email: "jane.smith@example.com",
-        role: Role.admin,
-        photo: null,
-      },
-      {
-        id: 3,
-        name: "Mike Brown",
-        username: "mikebrown",
-        scorePoints: 90,
-        email: "mike.brown@example.com",
-        role: Role.user,
-        photo: null,
-      },
-    ],
-  },
-  { id: "4", name: "Team Backend", members: [] },
-];
-
-const mockPending: Pending[] = [
-  {
-    id: "p1",
-    team: {
-        id: '2242',
-        members: [
-          {
-            id: 1,
-            name: "John Doe",
-            username: "johndoe",
-            scorePoints: 120,
-            email: "john.doe@example.com",
-            role: Role.user,
-            photo: null,
-          },
-          {
-            id: 2,
-            name: "Jane Smith",
-            username: "janesmith",
-            scorePoints: 100,
-            email: "jane.smith@example.com",
-            role: Role.admin,
-            photo: null,
-          },
-        ],
-        name: 'Team Fullstack'
-      },
-    sender: mockUsers[1],
-    status: false,
-  },
-  {
-    id: "p2",
-    team: {
-        id: '2241',
-        members: [
-          {
-            id: 3,
-            name: "Mike Brown",
-            username: "mikebrown",
-            scorePoints: 90,
-            email: "mike.brown@example.com",
-            role: Role.user,
-            photo: null,
-          },
-        ],
-        name: 'Team QA'
-      },
-    sender: mockUsers[2],
-    status: false,
-  },
-];
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  bulkAddMembers,
+  removeMember,
+  createTeam,
+  renameTeam,
+  deleteTeam,
+  leaveTeam,
+} from "../../store/features/teamsSlice";
+import {
+  acceptPendingAndAddMember,
+  rejectPending,
+  selectPendingForUser,
+} from "../../store/features/pendingSlice";
 
 export const Team: React.FC = () => {
-  // const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
 
-  const optionsMenuRef = useRef<HTMLUListElement | null>(null);
+  const currentUser = useAppSelector((s) => s.user.value);
+  const currentUserId = currentUser?.id ?? 1;
 
+  const teamsFromStore = useAppSelector((s) => s.teams.value);
+  const usersFromStore = useAppSelector((s) => s.users.value);
+  const pendingFromStore = useAppSelector((s) => selectPendingForUser(s));
+
+  // UI state
   const [errorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState("myTeams");
+  const [activeTab, setActiveTab] = useState<"myTeams" | "pending">("myTeams");
   const [isModalOpen, setModalOpen] = useState(false);
-
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  const [teams, setTeams] = useState<TeamType[]>([]);
-  const [memberTeams, setMemberTeams] = useState<TeamType[]>(mockMemberTeams);
   const [expandedTeamId, setExpandedTeamId] = useState<string | null>(null);
 
+  // dropdown open state
+  const [optionsOpenTeamId, setOptionsOpenTeamId] = useState<string | null>(null);
+
+  // modal flow state
+  type ModalMode = "create" | "invite" | "rename" | "delete" | "leave" | "removeMember" | "success" | null;
+  const [modalMode, setModalMode] = useState<ModalMode>(null);
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [selectedMember, setSelectedMember] = useState<User | null>(null);
+
+  // form state
   const [teamName, setTeamName] = useState("");
-  const [isTeamNameSuccess, setIsTeamNameSuccess] = useState(false);
-
-  const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
-  const [isRenaming, setIsRenaming] = useState(false);
-
-  const [confirmTeamId, setConfirmTeamId] = useState<string | null>(null);
-  const [confirmAction, setConfirmAction] = useState<"delete" | "leave" | null>(null);
-
+  const [pendingNewTeam, setPendingNewTeam] = useState<TeamType | null>(null);
+  const [teamMembersSelection, setTeamMembersSelection] = useState<User[]>([]);
   const [userEmail, setUserEmail] = useState("");
-  const [userEmailError, setUserEmailError] = useState("")
+  const [userEmailError, setUserEmailError] = useState("");
+  const [teamNameError, setTeamNameError] = useState("");
   const [suggestedUsers, setSuggestedUsers] = useState<User[]>([]);
 
-  const [teamMembers, setTeamMembers] = useState<User[]>([]);
-  const [isTeamMembersSuccess, setIsTeamMembersSuccess] = useState(false);
+  const teamsWithMembers = useMemo(() => {
+    return teamsFromStore.map((team) => ({
+      ...team,
+      members: (team.memberIds ?? [])
+        .map((id) => usersFromStore.find((u) => u.id === id))
+        .filter((u): u is User => Boolean(u)),
+    }));
+  }, [teamsFromStore, usersFromStore]);
 
-  const [optionsTeamId, setOptionsTeamId] = useState<string | null>(null);
-
-  const [isPending, setIsPending ] = useState<Pending[]>(mockPending);
-
-  const resetTeamCreation = () => {
-    setIsRenaming(false);
-    setEditingTeamId(null);
-    setTeamName("");
-    setIsTeamNameSuccess(false);
-    setUserEmail("");
-    setTeamMembers([]);
-    setIsTeamMembersSuccess(false);
-    setModalOpen(false);
-    setConfirmTeamId(null);
-    setConfirmAction(null);
-  };
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   if (token.value) {
-  //     getTeams(token.value)
-  //       .then((fetchedTeams) => {
-  //         setTeams(fetchedTeams);
-  //       })
-  //       .catch(() => {
-  //         setErrorMessage("Something went wrong!");
-  //       })
-  //       .finally(() => {
-  //         setIsLoading(false);
-  //       });
-  //   }
-  // }, []);
+  const ownerTeamsWithMembers = useMemo(
+    () => teamsWithMembers.filter((t) => t.ownerId === currentUserId),
+    [teamsWithMembers, currentUserId]
+  );
+  const memberTeamsWithMembers = useMemo(
+    () => teamsWithMembers.filter((t) => (t.memberIds ?? []).includes(currentUserId) && t.ownerId !== currentUserId),
+    [teamsWithMembers, currentUserId]
+  );
 
   useEffect(() => {
-    setIsLoading(true);
+    const trimmed = userEmail.trim().toLowerCase();
 
-    setTimeout(() => {
-      setTeams(mockOwnerTeams);
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+    if (trimmed.length === 0) {
+      setSuggestedUsers([]);
+      setUserEmailError("");
+      return;
+    }
+
+    const id = setTimeout(() => {
+      let found = usersFromStore.filter((u) =>
+        u.email.toLowerCase().includes(trimmed)
+      );
+
+      if (selectedTeamId) {
+        const currentTeamMembers =
+          teamsFromStore.find((t) => t.id === selectedTeamId)?.memberIds ?? [];
+        found = found.filter((u) => !currentTeamMembers.includes(u.id));
+      }
+
+      found = found.filter(
+        (u) => !teamMembersSelection.some((addedUser) => addedUser.id === u.id) &&
+        u.id !== currentUserId
+      );
+
+      setSuggestedUsers(found);
+      console.log(found)
+
+      if (found.length === 0) {
+        setUserEmailError(
+          trimmed.includes("@")
+            ? "User not found"
+            : "Please check that email address is indicated correctly"
+        );
+      } else {
+        setUserEmailError("");
+      }
+    }, 500);
+
+    return () => clearTimeout(id);
+  }, [userEmail, usersFromStore, teamsFromStore, selectedTeamId, teamMembersSelection, currentUserId]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        optionsMenuRef.current &&
-        !optionsMenuRef.current.contains(event.target as Node)
-      ) {
-        setOptionsTeamId(null);
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      if (target.closest(".team__options") || target.closest(".team__options-menu")) {
+        return;
       }
+      setOptionsOpenTeamId(null);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const pendingForDisplay = pendingFromStore.map((p) => ({
+    ...p,
+    team: teamsFromStore.find((t) => t.id === p.teamId) ?? undefined,
+    sender: usersFromStore.find((u) => u.id === p.senderId) ?? undefined,
+  }));
 
-  const actualMembers = (() => {
-    const owner = teams.find(t => t.id === editingTeamId);
-    if (owner) return owner.members;
-    const member = memberTeams.find(t => t.id === editingTeamId);
-    return member ? member.members : [];
-  })();
+  const handleAcceptPending = (p: Pending) => {
+    dispatch(acceptPendingAndAddMember({ id: p.id }));
+  };
 
-  const filteredSuggestions = suggestedUsers.filter(user =>
-    !teamMembers.some(member => member.id === user.id) &&
-    !actualMembers.some(member => member.id === user.id)
-  );
+  const handleRejectPending = (id: string) => {
+    dispatch(rejectPending({ id }));
+  };
 
-
-  useEffect(() => {
-  const trimmedEmail = userEmail.trim().toLowerCase();
-
-  if (trimmedEmail === "") {
+  const openCreateModal = () => {
+    setModalMode("create");
+    setTeamName("");
+    setTeamMembersSelection([]);
+    setUserEmail("");
     setUserEmailError("");
-    setSuggestedUsers([]);
-    return;
-  }
+    setModalOpen(true);
+    setSelectedTeamId(null);
+    setOptionsOpenTeamId(null);
+  };
 
-  const timeoutId = setTimeout(() => {
-    const matchedUsers = mockUsers.filter(user =>
-      user.email.toLowerCase().includes(trimmedEmail)
-    );
+  const openInviteModal = (teamId: string) => {
+    setModalMode("invite");
+    setSelectedTeamId(teamId);
+    setTeamMembersSelection([]);
+    setUserEmail("");
+    setUserEmailError("");
+    setModalOpen(true);
+    setOptionsOpenTeamId(null);
+  };
 
-    setSuggestedUsers(matchedUsers);
+  const openRenameModal = (teamId: string) => {
+    const t = teamsFromStore.find((x) => x.id === teamId);
+    setModalMode("rename");
+    setSelectedTeamId(teamId);
+    setTeamName(t?.name ?? "");
+    setModalOpen(true);
+    setOptionsOpenTeamId(null);
+  };
 
-    const hasAtSymbol = trimmedEmail.includes("@");
+  const openDeleteModal = (teamId: string) => {
+    setModalMode("delete");
+    setSelectedTeamId(teamId);
+    setModalOpen(true);
+    setOptionsOpenTeamId(null);
+  };
 
-    if (matchedUsers.length === 0) {
-      if (hasAtSymbol) {
-        setUserEmailError("User not found");
-      } else {
-        setUserEmailError("Please check that email address is indicated correctly");
-      }
-    } else {
-      setUserEmailError("");
+  const openLeaveModal = (teamId: string) => {
+    setModalMode("leave");
+    setSelectedTeamId(teamId);
+    setModalOpen(true);
+    setOptionsOpenTeamId(null);
+  };
+
+  const openRemoveMemberModal = (teamId: string, member: User) => {
+    setModalMode("removeMember");
+    setSelectedTeamId(teamId);
+    setSelectedMember(member);
+    setModalOpen(true);
+    setOptionsOpenTeamId(null);
+  };
+
+  const confirmModalAction = () => {
+    if (!modalMode) return;
+
+    if (modalMode === "create") {
+      const newTeamId = `${Date.now()}`;
+      const memberIds = [currentUserId];
+
+      const newTeam: TeamType = {
+        id: newTeamId,
+        name: teamName.trim(),
+        ownerId: currentUserId,
+        memberIds,
+        createdAt: new Date().toISOString(),
+      };
+
+      setPendingNewTeam(newTeam);
+      setSelectedTeamId(newTeamId);
+      setModalMode("invite");
+      setTeamMembersSelection([]);
+      setTeamName(teamName);
+      setTeamNameError("");
+      return;
     }
-  }, 300);
 
-  return () => clearTimeout(timeoutId);
-}, [userEmail]);
+    if (modalMode === "invite" && selectedTeamId) {
+      if (!pendingNewTeam) return;
+
+      dispatch(createTeam(pendingNewTeam));
+
+      const userIds = teamMembersSelection.map((u) => u.id);
+      if (userIds.length > 0) {
+        dispatch(bulkAddMembers({ teamId: selectedTeamId, userIds }));
+      }
+
+      setPendingNewTeam(null); 
+
+      if (pendingNewTeam) {
+        setModalMode("success");
+      }
+
+      return;
+    }
 
 
-  const handleReject = (id: string) => {
-    setIsPending(prev => prev.filter(req => req.id !== id));
+    if (modalMode === "rename" && selectedTeamId) {
+      dispatch(renameTeam({ teamId: selectedTeamId, name: teamName.trim() }));
+      setModalOpen(false);
+      setModalMode(null);
+      setTeamName("");
+      setSelectedTeamId(null);
+      return;
+    }
+
+    if (modalMode === "delete" && selectedTeamId) {
+      dispatch(deleteTeam({ teamId: selectedTeamId }));
+      setModalOpen(false);
+      setModalMode(null);
+      setSelectedTeamId(null);
+      return;
+    }
+
+    if (modalMode === "leave" && selectedTeamId) {
+      dispatch(leaveTeam({ teamId: selectedTeamId, userId: currentUserId }));
+      setModalOpen(false);
+      setModalMode(null);
+      setSelectedTeamId(null);
+      return;
+    }
+
+    if (modalMode === "removeMember" && selectedTeamId && selectedMember) {
+      dispatch(removeMember({ teamId: selectedTeamId, userId: selectedMember.id }));
+      setModalOpen(false);
+      setModalMode(null);
+      setSelectedMember(null);
+      setSelectedTeamId(null);
+      return;
+    }
+  };
+
+  const addSuggestedUserToSelection = (user: User) => {
+    if (teamMembersSelection.some((m) => m.id === user.id)) {
+      setUserEmailError("User already added");
+      return;
+    }
+    if (teamMembersSelection.length >= 10) {
+      setUserEmailError("You can only add up to 10 members");
+      return;
+    }
+
+    setTeamMembersSelection((prev) => [...prev, user]);
+    setUserEmail("");
+    setSuggestedUsers([]);
+    setUserEmailError("");
   };
 
 
-  const handleAccept = (request: Pending) => {
-  const { team } = request;
-  const userToAdd = mockUsers[4];
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
 
-  setMemberTeams(prev => {
-    const existing = prev.find(t => t.id === team.id);
-    
-    if (existing) {
-      const hasUser = existing.members.some(m => m.id === userToAdd.id);
-      const updatedMembers = hasUser
-        ? existing.members
-        : [...existing.members, userToAdd];
+    const trimmed = userEmail.trim().toLowerCase();
 
-      return prev.map(t =>
-        t.id === team.id
-          ? { ...t, members: updatedMembers }
-          : t
-      );
-    } else {
-      const hasUser = team.members.some(m => m.id === userToAdd.id);
-      const newMembers = hasUser
-        ? team.members
-        : [...team.members, userToAdd];
+    const found = usersFromStore.find((u) => u.email.toLowerCase() === trimmed);
 
-      return [...prev, { ...team, members: newMembers }];
+    if (!found) {
+      setUserEmailError("User not found");
+      return;
     }
-  });
 
-  setIsPending(prev => prev.filter(p => p.id !== request.id));
-};
+    if (found.id === currentUserId) {
+      setUserEmailError("User already added");
+      return;
+    }
+
+    if (teamMembersSelection.some((m) => m.id === found.id)) {
+      setUserEmailError("User already added");
+      return;
+    }
+
+    if (selectedTeamId) {
+      const alreadyInTeam = (
+        teamsFromStore.find((t) => t.id === selectedTeamId)?.memberIds ?? []
+      ).includes(found.id);
+
+      if (alreadyInTeam) {
+        setUserEmailError("User already in team");
+        return;
+      }
+    }
+
+    if (!filteredSuggestions.some((u) => u.id === found.id)) {
+      setUserEmailError("User not found");
+      return;
+    }
+
+    if (teamMembersSelection.length >= 10) {
+      setUserEmailError("You can only add up to 10 members");
+      return;
+    }
+
+    addSuggestedUserToSelection(found);
+  };
+
+
+  const filteredSuggestions = suggestedUsers.filter((u) => {
+    const alreadySelected = teamMembersSelection.some((m) => m.id === u.id);
+    const alreadyInTeam = selectedTeamId ? (teamsFromStore.find((t) => t.id === selectedTeamId)?.memberIds ?? []).includes(u.id) : false;
+    const isOwner = u.id === currentUserId;
+    return !alreadySelected && !alreadyInTeam && !isOwner;
+  });
 
 
   return (
-    <PageLayout
-      pageTitle="Team managment"
-      isLoading={isLoading}
-      errorMessage={errorMessage}
-    >
+    <PageLayout pageTitle="Team management" isLoading={isLoading} errorMessage={errorMessage}>
       {!isLoading && !errorMessage && (
         <div className="team">
           <div className="team__header">
             <ul className="team__tabs">
               <li className="team__tab">
-                <button
-                  className={`team__tab-button ${
-                    activeTab === "myTeams" ? "team__tab-button--active" : ""
-                  }`}
-                  onClick={() => setActiveTab("myTeams")}
-                >
+                <button className={classNames("team__tab-button", { "team__tab-button--active": activeTab === "myTeams" })} onClick={() => setActiveTab("myTeams")}>
                   My teams
                 </button>
               </li>
               <li className="team__tab">
-                <button
-                  className={`team__tab-button ${
-                    activeTab === "pending" ? "team__tab-button--active" : ""
-                  }`}
-                  onClick={() => setActiveTab("pending")}
-                >
-                  Pending {isPending.length > 0 && <span className="team__tab-button-info">{isPending.length}</span>}
+                <button className={classNames("team__tab-button", { "team__tab-button--active": activeTab === "pending" })} onClick={() => setActiveTab("pending")}>
+                  Pending {pendingFromStore.length > 0 && <span className="team__tab-button-info">{pendingFromStore.length}</span>}
                 </button>
               </li>
             </ul>
 
-            <button
-              className="team__create-btn"
-              onClick={() => setModalOpen(true)}
-            >
+            <button className="team__create-btn" onClick={openCreateModal}>
               Create team
             </button>
           </div>
@@ -410,126 +375,55 @@ export const Team: React.FC = () => {
           <div className="team__content">
             {activeTab === "myTeams" && (
               <>
-                {!isLoading && teams.length > 0 && (
+                {ownerTeamsWithMembers.length > 0 && (
                   <div className="team__list-block">
                     <h3 className="team__list-title">Owner</h3>
                     <ul className="team__list">
-                      {teams.map((team: TeamType) => (
+                      {ownerTeamsWithMembers.map((team) => (
                         <React.Fragment key={team.id}>
                           <li className="team__list-item">
                             <button
                               type="button"
-                              onClick={() => {
-                                setExpandedTeamId(prev => prev === team.id ? null : team.id);
-                              }}
-                              className={classNames("team__list-item-button", {
-                                "team__list-item-button--open":
-                                  expandedTeamId === team.id,
-                              })}
-                            ></button>
+                              className={classNames("team__list-item-button", { "team__list-item-button--open": expandedTeamId === team.id })}
+                              onClick={() => setExpandedTeamId((p) => (p === team.id ? null : team.id))}
+                            />
                             {team.name}
-                            <button 
-                              className={classNames("team__options", {
-                                "team__options--active": optionsTeamId === team.id,
-                              })}
-                              onClick={() =>
-                                setOptionsTeamId(prev => (prev === team.id ? null : team.id))
-                              }
-                            >
-                            </button>
-                            {optionsTeamId === team.id && (
-                              <ul className="team__options-menu" ref={optionsMenuRef}>
-                                <li 
-                                  className="team__options-menu-option" 
-                                  onClick={() => {
-                                    setEditingTeamId(team.id);
-                                    setTeamName(team.name);
-                                    setTeamMembers([]);
-                                    setSuggestedUsers([]);
-                                    setIsTeamNameSuccess(true);
-                                    setModalOpen(true);
-                                    setOptionsTeamId(null);
-                                  }}>
+                            <button
+                              className={classNames("team__options", { "team__options--active": optionsOpenTeamId === team.id })}
+                              onClick={(e) => { e.stopPropagation(); setOptionsOpenTeamId((prev) => (prev === team.id ? null : team.id)); }}
+                              aria-expanded={optionsOpenTeamId === team.id}
+                              aria-controls={`team-options-${team.id}`}
+                            />
+                            {optionsOpenTeamId === team.id && (
+                              <ul id={`team-options-${team.id}`} className="team__options-menu">
+                                <li className="team__options-menu-option" onClick={() => openInviteModal(team.id)}>
                                   <img src="/images/userplus.svg" alt="" />
-                                  <button
-                                    className="team__options-button"
-                                    
-                                  >
-                                    Invite members
-                                  </button>
+                                  <button className="team__options-button">Invite members</button>
                                 </li>
-                                <li 
-                                  className="team__options-menu-option" 
-                                  onClick={() => {
-                                    setEditingTeamId(team.id);
-                                    setTeamName(team.name);
-                                    setIsRenaming(true);
-                                    setIsTeamNameSuccess(false);
-                                    setModalOpen(true);
-                                    setOptionsTeamId(null);
-                                  }}>
+                                <li className="team__options-menu-option" onClick={() => openRenameModal(team.id)}>
                                   <img src="/images/pencil.svg" alt="" />
-                                  <button 
-                                    className="team__options-button" 
-                                    
-                                  >
-                                    Rename team
-                                  </button>
+                                  <button className="team__options-button">Rename team</button>
                                 </li>
-                                <li 
-                                  className="team__options-menu-option" 
-                                  onClick={() => {
-                                    setConfirmTeamId(team.id);
-                                    setConfirmAction("delete");
-                                    setOptionsTeamId(null);
-                                    setModalOpen(true);
-                                    setIsTeamMembersSuccess(true);
-                                  }}>
+                                <li className="team__options-menu-option" onClick={() => openDeleteModal(team.id)}>
                                   <img src="/images/trash.svg" alt="" />
-                                  <button
-                                    className="team__options-button"
-                                  >
-                                    Delete team
-                                  </button>
+                                  <button className="team__options-button">Delete team</button>
                                 </li>
                               </ul>
                             )}
                           </li>
+
                           {expandedTeamId === team.id && (
                             <ul className="team__members">
                               {team.members
-                                .sort(
-                                  (a, b) =>
-                                    (b.role === Role.admin ? 1 : 0) -
-                                    (a.role === Role.admin ? 1 : 0)
-                                )
+                                .sort((a, b) => (b.id === team.ownerId ? 1 : 0) - (a.id === team.ownerId ? 1 : 0))
                                 .map((member) => (
                                   <li key={member.id} className="team__member">
-                                    <img
-                                      className="team__member-img"
-                                      src={member.photo ?? `/images/emma-johnson.jpg`}
-                                      alt={member.name}
-                                    />
-
-                                    <h4 className="team__member-name">
-                                      {member.name}
-                                    </h4>
-
+                                    <img className="team__member-img" src={member.photo ?? `/images/emma-johnson.jpg`} alt={member.name} />
+                                    <h4 className="team__member-name">{member.name}</h4>
                                     <span className="team__member-role">
-                                      {member.role === Role.admin
-                                        ? "Administrator"
-                                        : "Member"}
+                                      {member.id === team.ownerId ? "Owner" :  "Member"}
                                     </span>
-
-                                    <button
-                                      type="button"
-                                      className="team__member-delete"
-                                      onClick={() => {
-                                        setModalOpen(true);
-                                        setIsConfirmOpen(true);
-                                        setUserEmail(member.email)
-                                      }}
-                                    ></button>
+                                    {member.id !== team.ownerId ? <button type="button" className="team__member-delete" onClick={() => openRemoveMemberModal(team.id, member)} /> : ''}
                                   </li>
                                 ))}
                             </ul>
@@ -540,97 +434,48 @@ export const Team: React.FC = () => {
                   </div>
                 )}
 
-                {!isLoading && memberTeams.length > 0 && (
+                {memberTeamsWithMembers.length > 0 && (
                   <div className="team__list-block">
                     <h3 className="team__list-title">Member</h3>
                     <ul className="team__list">
-                      {memberTeams.map((team: TeamType) => (
+                      {memberTeamsWithMembers.map((team) => (
                         <React.Fragment key={team.id}>
                           <li className="team__list-item">
                             <button
                               type="button"
-                              onClick={() => {
-                                setExpandedTeamId(prev => prev === team.id ? null : team.id);
-                              }}
-                              className={classNames("team__list-item-button", {
-                                "team__list-item-button--open":
-                                  expandedTeamId === team.id,
-                              })}
-                            ></button>
+                              className={classNames("team__list-item-button", { "team__list-item-button--open": expandedTeamId === team.id })}
+                              onClick={() => setExpandedTeamId((p) => (p === team.id ? null : team.id))}
+                            />
                             {team.name}
-                            <button 
-                              className={classNames("team__options", {
-                                "team__options--active": optionsTeamId === team.id,
-                              })}
-                              onClick={() =>
-                                setOptionsTeamId(prev => (prev === team.id ? null : team.id))
-                              }
-                            >
-                            </button>
-                            {optionsTeamId === team.id && (
-                              <ul className="team__options-menu" ref={optionsMenuRef}>
-                                <li 
-                                  className="team__options-menu-option" 
-                                  onClick={() => {
-                                      setEditingTeamId(team.id);
-                                      setTeamName(team.name);
-                                      setTeamMembers([]);
-                                      setSuggestedUsers([]);
-                                      setIsTeamNameSuccess(true);
-                                      setModalOpen(true);
-                                      setOptionsTeamId(null);
-                                    }}>
+                            <button
+                              className={classNames("team__options", { "team__options--active": optionsOpenTeamId === team.id })}
+                              onClick={(e) => { e.stopPropagation(); setOptionsOpenTeamId((prev) => (prev === team.id ? null : team.id)); }}
+                              aria-expanded={optionsOpenTeamId === team.id}
+                              aria-controls={`team-options-${team.id}`}
+                            />
+                            {optionsOpenTeamId === team.id && (
+                              <ul id={`team-options-${team.id}`} className="team__options-menu">
+                                <li className="team__options-menu-option" onClick={() => openInviteModal(team.id)}>
                                   <img src="/images/userplus.svg" alt="" />
-                                  <button
-                                    className="team__options-button"
-                                  >
-                                    Invite members
-                                  </button>
+                                  <button className="team__options-button">Invite members</button>
                                 </li>
-                                <li 
-                                  className="team__options-menu-option" 
-                                  onClick={() => {
-                                    setConfirmTeamId(team.id);
-                                    setConfirmAction("leave");
-                                    setOptionsTeamId(null);
-                                    setModalOpen(true);
-                                  }}>
+                                <li className="team__options-menu-option" onClick={() => openLeaveModal(team.id)}>
                                   <img src="/images/logout.svg" alt="" />
-                                  <button
-                                    className="team__options-button"
-                                    
-                                  >
-                                    Leave team
-                                  </button>
+                                  <button className="team__options-button">Leave team</button>
                                 </li>
                               </ul>
                             )}
                           </li>
+
                           {expandedTeamId === team.id && (
                             <ul className="team__members">
                               {team.members
-                                .sort(
-                                  (a, b) =>
-                                    (b.role === Role.admin ? 1 : 0) -
-                                    (a.role === Role.admin ? 1 : 0)
-                                )
+                                .sort((a, b) => (b.id === team.ownerId ? 1 : 0) - (a.id === team.ownerId ? 1 : 0))
                                 .map((member) => (
                                   <li key={member.id} className="team__member">
-                                    <img
-                                      className="team__member-img"
-                                      src={member.photo ?? `/images/emma-johnson.jpg`}
-                                      alt={member.name}
-                                    />
-
-                                    <h4 className="team__member-name">
-                                      {member.name}
-                                    </h4>
-
-                                    <span className="team__member-role">
-                                      {member.role === Role.admin
-                                        ? "Administrator"
-                                        : "Member"}
-                                    </span>
+                                    <img className="team__member-img" src={member.photo ?? `/images/emma-johnson.jpg`} alt={member.name} />
+                                    <h4 className="team__member-name">{member.name}</h4>
+                                    <span className="team__member-role">{member.id === team.ownerId ? "Owner" :  "Member"}</span>
                                   </li>
                                 ))}
                             </ul>
@@ -641,13 +486,9 @@ export const Team: React.FC = () => {
                   </div>
                 )}
 
-                {!isLoading && teams.length === 0 && !errorMessage && memberTeams.length === 0 && (
+                {ownerTeamsWithMembers.length === 0 && memberTeamsWithMembers.length === 0 && (
                   <>
-                    <img
-                      className="team__content-img"
-                      src="/images/no-teams.svg"
-                      alt="no teams"
-                    />
+                    <img className="team__content-img" src="/images/no-teams.svg" alt="no pendings" />
                     <p className="team__content-message">No teams were added</p>
                   </>
                 )}
@@ -655,444 +496,203 @@ export const Team: React.FC = () => {
             )}
 
             {activeTab === "pending" && (
-              !isLoading && isPending?.length === 0 && !errorMessage ? (
-                <>
-                  <img
-                    className="team__content-img"
-                    src="/images/no-teams.svg"
-                    alt="no pendings"
-                  />
-                  <p className="team__content-message">No pending invitation</p>
-                </>
-              ) : (
-                <ul className="team__list">
-                  {isPending.map(p => (
-                    <li key={p.id} className="team__list-item team__list-item--pending">
-                      <div className="team__pending-wrapper">
-                        <img
-                          className="team__member-img team__member-img--pending"
-                          src={p.sender.photo ?? `/images/emma-johnson.jpg`}
-                          alt={p.sender.name}
-                        />
+              <>
+                {pendingForDisplay.length === 0 ? (
+                  <>
+                    <img className="team__content-img" src="/images/no-teams.svg" alt="no pendings" />
+                    <p className="team__content-message">No pending invitation</p>
+                  </>
+                ) : (
+                  <ul className="team__list">
+                    {pendingForDisplay.map((p) => (
+                      <li key={p.id} className="team__list-item team__list-item--pending">
+                        <div className="team__pending-wrapper">
+                          <img className="team__member-img team__member-img--pending" src={p.sender?.photo ?? `/images/emma-johnson.jpg`} alt={p.sender?.name ?? "User"} />
+                          <h4 className="team__member-name team__member-name--pending">{p.sender?.name ?? "Unknown"}</h4>
+                          <p className="team__pending-text">wants to add you to</p>
+                          <h4 className="team__member-name team__member-name--pending">{p.team?.name ?? "Unknown team"}</h4>
+                        </div>
 
-                        <h4 className="team__member-name team__member-name--pending">
-                          {p.sender.name}
-                        </h4>
-
-                        <p className="team__pending-text">
-                          wants to add you to 
-                        </p>
-
-                        <h4 className="team__member-name team__member-name--pending">
-                          {p.team.name}
-                        </h4>
-                      </div>
-
-                      <div className="team__pending-btn-wrapper">
-                        <button
-                          type="button"
-                          className="team__pending-btn"
-                          onClick={() => handleAccept(p)}
-                        >
-                          <img src="/images/check-green.svg" alt="button-accept" />
-                        </button>
-                        <button
-                          type="button"
-                          className="team__pending-btn"
-                          onClick={() => handleReject(p.id)}
-                        >
-                          <img src="/images/close-red.svg" alt="button-reject" />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )
+                        <div className="team__pending-btn-wrapper">
+                          <button type="button" className="team__pending-btn" onClick={() => handleAcceptPending(p)}>
+                            <img src="/images/check-green.svg" alt="button-accept" />
+                          </button>
+                          <button type="button" className="team__pending-btn" onClick={() => handleRejectPending(p.id)}>
+                            <img src="/images/close-red.svg" alt="button-reject" />
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
-
           </div>
 
           {isModalOpen && (
             <>
-              <div
-                className="team__overlay"
-                onClick={() => setModalOpen(false)}
-              ></div>
+              <div className="team__overlay" onClick={() => { setModalOpen(false); setModalMode(null); setSelectedTeamId(null); }} />
 
-              <div className="team__modal">
-                {isTeamMembersSuccess ? '' : <button
-                  type="button"
-                  className="team__modal-close"
-                  onClick={() => {
-                    resetTeamCreation();
-                  }}
-                ></button>}
+              <div className="team__modal" role="dialog" aria-modal="true">
+                <button type="button" className="team__modal-close" onClick={() => { 
+                  setModalOpen(false);
+                  setModalMode(null);
+                  setTeamName("");
+                  setTeamNameError("");
+                  setTeamMembersSelection([]);
+                  setUserEmail("");
+                  setUserEmailError("");
+                }} aria-label="Close"></button>
 
-                {isModalOpen && confirmTeamId && confirmAction && (
-                    <>
-                      <h2 className="team__modal-title team__modal-title--remove">
-                        {confirmAction === "delete"
-                          ? `Delete ${teams.find(t => t.id === confirmTeamId)?.name}?`
-                          : `Leave ${memberTeams.find(t => t.id === confirmTeamId)?.name}?`
-                        }
-                      </h2>
-                      <p className="team__modal-description">
-                        {confirmAction === "delete"
-                          ? "Are you sure you want to delete this team?"
-                          : "Are you sure you want to leave this team?"
-                        }
-                      </p>
-
-                      <div className="team__modal-actions">
-                        <button
-                          type="button"
-                          className="team__modal-cancel"
-                          onClick={() => {
-                            if (confirmAction === "delete") {
-                              setTeams(prev => prev.filter(t => t.id !== confirmTeamId));
-                            } else {
-                              setMemberTeams(prev => prev.filter(t => t.id !== confirmTeamId));
-                            }
-                            resetTeamCreation();
-                          }}
-                        >
-                          {confirmAction === "delete" ? "Delete" : "Leave"}
-                        </button>
-
-                        <button
-                          type="button"
-                          className="team__modal-create"
-                          onClick={() => {
-                            resetTeamCreation();
-                          }}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  )}
-
-                {!isTeamMembersSuccess && !isConfirmOpen && !confirmTeamId ? (
+                {(modalMode === "create" || modalMode === "rename") && (
                   <>
-                    {!isTeamNameSuccess ? (
-                      <>
-                        <img
-                          src="/images/people.svg"
-                          alt="People image"
-                        />
+                    <img src="/images/people.svg" alt="People" />
+                    <h2 className="team__modal-title">{modalMode === "rename" ? "Rename your team" : "Create your team"}</h2>
 
-                        <h2 className="team__modal-title">{isRenaming ? "Rename your team" : "Create your team"}</h2>
+                    <label className="team__modal-label">
+                      <input
+                        type="text"
+                        placeholder="Name your team"
+                        className={classNames("team__modal-input", { "team__modal-input--error": teamName.length > 30 })}
+                        value={teamName}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setTeamName(newValue);
 
-                        <label className="team__modal-label">
-                          <input
-                            type="text"
-                            placeholder="Name your team"
-                            className={`team__modal-input ${teamName.length > 30 ? "team__modal-input--error" : ""}`}
-                            value={teamName}
-                            onChange={(e) => {
-                              const newValue = e.target.value; 
-                              setTeamName(newValue); 
-                              if (newValue.length > 30) {
-                                setUserEmailError("Name is too long");
-                              } else {
-                                setUserEmailError("");
-                              }
-                            }}
-                          />
+                          if (newValue.length > 30) {
+                            setTeamNameError("Name is too long");
+                          } else {
+                            setTeamNameError("");
+                          }
+                        }}
+                      />
+                      
+                      <span className={classNames("team__modal-input-counter", { "team__modal-input-counter--error": teamName.length > 30 })}>{teamName.length}/30</span>
+                      {teamNameError && (
+                        <p className="team__modal-input-message team__modal-input-message--error">
+                          {teamNameError}
+                        </p>
+                      )}
+                    </label>
 
-                          <span
-                            className={`team__modal-input-counter ${
-                              teamName.length > 30
-                                ? "team__modal-input-counter--error"
-                                : ""
-                            }`}
-                          >
-                            {teamName.length}/30
-                          </span>
-                        </label>
-
-                        {userEmailError !== "" &&
-                          <p className="team__modal-input-message team__modal-input-message--error">
-                            {userEmailError}
-                          </p>
-                        }
-
-                        <div className="team__modal-actions">
-                          <button type="button" className="team__modal-cancel" onClick={() => {
-                            resetTeamCreation();
-                          }}>
-                            Cancel
-                          </button>
-
-                          <button
-                            type="button"
-                            className="team__modal-create"
-                            onClick={() => {
-                              if (isRenaming && editingTeamId) {
-                                setTeams((prev) =>
-                                  prev.map((t) =>
-                                    t.id === editingTeamId ? { ...t, name: teamName } : t
-                                  )
-                                );
-                                resetTeamCreation();
-                                setIsRenaming(false);
-                                setEditingTeamId(null);
-                              } else {
-                                setIsTeamNameSuccess(true);
-                              }
-                            }}
-                            disabled={
-                              teamName.trim() === "" || teamName.length > 30
-                            }
-                          >
-                            {isRenaming ? "Rename team" : "Create team"}
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <img
-                          src="/images/avatars.svg"
-                          alt="Avatars image"
-                        />
-
-                        <h2 className="team__modal-title">{teamName}</h2>
-                          <div className={classNames("team__tags", 
-                          { "team__tags--error": userEmailError !== "" }
-                            )}>
-                            {teamMembers.map((member) => (
-                              <span 
-                                key={member.id} 
-                                className="team__tag" 
-                              >
-                                {member.email}
-                                <button
-                                  type="button"
-                                  className="team__tag-remove"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setTeamMembers(prev => prev.filter(user => user.id !== member.id));
-                                  }}
-                                >
-                                </button>
-                              </span>
-                            ))}
-                            <input
-                              type="email"
-                              placeholder={teamMembers.length === 0 ? "Enter users email" : "Type email"}
-                              className={"team__modal-input team__modal-input--email"}
-                              value={userEmail}
-                              onChange={(e) => {
-                                setUserEmail(e.target.value);
-                                setUserEmailError("");
-                              }}
-                              onKeyDown={e => {
-                                if (e.key !== "Enter") return;
-                                e.preventDefault();
-
-                                const trimmed = userEmail.trim().toLowerCase();
-                                const foundUser = mockUsers.find(u => u.email.toLowerCase() === trimmed);
-                                if (!foundUser) {
-                                  setUserEmailError("User not found");
-                                  return;
-                                }
-
-                                const actualMembers = (() => {
-                                  const owner = teams.find(t => t.id === editingTeamId);
-                                  if (owner) return owner.members;
-                                  const member = memberTeams.find(t => t.id === editingTeamId);
-                                  return member ? member.members : [];
-                                })();
-
-                                if (actualMembers.some(m => m.id === foundUser.id)) {
-                                  setUserEmailError("User already in team");
-                                  return;
-                                }
-                                if (teamMembers.some(m => m.id === foundUser.id)) {
-                                  setUserEmailError("User already added");
-                                  return;
-                                }
-                                if (teamMembers.length >= 10) {
-                                  setUserEmailError("You can only add up to 10 members");
-                                  return;
-                                }
-
-                                setTeamMembers(prev => [...prev, foundUser]);
-                                setUserEmail("");
-                                setUserEmailError("");
-                              }}
-
-                              style={{
-                                marginBlock: teamMembers.length < 2 ? "-9px" : "0",
-                              }}
-                            />
-                          </div>
-                        
-
-                        {userEmailError !== "" ? (
-                          <p className="team__modal-input-message team__modal-input-message--error">
-                            {userEmailError}
-                          </p>
-                        ) : (
-                          <p className="team__modal-input-message">
-                            You can add up to 10 people at a time
-                            {filteredSuggestions.length > 0 && (
-                            <ul className="team__modal-suggestions">
-                              {filteredSuggestions.map((user) => (
-                                <li
-                                  key={user.id}
-                                  className="team__modal-suggestion"
-                                  onClick={() => {
-                                    const isAlreadyAdded = teamMembers.some(member => member.id === user.id);
-
-                                    if (isAlreadyAdded) {
-                                      setUserEmailError("User already added");
-                                      return;
-                                    }
-
-                                    if (teamMembers.length >= 10) {
-                                      setUserEmailError("You can only add up to 10 members");
-                                      return;
-                                    }
-
-                                    setTeamMembers((prev) => [...prev, user]);
-                                    setUserEmail("");
-                                    setSuggestedUsers([]);
-                                    setUserEmailError("");
-                                  }}
-                                >
-                                  <img className="team__modal-suggestion-avatar" src="" alt="Ava" />
-                                  <div className="team__modal-suggestion-info">
-                                    <h5 className="team__modal-suggestion-name">{user.name}</h5>
-                                    <p className="team__modal-suggestion-email">{user.email}</p>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                          </p>
-                        )}
-
-                        <div className="team__modal-actions">
-                          <button 
-                            type="button" 
-                            className="team__modal-cancel"
-                            onClick={() => {
-                              resetTeamCreation();
-                              setModalOpen(false);
-                            }}
-                          >
-                            Cancel
-                          </button>
-
-                          <button
-                            type="button"
-                            className="team__modal-create"
-                            disabled={teamMembers.length === 0}
-                            onClick={() => {
-                              if (editingTeamId) {
-                                const isOwner = teams.some(t => t.id === editingTeamId);
-                                if (isOwner) {
-                                  setTeams(prev =>
-                                    prev.map(t =>
-                                      t.id === editingTeamId
-                                        ? { ...t, members: [...t.members, ...teamMembers] }
-                                        : t
-                                    )
-                                  );
-                                } else {
-                                  setMemberTeams(prev =>
-                                    prev.map(t =>
-                                      t.id === editingTeamId
-                                        ? { ...t, members: [...t.members, ...teamMembers] }
-                                        : t
-                                    )
-                                  );
-                                }
-
-                                resetTeamCreation();
-                              } else {
-                                setTeams(prev => [
-                                  ...prev,
-                                  {
-                                    id: `${Date.now()}`, 
-                                    name: teamName,
-                                    members: teamMembers,
-                                  },
-                                ]);
-                                setIsTeamMembersSuccess(true);
-                              }
-                            }}
-                          >
-                            Add members
-                          </button>
-
-
-                        </div>
-                      </>
-                    )}
+                    <div className="team__modal-actions">
+                      <button type="button" className="team__modal-cancel" onClick={() => { setModalOpen(false); setModalMode(null); setSelectedTeamId(null); }}>Cancel</button>
+                      <button type="button" className="team__modal-create" disabled={teamName.trim() === "" || teamName.length > 30} onClick={confirmModalAction}>
+                        {modalMode === "rename" ? "Rename team" : "Create team"}
+                      </button>
+                    </div>
                   </>
-                ) : isConfirmOpen ? (
-                      <>
-                        <h2 className="team__modal-title team__modal-title--remove">{`Remove 
-                          ${
-                            teams
-                              .find(team => team.id === expandedTeamId)
-                              ?.members
-                              .find(member => member.email === userEmail)
-                              ?.name || userEmail
-                          }?`}
-                        </h2>
-                        <p className="team__modal-description">Are you sure you want to remove this person from the team?</p>
-                        
-                        <div className="team__modal-actions">
-                          <button
-                            type="button"
-                            className="team__modal-cancel"
-                            onClick={() => {
-                              setTeams(prevTeams =>
-                                prevTeams.map(t =>
-                                  t.id === expandedTeamId
-                                    ? {
-                                        ...t,
-                                        members: t.members.filter(m => m.email !== userEmail),
-                                      }
-                                    : t
-                                )
-                              );
-                              setUserEmail('');
-                              setIsConfirmOpen(false);
-                              setModalOpen(false);
-                            }}
-                          >
-                            Remove
-                          </button>
+                )}
 
-                          <button
-                            type="button"
-                            className="team__modal-create"
-                            onClick={() => {
-                              setIsConfirmOpen(false);
-                              setModalOpen(false);
-                            }}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </>
-                    ) : !confirmTeamId && !confirmAction && (
+                {modalMode === "invite" && (
                   <>
-                    <img src="/images/done-icon.svg" alt="Done icon" className="team__modal-done"/>
-
-                    <h2 className="team__modal-title team__modal-title--success">
-                      Your team was successfully created
+                    <img src="/images/avatars.svg" alt="Avatars" />
+                    <h2 className="team__modal-title">
+                      {teamsFromStore.find(t => t.id === selectedTeamId)?.name ?? teamName}
                     </h2>
+
+                    <div className={classNames("team__tags", { "team__tags--error": !!userEmailError })}>
+                      {teamMembersSelection.map((m) => (
+                        <span key={m.id} className="team__tag">
+                          {m.email}
+                          <button
+                            type="button"
+                            className="team__tag-remove"
+                            onClick={() => setTeamMembersSelection((prev) => prev.filter((x) => x.id !== m.id))}
+                            aria-label={`Remove ${m.email}`}
+                          >
+                            
+                          </button>
+                        </span>
+                      ))}
+
+                      <input
+                        type="email"
+                        placeholder={teamMembersSelection.length === 0 ? "Enter users email" : "Type email"}
+                        className="team__modal-input team__modal-input--email"
+                        value={userEmail}
+                        onChange={(e) => {
+                          setUserEmail(e.target.value);
+                          setUserEmailError("");
+                        }}
+                        onKeyDown={handleEmailKeyDown}
+                        aria-label="User email"
+                      />
+                    </div>
+
+                    {userEmailError ? (
+                      <p className="team__modal-input-message team__modal-input-message--error">
+                        {userEmailError}
+                      </p>
+                    ) : (
+                      <p className="team__modal-input-message">
+                        You can add up to 10 people at a time
+                        {filteredSuggestions.length > 0 && (
+                          <ul className="team__modal-suggestions">
+                            {filteredSuggestions.map((u) => (
+                              <li key={u.id} className="team__modal-suggestion" onClick={() => addSuggestedUserToSelection(u)}>
+                                <img className="team__modal-suggestion-avatar" src={u.photo ?? "/images/default-avatar.svg"} alt="Ava" />
+                                <div className="team__modal-suggestion-info">
+                                  <h5 className="team__modal-suggestion-name">{u.name}</h5>
+                                  <p className="team__modal-suggestion-email">{u.email}</p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </p>
+                    )}
+
+                    <div className="team__modal-actions">
+                      <button type="button" className="team__modal-cancel" onClick={() => { setModalOpen(false); setModalMode(null); setSelectedTeamId(null); }}>
+                        Cancel
+                      </button>
+
+                      <button type="button" className="team__modal-create" disabled={teamMembersSelection.length === 0} onClick={confirmModalAction}>
+                        Add members
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {modalMode === "success" && (
+                  <>
+                    <img src="/images/done-icon.svg" alt="Done icon" className="team__modal-done" />
+                    <h2 className="team__modal-title team__modal-title--success">Your team was successfully created</h2>
                     <p className="team__modal-description">Users will join the team by accepting your request</p>
 
-                    <button type="button" className="team__modal-continue" onClick={() => resetTeamCreation()}>
-                      Continue
-                    </button>
+                    <div className="team__modal-actions">
+                      <button type="button" className="team__modal-create" onClick={() => {
+                        setModalOpen(false);
+                        setModalMode(null);
+                        setSelectedTeamId(null);
+                        setTeamName("");
+                        setTeamMembersSelection([]);
+                        setUserEmail("");
+                      }}>Continue</button>
+                    </div>
+                  </>
+                )}
+
+                {(modalMode === "delete" || modalMode === "leave" || modalMode === "removeMember") && (
+                  <>
+                    <h2 className="team__modal-title team__modal-title--remove">
+                      {modalMode === "delete" && `Delete ${teamsFromStore.find((t) => t.id === selectedTeamId)?.name}?`}
+                      {modalMode === "leave" && `Leave ${teamsFromStore.find((t) => t.id === selectedTeamId)?.name}?`}
+                      {modalMode === "removeMember" && `Remove ${selectedMember?.name ?? ""}?`}
+                    </h2>
+                    <p className="team__modal-description">
+                      {modalMode === "delete" && "Are you sure you want to delete this team?"}
+                      {modalMode === "leave" && "Are you sure you want to leave this team?"}
+                      {modalMode === "removeMember" && "Are you sure you want to remove this person from the team?"}
+                    </p>
+
+                    <div className="team__modal-actions">
+                      <button type="button" className="team__modal-cancel" onClick={confirmModalAction}>
+                        {modalMode === "delete" ? "Delete" : modalMode === "leave" ? "Leave" : "Remove"}
+                      </button>
+                      <button type="button" className="team__modal-create" onClick={() => { setModalOpen(false); setModalMode(null); setSelectedTeamId(null); }}>Cancel</button>
+                    </div>
                   </>
                 )}
               </div>

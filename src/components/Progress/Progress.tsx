@@ -1,10 +1,22 @@
 import "./Progress.scss";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../store/hooks";
+import { getExercises } from "../../store/features/exercisesSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 type Props = {
   className?: string;
 };
 
 export const Progress: React.FC<Props> = ({ className = "" }) => {
+  const dispatch = useAppDispatch();
+  const exercises = useSelector((state: RootState) => state.exercises.value);
+
+  useEffect(() => {
+    dispatch(getExercises());
+  }, [dispatch]);
+
   return (
     <div className={`progress ${className}`.trim()}>
       <h4 className="progress__title">Your progress</h4>
@@ -16,61 +28,26 @@ export const Progress: React.FC<Props> = ({ className = "" }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <img
-                src="/images/molecular-biology.svg"
-                alt="Molecular biology icon"
-                className="icon"
-              />
-              Molecular biology
-            </td>
-            <td>0/11</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/basics-of-python.svg"
-                alt="Python icon"
-                className="icon"
-              />
-              Basics of Python
-            </td>
-            <td>0/4</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/protein-structure.svg"
-                alt="Protein structure icon"
-                className="icon"
-              />
-              Protein structure
-            </td>
-            <td>0/1</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/molecular-sequence.svg"
-                alt="Molecular sequence icon"
-                className="icon"
-              />
-              Molecular sequence
-            </td>
-            <td>0/5</td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                src="/images/image-analysis.svg"
-                alt="Image analysis icon"
-                className="icon"
-              />
-              Image analysis
-            </td>
-            <td>0/10</td>
-          </tr>
+          {exercises?.map((exercise, index) => {
+            const completed =
+              exercise.progress !== null
+                ? Math.round((exercise.progress / 100) * exercise.steps)
+                : 0;
+
+            return (<tr key={index}>
+              <td>
+                <img
+                  src={exercise.imagePath}
+                  alt={`${exercise.title} icon`}
+                  className="icon"
+                />
+                {exercise.title}
+              </td>
+              <td>
+                {completed}/{exercise.steps}
+              </td>
+            </tr>
+          )})}
         </tbody>
       </table>
     </div>

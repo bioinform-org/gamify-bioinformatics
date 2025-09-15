@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./Sidebar.scss";
 import classNames from "classnames";
-import { useAppSelector } from "../../store/hooks";  // import hooka Redux
+import { useAppSelector } from "../../store/hooks";
+import { selectPendingCountForUser } from "../../store/features/pendingSlice";
 import { selectUnreadMessagesCount } from "../../store/features/messageSlice";
 
 interface Props {}
@@ -16,6 +17,7 @@ const navLinks = [
 ];
 
 export const Sidebar: React.FC<Props> = () => {
+  const pendingCount = useAppSelector(selectPendingCountForUser);
   // Pobieramy totalną liczbę nieprzeczytanych wiadomości z Reduxa
   const totalMessages = useAppSelector(selectUnreadMessagesCount);
 
@@ -44,6 +46,9 @@ export const Sidebar: React.FC<Props> = () => {
                   {name}
                   {name === "Chats" && totalMessages > 0 && (
                     <span className="side-bar__link-info">{totalMessages}</span>
+                  )}
+                  {name === "Team management" && pendingCount > 0 && (
+                    <span className="side-bar__link-info">{pendingCount}</span>
                   )}
                 </NavLink>
               </li>

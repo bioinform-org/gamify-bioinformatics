@@ -29,6 +29,9 @@ import { Answer } from "./pages/ThePoisonousMilkshakePage/components/Answer";
 import { ControlPanel } from "./pages/ControlPanel";
 import { Reports } from "./components/Reports";
 import { BlockedUsers } from "./components/BlockedUsers";
+import { fetchPending } from "./store/features/pendingSlice";
+import { fetchTeams } from "./store/features/teamsSlice";
+import { fetchUsers } from "./store/features/usersSlice";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -49,6 +52,12 @@ export const App: React.FC = () => {
       dispatch(setToken(user.value.token));
     }
   }, [user.value])
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+    dispatch(fetchTeams());
+    dispatch(fetchPending());
+  }, [dispatch]);
 
   return (
     <div className="app">
