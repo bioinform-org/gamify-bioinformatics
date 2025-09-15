@@ -29,7 +29,9 @@ export const ChatPage: React.FC<Props> = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [, setAttachedFile] = useState<File | null>(null);
+  const [attachedFiles, setAttachedFiles] = useState<{ file: File; url: string }[]>([]);
+
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
@@ -51,11 +53,17 @@ export const ChatPage: React.FC<Props> = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setAttachedFile(file);
+    const files = e.target.files;
+    if (files) {
+      const newFiles = Array.from(files).map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      }));
+      setAttachedFiles((prev) => [...prev, ...newFiles]);
     }
+    e.target.value = ""; 
   };
+  
 
   const dispatch = useAppDispatch();
 
@@ -218,79 +226,111 @@ export const ChatPage: React.FC<Props> = () => {
               </div>
 
               <div className="chat-page__input">
-                <div className="chat-page__additional-buttons">
-                  <button
-                    className="chat-page__send-button"
-                    type="button"
-                    onClick={() => setShowEmojiPicker((prev) => !prev)}
-                  >
-                    <img src="/public/images/emoji-icon.svg" alt="emoji" />
-                  </button>
-                  {showEmojiPicker && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "60px",
-                        left: "16px",
-                        zIndex: 1000,
-                      }}
-                    >
-                      <Picker
-                        data={data}
-                        onEmojiSelect={(emoji: any) => {
-                          if (textareaRef.current) {
-                            const textarea = textareaRef.current;
-                            const start = textarea.selectionStart;
-                            const end = textarea.selectionEnd;
-                            const text = textarea.value;
-                            const emojiChar = emoji.native;
+              {attachedFiles.length > 0 && (
+  <div className="chat-page__selected-attachments">
+    {attachedFiles.map(({ file, url }, index) => (
+      <div
+        key={index}
+        className={file.type.startsWith("image/") ? "attachment-img" : "attachment-pdf"}
+      >
+        {file.type.startsWith("image/") ? (
+          <img src={url} alt="preview" className="attachment-img--item" />
+        ) : (
+          <div className="attachment-pdf">
+            <img src="/images/pdf-icon2.svg" alt="preview" className="attachment-pdf--item" />
+            {file.name}
+          </div>
+        )}
 
-                            textarea.value =
-                              text.slice(0, start) +
-                              emojiChar +
-                              text.slice(end);
-                            textarea.selectionStart = textarea.selectionEnd =
-                              start + emojiChar.length;
-                            textarea.focus();
-                          }
-                          setShowEmojiPicker(false);
+        <button
+          className={file.type.startsWith("image/") ? "attachment-img__remove" : "attachment-pdf__remove"}
+          onClick={() => {
+            setAttachedFiles((prev) => prev.filter((_, i) => i !== index));
+          }}
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
+                <div className="chat-page__aaa">
+                  <div className="chat-page__additional-buttons">
+                    <button
+                      className="chat-page__send-button"
+                      type="button"
+                      onClick={() => setShowEmojiPicker((prev) => !prev)}
+                    >
+                      <img src="/public/images/emoji-icon.svg" alt="emoji" />
+                    </button>
+                    {showEmojiPicker && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "60px",
+                          left: "16px",
+                          zIndex: 1000,
                         }}
-                      />
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*,.pdf,.doc,.docx,.txt"
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                  />
-                  <button
-                    className="chat-page__send-button"
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <img
-                      src="/public/images/attachments-icon.svg"
-                      alt="attachments"
+                      >
+                        <Picker
+                          data={data}
+                          onEmojiSelect={(emoji: any) => {
+                            if (textareaRef.current) {
+                              const textarea = textareaRef.current;
+                              const start = textarea.selectionStart;
+                              const end = textarea.selectionEnd;
+                              const text = textarea.value;
+                              const emojiChar = emoji.native;
+
+                              textarea.value =
+                                text.slice(0, start) +
+                                emojiChar +
+                                text.slice(end);
+                              textarea.selectionStart = textarea.selectionEnd =
+                                start + emojiChar.length;
+                              textarea.focus();
+                            }
+                            setShowEmojiPicker(false);
+                          }}
+                        />
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*,.pdf,.doc,.docx,.txt"
+                      style={{ display: "none" }}
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
                     />
+                    <button
+                      className="chat-page__send-button"
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <img
+                        src="/public/images/attachments-icon.svg"
+                        alt="attachments"
+                      />
+                    </button>
+                  </div>
+
+                  <textarea
+                    placeholder="Type your message here"
+                    className="chat-page__input-field"
+                    ref={textareaRef}
+                    onInput={(e) => {
+                      const target = e.target as HTMLTextAreaElement;
+                      target.style.height = "auto";
+                      target.style.height = `${target.scrollHeight}px`;
+                    }}
+                  ></textarea>
+
+                  <button className="chat-page__send-button">
+                    <img src="/public/images/send-icon.svg" alt="send" />
                   </button>
                 </div>
-
-                <textarea
-                  placeholder="Type your message here"
-                  className="chat-page__input-field"
-                  ref={textareaRef}
-                  onInput={(e) => {
-                    const target = e.target as HTMLTextAreaElement;
-                    target.style.height = "auto";
-                    target.style.height = `${target.scrollHeight}px`;
-                  }}
-                ></textarea>
-
-                <button className="chat-page__send-button">
-                  <img src="/public/images/send-icon.svg" alt="send" />
-                </button>
               </div>
             </section>
           )}
