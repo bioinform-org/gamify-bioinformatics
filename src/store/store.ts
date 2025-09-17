@@ -7,6 +7,9 @@ import tokenReducer from '../store/features/tokenSlice';
 import testExercisesReducer from '../store/features/testExercisesSlice';
 import channelsReducer from '../store/features/channelSlice';
 import messagesReducer from '../store/features/messageSlice';
+import teamsReducer from '../store/features/teamsSlice';
+import pendingReducer from '../store/features/pendingSlice';
+import reportsReducer from '../store/features/reportsSlice';
 import chatCategoriesReducer from "./features/chatCategorySlice";
 
 //main state, which looks like this: state: {user, users, exercises}
@@ -21,6 +24,9 @@ export const store = configureStore({
     testExercises: testExercisesReducer,
     channels: channelsReducer,
     messages: messagesReducer,
+    teams: teamsReducer,
+    pending: pendingReducer,
+    reports: reportsReducer,
     chatCategories: chatCategoriesReducer,
   }
 })

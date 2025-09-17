@@ -1,48 +1,58 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User } from "../../types/ProductType";
-import { getUsersFromServer } from "../../api";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import type { User } from "../../types/ProductType";
 
-//ALL INFORMATION HERE IS INDENTICAL TO EXERCISEsSLICE
+export const fetchUsers = createAsyncThunk<User[]>("users/fetchAll", async () => {
+  const res = await fetch("/api/users.json");
+  if (!res.ok) throw new Error("Failed to fetch users");
+  return (await res.json()) as User[];
+});
 
 export interface UsersState {
-  value: User[] | [],
-  isLoading: boolean,
-  errorMessage: string,
+  value: User[];
+  isLoading: boolean;
+  errorMessage: string;
 }
 
 const initialState: UsersState = {
   value: [],
   isLoading: false,
-  errorMessage: '',
-}
+  errorMessage: "",
+};
 
 export const usersSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
-  reducers: {},
-  extraReducers: builder => {
+  reducers: {
+    upsertUser(state, action: { payload: User }) {
+      const idx = state.value.findIndex((u) => u.id === action.payload.id);
+      if (idx === -1) state.value.push(action.payload);
+      else state.value[idx] = action.payload;
+    },
+    removeUser(state, action: { payload: number }) {
+      state.value = state.value.filter((u) => u.id !== action.payload);
+    },
+  },
+  extraReducers: (builder) => {
     builder
-    .addCase(getUsers.pending, (state) => {
-      state.isLoading = true;
-      state.errorMessage = '';
-    })
-    .addCase(getUsers.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.value = action.payload;
-    })
-    .addCase(getUsers.rejected, (state) => {
-      state.isLoading = false;
-      state.errorMessage = 'Users cannot be downloaded from the server'
-    })
-  }
+      .addCase(fetchUsers.pending, (state) => {
+        state.isLoading = true;
+        state.errorMessage = "";
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.value = action.payload.map((user) => ({
+          ...user,
+          photo: user.photo ?? "/images/avatar_by_default.svg",
+        }));
+      })
+      .addCase(fetchUsers.rejected, (state) => {
+        state.isLoading = false;
+        state.errorMessage = "Users cannot be downloaded from the server";
+      });
+  },
 });
 
-export default usersSlice.reducer;
-
+export const { upsertUser, removeUser } = usersSlice.actions;
 export const selectUsers = (state: RootState) => state.users;
-
-export const getUsers = createAsyncThunk(
-  "users/getUsers",
-  async () => await getUsersFromServer()
-)
+export default usersSlice.reducer;
