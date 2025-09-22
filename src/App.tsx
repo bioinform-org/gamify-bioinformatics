@@ -32,6 +32,7 @@ import { BlockedUsers } from "./components/BlockedUsers";
 import { fetchPending } from "./store/features/pendingSlice";
 import { fetchTeams } from "./store/features/teamsSlice";
 import { fetchUsers } from "./store/features/usersSlice";
+import { fetchMessages } from "./store/features/messageSlice";
 
 export const App: React.FC = () => {
   const token = useAppSelector(selectToken);
@@ -57,6 +58,7 @@ export const App: React.FC = () => {
     dispatch(fetchUsers());
     dispatch(fetchTeams());
     dispatch(fetchPending());
+    dispatch(fetchMessages());
   }, [dispatch]);
 
   return (

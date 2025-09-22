@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../store";
 
 export interface Message {
+    channelId: string | null;
     id: number;
     sender: string;
     content: string;
