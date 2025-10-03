@@ -1,52 +1,47 @@
 [
   {
     "id": 1,
-    "sender": "You",
+    "fromUserName": "Admin",
     "content": "Hello! Looking forward to talking with somebody!",
     "time": "10:30 AM",
-    "position": "right",
     "read": true,
     "category": "channels",
-    "channelId": "python_learning"
+    "to": "python_learning"
   },
   {
     "id": 2,
-    "sender": "Tom Jones",
+    "fromUserName": "John Doe",
     "content": "si",
     "time": "10:30 AM",
-    "position": "left",
     "read": true,
     "category": "channels",
-    "channelId": "python_learning"
+    "to": "python_learning"
   },
   {
     "id": 3,
-    "sender": "Tom Jones",
+    "fromUserName": "John Doe",
     "content": "Hello Maya! Whats the matter?",
     "time": "10:30 AM",
-    "position": "left",
     "read": true,
     "category": "channels",
-    "channelId": "python_learning"
+    "to": "python_learning"
   },
   {
     "id": 4,
-    "sender": "You",
+    "fromUserName": "Admin",
     "content": "Oh, yes! I have some issues wiHello Maya!",
     "time": "10:30 AM",
-    "position": "right",
     "read": true,
     "category": "channels",
-    "channelId": "python_learning"
+    "to": "python_learning"
   },
   {
     "id": 5,
-    "sender": "You",
+    "fromUserName": "Admin",
     "content": "Hello! Looking forward to talking with somebody!Hello! Looking forward to talkingwith somebodng folkingwith somebodng forward to lkingwith somebodng forward to lkingwith somebodng forward to lkingwith somebodng forward to rward to talkingwith somebody!Hello! Lng forward to talkingwith somebody!Hello! Lng forward to talkingwith somebody!Hello! Lng forward to talkingwith somebody!Hello! Lng forward to talkingwith somebody!Hello! Ly!Hello! Looking forward to talking with somebodywith somebody!Hello! Looking forward to talking with somebodywith somebody!Hello! Looking forward to talking with somebodywith somebody!Hello! Looking forward to talking with somebody with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!Hello! Looking forward to talking with somebody!",
     "time": "10:30 AM",
-    "position": "right",
     "read": false,
     "category": "channels",
-    "channelId": "python_learning"
+    "to": "python_learning"
   }
 ]

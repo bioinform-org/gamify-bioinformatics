@@ -7,11 +7,14 @@
   flex-grow: 1;
   border-radius: 16px;
   display: flex;
+  //height: 100%;
   height: calc(100vh - 136px);
 
   &__menu {
     width: 35%;
     border-right: 1px solid #f1f2f2;
+    overflow-y: auto;
+
   }
 
   &__menu-header {
@@ -19,10 +22,10 @@
     font-size: 18px;
     font-weight: bold;
     border-bottom: 1px solid #f1f2f2;
-  }
-
-  &__boxes {
-    height: 144px;
+    position: sticky;
+    top: 0;
+    background: vars.$c-white;
+    z-index: 5;
   }
 
   &__list {

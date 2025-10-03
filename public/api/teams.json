@@ -17,7 +17,7 @@
     "id": "3",
     "name": "Team Frontend",
     "ownerId": 2,
-    "memberIds": [1, 2, 3],
+    "memberIds": [1, 2, 3, 0],
     "createdAt": "2024-03-05T09:00:00.000Z"
   },
   {
@@ -31,7 +31,7 @@
     "id": "2242",
     "name": "Team Fullstack",
     "ownerId": 2,
-    "memberIds": [2],
+    "memberIds": [2,0],
     "createdAt": "2024-04-01T12:00:00.000Z"
   },
   {

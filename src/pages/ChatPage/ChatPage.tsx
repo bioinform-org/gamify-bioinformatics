@@ -11,6 +11,11 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useRef } from "react";
 import { selectUnreadCountByCategory } from "../../store/features/messageSlice";
+import { DirectMessages } from "../../components/DirectMessagesList";
+import { fetchDirectMessages } from "../../store/features/directMessagesSlice";
+import { TeamsList } from "../../components/TeamsList";
+import { fetchTeams } from "../../store/features/teamsSlice";
+import { User } from "../../types/ProductType";
 
 type Props = {};
 
@@ -20,10 +25,22 @@ const BUTTONS = [
   { id: "direct", label: "Direct messages" },
 ];
 
+const loggedUser = {
+  id: 0,
+  name: "Admin",
+  username: "admin",
+  scorePoints: 90,
+  email: "admin.admin@example.com",
+  role: "admin",
+  photo: null,
+  password: "admin",
+};
+
 export const ChatPage: React.FC<Props> = () => {
-  const [clickedButtons, setClickedButtons] = useState<Record<string, boolean>>(
-    {}
-  );
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({});
+
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<
@@ -32,20 +49,31 @@ export const ChatPage: React.FC<Props> = () => {
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
+  const [pickedUser, setPickedUser] = useState<User | null>(null);
 
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const prevMessagesLength = useRef(0);
 
   const channels = useAppSelector((state) => state.channels.channels);
   const messages = useAppSelector((state) => state.messages.messages);
-  const user = useAppSelector((state) => state.user.value);
+  const directMessages = useAppSelector((state) => state.directMessages.directMessages);
+  const teams = useAppSelector((state) => state.teams.value);
+  const users = useAppSelector((state) => state.users.value);
 
-  const actualMessages = messages.filter(
-    (msg) => msg.channelId === activeChannelId
-  );
+  const actualMessages = messages.filter((msg) => {
+    if (activeChannelId) {
+      return msg.to === activeChannelId;
+    }
+    return false;
+  });
+
+  const assignedTeams = teams.filter((team) => {
+    return team.memberIds.includes(loggedUser.id);
+  });
 
   const toggleMenu = (id: number) => {
     if (editingMessageId === id) {
@@ -60,7 +88,7 @@ export const ChatPage: React.FC<Props> = () => {
   };
 
   const toggleButton = (id: string) => {
-    setClickedButtons((prev) => ({
+    setExpandedSections((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -88,11 +116,19 @@ export const ChatPage: React.FC<Props> = () => {
     }
   };
 
+  const handleDirectMessage = (user: User) => {
+    setIsPopupOpen(false);
+    setPickedUser(null);
+    setActiveChannelId(`${user.username}`);
+  };
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchChannels());
     dispatch(fetchMessages());
+    dispatch(fetchDirectMessages());
+    dispatch(fetchTeams());
   }, [dispatch]);
 
   useEffect(() => {
@@ -107,7 +143,6 @@ export const ChatPage: React.FC<Props> = () => {
       }
 
       setOpenMenuId(null);
-      console.log(user);
     }
 
     if (openMenuId !== null) {
@@ -143,8 +178,6 @@ export const ChatPage: React.FC<Props> = () => {
     };
   }, [showEmojiPicker]);
 
-  const prevMessagesLength = useRef(0);
-
   useEffect(() => {
     if (
       messagesContainerRef.current &&
@@ -174,12 +207,13 @@ export const ChatPage: React.FC<Props> = () => {
                         <button
                           type="button"
                           className={classNames({
-                            "chat-page__element-button": !clickedButtons[id],
+                            "chat-page__element-button": !expandedSections[id],
                             "chat-page__element-button--clicked":
-                              clickedButtons[id],
+                              expandedSections[id],
                           })}
                           onClick={() => toggleButton(id)}
                         />
+
                         {label}
                         {unreadCount > 0 && (
                           <span className="chat-page__element-info">
@@ -187,9 +221,21 @@ export const ChatPage: React.FC<Props> = () => {
                           </span>
                         )}
                       </div>
-                      {id === "channels" && clickedButtons["channels"] && (
-                        <ChannelsList onChannelSelect={setActiveChannelId} />
+                      {id === "channels" && expandedSections["channels"] && (
+                        <ChannelsList onChannelSelect={setActiveChannelId} activeButtonId={activeChannelId||''}/>
                       )}
+                      {id === "direct" && expandedSections["direct"] && (
+                        <DirectMessages onDirectSelect={setActiveChannelId} directMessages={directMessages} activeButtonId={activeChannelId||''}/>
+                      )}
+                      {id === "team" &&
+                        expandedSections["team"] &&
+                        assignedTeams.length > 0 && (
+                          <TeamsList
+                            onDirectSelect={setActiveChannelId}
+                            teams={assignedTeams}
+                            activeButtonId={activeChannelId||''}
+                          />
+                        )}
                     </li>
                   );
                 })}
@@ -219,24 +265,26 @@ export const ChatPage: React.FC<Props> = () => {
             <section className="chat-page__window">
               <div className="chat-page__window-label">
                 {channels.find((c) => c.id === activeChannelId)?.label}
+                {assignedTeams.find((t) => t.id === activeChannelId)?.name}
+                {directMessages.find((d) => d.userName === activeChannelId)?.name}
               </div>
 
               <div className="chat-page__messages" ref={messagesContainerRef}>
                 {actualMessages.length > 0 ? (
                   actualMessages.map(
-                    ({ id, sender, content, time, position }, index) => {
-                      const prevMessage = messages[index - 1];
+                    ({ id, fromUserName, content, time }, index) => {
+                      const prevMessage = actualMessages[index - 1];
                       const showSenderInfo =
                         !prevMessage ||
-                        prevMessage.sender !== sender ||
-                        prevMessage.position !== position;
-
+                        prevMessage.fromUserName !== fromUserName;
                       return (
                         <div
                           key={`${id}-${index}`}
                           className={classNames("chat-page__message", {
-                            "chat-page__message--left": position === "left",
-                            "chat-page__message--right": position === "right",
+                            "chat-page__message--left":
+                              fromUserName !== loggedUser.name,
+                            "chat-page__message--right":
+                              fromUserName === loggedUser.name,
                             "chat-page__message--grouped": !showSenderInfo,
                           })}
                         >
@@ -244,7 +292,11 @@ export const ChatPage: React.FC<Props> = () => {
                             <div className="chat-page__message-label">
                               <div
                                 className="chat-page__message-user-info"
-                                onClick={() => setIsPopupOpen(true)}
+                                onClick={() => {
+                                  const user = users.find(u => u.name === fromUserName)
+                                  setPickedUser(user || null);
+                                  setIsPopupOpen(true);
+                                }}
                               >
                                 <img
                                   src="/public/images/avatar_by_default.svg"
@@ -252,7 +304,7 @@ export const ChatPage: React.FC<Props> = () => {
                                   className="chat-page__avatar"
                                 />
                                 <span className="chat-page__name">
-                                  {position === "right" ? "Your name" : sender}
+                                  {fromUserName}
                                 </span>
                               </div>
                               <div className="chat-page__message-time-info">
@@ -272,7 +324,7 @@ export const ChatPage: React.FC<Props> = () => {
                                       alt="close"
                                     />
                                   </button>
-                                ) : position === "right" ? (
+                                ) : fromUserName === loggedUser.name ? (
                                   <button
                                     className="chat-page__message-info"
                                     type="button"
@@ -314,7 +366,8 @@ export const ChatPage: React.FC<Props> = () => {
                             </div>
                             <div
                               className={classNames("chat-page__bubble", {
-                                "chat-page__bubble--gray": position === "left",
+                                "chat-page__bubble--gray":
+                                  fromUserName !== loggedUser.name,
                               })}
                             >
                               {editingMessageId === id ? "Editing..." : content}
@@ -457,7 +510,13 @@ export const ChatPage: React.FC<Props> = () => {
           )}
         </div>
       </PageLayout>
-      {isPopupOpen && <ProfilePopup setIsOpen={setIsPopupOpen} />}
+      {isPopupOpen && pickedUser && (
+        <ProfilePopup
+          setIsOpen={setIsPopupOpen}
+          user={pickedUser}
+          onDirectMessage={handleDirectMessage}
+        />
+      )}
     </>
   );
 };
