@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../store";
 
 export interface Message {
+    to: string | null;
     id: number;
-    sender: string;
+    fromUserName: string;
     content: string;
     time: string;
-    position: string;
     read: boolean;
     category: string
 }

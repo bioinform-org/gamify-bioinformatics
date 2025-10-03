@@ -18,7 +18,6 @@ const navLinks = [
 
 export const Sidebar: React.FC<Props> = () => {
   const pendingCount = useAppSelector(selectPendingCountForUser);
-  // Pobieramy totalną liczbę nieprzeczytanych wiadomości z Reduxa
   const totalMessages = useAppSelector(selectUnreadMessagesCount);
 
   return (

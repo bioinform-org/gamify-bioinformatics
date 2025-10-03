@@ -11,6 +11,11 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useRef } from "react";
 import { selectUnreadCountByCategory } from "../../store/features/messageSlice";
+import { DirectMessages } from "../../components/DirectMessagesList";
+import { fetchDirectMessages } from "../../store/features/directMessagesSlice";
+import { TeamsList } from "../../components/TeamsList";
+import { fetchTeams } from "../../store/features/teamsSlice";
+import { User } from "../../types/ProductType";
 
 type Props = {};
 
@@ -20,32 +25,70 @@ const BUTTONS = [
   { id: "direct", label: "Direct messages" },
 ];
 
+const loggedUser = {
+  id: 0,
+  name: "Admin",
+  username: "admin",
+  scorePoints: 90,
+  email: "admin.admin@example.com",
+  role: "admin",
+  photo: null,
+  password: "admin",
+};
+
 export const ChatPage: React.FC<Props> = () => {
-  const [clickedButtons, setClickedButtons] = useState<Record<string, boolean>>(
-    {}
-  );
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({});
+
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const [attachedFiles, setAttachedFiles] = useState<{ file: File; url: string }[]>([]);
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [attachedFiles, setAttachedFiles] = useState<
+    { file: File; url: string }[]
+  >([]);
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [editingMessageId, setEditingMessageId] = useState<number | null>(null);
+  const [pickedUser, setPickedUser] = useState<User | null>(null);
 
-  const toggleMenu = (id: number) => {
-    setOpenMenuId(openMenuId === id ? null : id);
-  };
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const prevMessagesLength = useRef(0);
 
   const channels = useAppSelector((state) => state.channels.channels);
   const messages = useAppSelector((state) => state.messages.messages);
+  const directMessages = useAppSelector((state) => state.directMessages.directMessages);
+  const teams = useAppSelector((state) => state.teams.value);
+  const users = useAppSelector((state) => state.users.value);
+
+  const actualMessages = messages.filter((msg) => {
+    if (activeChannelId) {
+      return msg.to === activeChannelId;
+    }
+    return false;
+  });
+
+  const assignedTeams = teams.filter((team) => {
+    return team.memberIds.includes(loggedUser.id);
+  });
+
+  const toggleMenu = (id: number) => {
+    if (editingMessageId === id) {
+      if (textareaRef.current) {
+        textareaRef.current.value = "";
+        textareaRef.current.focus();
+        setEditingMessageId(null);
+      }
+    } else {
+      setOpenMenuId(openMenuId === id ? null : id);
+    }
+  };
 
   const toggleButton = (id: string) => {
-    setClickedButtons((prev) => ({
+    setExpandedSections((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -60,19 +103,91 @@ export const ChatPage: React.FC<Props> = () => {
       }));
       setAttachedFiles((prev) => [...prev, ...newFiles]);
     }
-    e.target.value = ""; 
+    e.target.value = "";
   };
-  
+
+  const handleEditMessage = (id: number) => {
+    const msg = actualMessages.find((m) => m.id === id);
+    if (msg && textareaRef.current) {
+      textareaRef.current.value = msg.content;
+      textareaRef.current.focus();
+      setEditingMessageId(id);
+      setOpenMenuId(null);
+    }
+  };
+
+  const handleDirectMessage = (user: User) => {
+    setIsPopupOpen(false);
+    setPickedUser(null);
+    setActiveChannelId(`${user.username}`);
+  };
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchChannels());
+    dispatch(fetchMessages());
+    dispatch(fetchDirectMessages());
+    dispatch(fetchTeams());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchMessages());
-  }, [dispatch]);
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+
+      if (
+        target.closest(".chat-page__message-menu") ||
+        target.closest(".chat-page__message-info")
+      ) {
+        return;
+      }
+
+      setOpenMenuId(null);
+    }
+
+    if (openMenuId !== null) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMenuId]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(target) &&
+        !target.closest(".chat-page__send-button")
+      ) {
+        setShowEmojiPicker(false);
+      }
+    }
+
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
+  useEffect(() => {
+    if (
+      messagesContainerRef.current &&
+      actualMessages.length > prevMessagesLength.current
+    ) {
+      const container = messagesContainerRef.current;
+      container.scrollTop = container.scrollHeight;
+    }
+    prevMessagesLength.current = actualMessages.length;
+  }, [actualMessages]);
 
   return (
     <>
@@ -92,12 +207,13 @@ export const ChatPage: React.FC<Props> = () => {
                         <button
                           type="button"
                           className={classNames({
-                            "chat-page__element-button": !clickedButtons[id],
+                            "chat-page__element-button": !expandedSections[id],
                             "chat-page__element-button--clicked":
-                              clickedButtons[id],
+                              expandedSections[id],
                           })}
                           onClick={() => toggleButton(id)}
                         />
+
                         {label}
                         {unreadCount > 0 && (
                           <span className="chat-page__element-info">
@@ -105,9 +221,21 @@ export const ChatPage: React.FC<Props> = () => {
                           </span>
                         )}
                       </div>
-                      {id === "channels" && clickedButtons["channels"] && (
-                        <ChannelsList onChannelSelect={setActiveChannelId} />
+                      {id === "channels" && expandedSections["channels"] && (
+                        <ChannelsList onChannelSelect={setActiveChannelId} activeButtonId={activeChannelId||''}/>
                       )}
+                      {id === "direct" && expandedSections["direct"] && (
+                        <DirectMessages onDirectSelect={setActiveChannelId} directMessages={directMessages} activeButtonId={activeChannelId||''}/>
+                      )}
+                      {id === "team" &&
+                        expandedSections["team"] &&
+                        assignedTeams.length > 0 && (
+                          <TeamsList
+                            onDirectSelect={setActiveChannelId}
+                            teams={assignedTeams}
+                            activeButtonId={activeChannelId||''}
+                          />
+                        )}
                     </li>
                   );
                 })}
@@ -137,124 +265,170 @@ export const ChatPage: React.FC<Props> = () => {
             <section className="chat-page__window">
               <div className="chat-page__window-label">
                 {channels.find((c) => c.id === activeChannelId)?.label}
+                {assignedTeams.find((t) => t.id === activeChannelId)?.name}
+                {directMessages.find((d) => d.userName === activeChannelId)?.name}
               </div>
 
-              <div className="chat-page__messages">
-                {messages.map(
-                  ({ id, sender, content, time, position }, index) => {
-                    const prevMessage = messages[index - 1];
-                    const showSenderInfo =
-                      !prevMessage ||
-                      prevMessage.sender !== sender ||
-                      prevMessage.position !== position;
-
-                    return (
-                      <div
-                        key={`${id}-${index}`}
-                        className={classNames("chat-page__message", {
-                          "chat-page__message--left": position === "left",
-                          "chat-page__message--right": position === "right",
-                          "chat-page__message--grouped": !showSenderInfo,
-                        })}
-                      >
-                        <div className="chat-page__message-content">
-                          <div className="chat-page__message-label">
-                            <div
-                              className="chat-page__message-user-info"
-                              onClick={() => setIsPopupOpen(true)}
-                            >
-                              <img
-                                src="/public/images/avatar_by_default.svg"
-                                alt="avatar"
-                                className="chat-page__avatar"
-                              />
-                              <span className="chat-page__name">
-                                {position === "right" ? "Your name" : sender}
-                              </span>
-                            </div>
-                            <div className="chat-page__message-time-info">
-                              <span className="chat-page__message-time">
-                                {time}
-                              </span>
-                              <button
-                                className="chat-page__message-info"
-                                type="button"
-                                onClick={() => toggleMenu(id)}
-                                aria-expanded={openMenuId === id}
-                                aria-haspopup="true"
+              <div className="chat-page__messages" ref={messagesContainerRef}>
+                {actualMessages.length > 0 ? (
+                  actualMessages.map(
+                    ({ id, fromUserName, content, time }, index) => {
+                      const prevMessage = actualMessages[index - 1];
+                      const showSenderInfo =
+                        !prevMessage ||
+                        prevMessage.fromUserName !== fromUserName;
+                      return (
+                        <div
+                          key={`${id}-${index}`}
+                          className={classNames("chat-page__message", {
+                            "chat-page__message--left":
+                              fromUserName !== loggedUser.name,
+                            "chat-page__message--right":
+                              fromUserName === loggedUser.name,
+                            "chat-page__message--grouped": !showSenderInfo,
+                          })}
+                        >
+                          <div className="chat-page__message-content">
+                            <div className="chat-page__message-label">
+                              <div
+                                className="chat-page__message-user-info"
+                                onClick={() => {
+                                  const user = users.find(u => u.name === fromUserName)
+                                  setPickedUser(user || null);
+                                  setIsPopupOpen(true);
+                                }}
                               >
                                 <img
-                                  src="/public/images/three-dots.svg"
-                                  alt="info"
+                                  src="/public/images/avatar_by_default.svg"
+                                  alt="avatar"
+                                  className="chat-page__avatar"
                                 />
-                              </button>
-                              {openMenuId === id && (
-                                <ul className="chat-page__message-menu">
-                                  <li>
+                                <span className="chat-page__name">
+                                  {fromUserName}
+                                </span>
+                              </div>
+                              <div className="chat-page__message-time-info">
+                                <span className="chat-page__message-time">
+                                  {time}
+                                </span>
+                                {editingMessageId === id ? (
+                                  <button
+                                    className="chat-page__message-info"
+                                    type="button"
+                                    onClick={() => toggleMenu(id)}
+                                    aria-expanded={openMenuId === id}
+                                    aria-haspopup="true"
+                                  >
                                     <img
-                                      src="/public/images/edit-message-icon.svg"
-                                      alt="edit"
-                                      className="chat-page__message-menu-edit"
+                                      src="/public/images/close-red.svg"
+                                      alt="close"
                                     />
-                                    Edit message
-                                  </li>
-                                  <li>
+                                  </button>
+                                ) : fromUserName === loggedUser.name ? (
+                                  <button
+                                    className="chat-page__message-info"
+                                    type="button"
+                                    onClick={() => toggleMenu(id)}
+                                    aria-expanded={openMenuId === id}
+                                    aria-haspopup="true"
+                                  >
                                     <img
-                                      src="/public/images/delete-message-icon.svg"
-                                      alt="delete"
-                                      className="chat-page__message-menu-delete"
+                                      src="/public/images/three-dots.svg"
+                                      alt="menu"
                                     />
-                                    Delete message
-                                  </li>
-                                </ul>
-                              )}
+                                  </button>
+                                ) : null}
+
+                                {openMenuId === id && (
+                                  <ul
+                                    className="chat-page__message-menu"
+                                    ref={menuRef}
+                                  >
+                                    <li onClick={() => handleEditMessage(id)}>
+                                      <img
+                                        src="/public/images/edit-message-icon.svg"
+                                        alt="edit"
+                                        className="chat-page__message-menu-edit"
+                                      />
+                                      Edit message
+                                    </li>
+                                    <li>
+                                      <img
+                                        src="/public/images/delete-message-icon.svg"
+                                        alt="delete"
+                                        className="chat-page__message-menu-delete"
+                                      />
+                                      Delete message
+                                    </li>
+                                  </ul>
+                                )}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames("chat-page__bubble", {
+                                "chat-page__bubble--gray":
+                                  fromUserName !== loggedUser.name,
+                              })}
+                            >
+                              {editingMessageId === id ? "Editing..." : content}
                             </div>
                           </div>
-                          <div
-                            className={classNames("chat-page__bubble", {
-                              "chat-page__bubble--gray": position === "left",
-                            })}
-                          >
-                            {content}
-                          </div>
                         </div>
-                      </div>
-                    );
-                  }
+                      );
+                    }
+                  )
+                ) : (
+                  <div className="no-message">No messages yet</div>
                 )}
               </div>
 
               <div className="chat-page__input">
-              {attachedFiles.length > 0 && (
-  <div className="chat-page__selected-attachments">
-    {attachedFiles.map(({ file, url }, index) => (
-      <div
-        key={index}
-        className={file.type.startsWith("image/") ? "attachment-img" : "attachment-pdf"}
-      >
-        {file.type.startsWith("image/") ? (
-          <img src={url} alt="preview" className="attachment-img--item" />
-        ) : (
-          <div className="attachment-pdf">
-            <img src="/images/pdf-icon2.svg" alt="preview" className="attachment-pdf--item" />
-            {file.name}
-          </div>
-        )}
+                {attachedFiles.length > 0 && (
+                  <div className="chat-page__selected-attachments">
+                    {attachedFiles.map(({ file, url }, index) => (
+                      <div
+                        key={index}
+                        className={
+                          file.type.startsWith("image/")
+                            ? "attachment-img"
+                            : "attachment-pdf"
+                        }
+                      >
+                        {file.type.startsWith("image/") ? (
+                          <img
+                            src={url}
+                            alt="preview"
+                            className="attachment-img--item"
+                          />
+                        ) : (
+                          <div className="attachment-pdf">
+                            <img
+                              src="/images/pdf-icon2.svg"
+                              alt="preview"
+                              className="attachment-pdf--item"
+                            />
+                            {file.name}
+                          </div>
+                        )}
 
-        <button
-          className={file.type.startsWith("image/") ? "attachment-img__remove" : "attachment-pdf__remove"}
-          onClick={() => {
-            setAttachedFiles((prev) => prev.filter((_, i) => i !== index));
-          }}
-        >
-          ✕
-        </button>
-      </div>
-    ))}
-  </div>
-)}
-
-
+                        <button
+                          className={
+                            file.type.startsWith("image/")
+                              ? "attachment-img__remove"
+                              : "attachment-pdf__remove"
+                          }
+                          onClick={() => {
+                            setAttachedFiles((prev) =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="chat-page__aaa">
                   <div className="chat-page__additional-buttons">
                     <button
@@ -266,6 +440,7 @@ export const ChatPage: React.FC<Props> = () => {
                     </button>
                     {showEmojiPicker && (
                       <div
+                        ref={emojiPickerRef}
                         style={{
                           position: "absolute",
                           bottom: "60px",
@@ -335,7 +510,13 @@ export const ChatPage: React.FC<Props> = () => {
           )}
         </div>
       </PageLayout>
-      {isPopupOpen && <ProfilePopup setIsOpen={setIsPopupOpen} />}
+      {isPopupOpen && pickedUser && (
+        <ProfilePopup
+          setIsOpen={setIsPopupOpen}
+          user={pickedUser}
+          onDirectMessage={handleDirectMessage}
+        />
+      )}
     </>
   );
 };
