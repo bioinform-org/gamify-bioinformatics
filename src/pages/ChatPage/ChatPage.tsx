@@ -31,7 +31,6 @@ export const ChatPage: React.FC<Props> = () => {
 
   const [attachedFiles, setAttachedFiles] = useState<{ file: File; url: string }[]>([]);
 
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
