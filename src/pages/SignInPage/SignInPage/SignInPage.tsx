@@ -158,7 +158,7 @@ export const SignInPage = () => {
 
         <button className="page-compilator__sign-up-button">
           <Link to={"/sign-up"} className="page-compilator__sign-up-link">
-            Sign Up'
+            Sign Up
           </Link>
         </button>
       </div>
