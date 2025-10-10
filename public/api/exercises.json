@@ -6,7 +6,8 @@
     "time": "1",
     "imagePath": "/images/milkshake-image.png",
     "progress": null,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "the-poisonous-milkshake"
   },
   {
     "title": "Gene Regulation",
@@ -15,7 +16,8 @@
     "time": "1",
     "imagePath": "/images/gene-regulation.png",
     "progress": 60,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "gene Regulation"
   },
   {
     "title": "DNA Repair",
@@ -24,7 +26,8 @@
     "time": "1",
     "imagePath": "/images/dna-repairing.png",
     "progress": null,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "dna-repair"
   },
   {
     "title": "Protein Synthesis",
@@ -33,7 +36,8 @@
     "time": "4",
     "imagePath": "/images/protein-synthesis.png",
     "progress": null,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "protein-synthesis"
   },
   {
     "title": "Genetic Mutations",
@@ -42,7 +46,8 @@
     "time": "3",
     "imagePath": "/images/genetic-mutations.png",
     "progress": null,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "genetic-mutations"
   },
   {
     "title": "Cell Signaling",
@@ -51,7 +56,8 @@
     "time": "1",
     "imagePath": "/images/cell-signaling.png",
     "progress": null,
-    "topic": "Molecular biology"
+    "topic": "Molecular biology",
+    "slug": "cell-signaling"
   },
   {
     "title": "Python Fundamentals",
@@ -60,7 +66,8 @@
     "time": "1",
     "imagePath": "/images/python-fundamentals.png",
     "progress": 100,
-    "topic": "Basics of Python"
+    "topic": "Basics of Python",
+    "slug": "python-fundamentals"
   },
   {
     "title": "Data Types",
@@ -69,7 +76,8 @@
     "time": "1",
     "imagePath": "/images/data-types.png",
     "progress": null,
-    "topic": "Basics of Python"
+    "topic": "Basics of Python",
+    "slug": "data-types"
   },
   {
     "title": "Loops & Conditions",
@@ -78,6 +86,7 @@
     "time": "2",
     "imagePath": "/images/loops-&-conditions.png",
     "progress": null,
-    "topic": "Basics of Python"
+    "topic": "Basics of Python",
+    "slug": "loops-conditions"
   }
 ]

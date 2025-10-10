@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import "./ExerciseCard.scss";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../store/hooks";
 
 type Props = {
   title: string;
@@ -9,6 +10,7 @@ type Props = {
   time: string;
   imagePath: string;
   progress: number | null;
+  exerciseSlug: string; 
 };
 
 export const ExerciseCard: React.FC<Props> = ({
@@ -18,7 +20,20 @@ export const ExerciseCard: React.FC<Props> = ({
   time,
   imagePath,
   progress,
+  exerciseSlug,
 }) => {
+  const chapters = useAppSelector((state) =>
+    state.chapters.items.filter((ch) => ch.exerciseSlug === exerciseSlug)
+  );
+
+  const firstIncomplete = chapters.find((ch) => !ch.completed);
+  const firstChapter = chapters[0];
+  const targetChapter = firstIncomplete || firstChapter;
+
+  const linkTarget = targetChapter
+    ? `/${exerciseSlug}/${targetChapter.link}`
+    : "#";
+
   return (
     <article className="exercise-card">
       <img src={imagePath} alt="" className="exercise-card__img" />
@@ -52,10 +67,13 @@ export const ExerciseCard: React.FC<Props> = ({
         className={classNames("exercise-card__btn", {
           "exercise-card__btn--completed": progress === 100,
         })}
-        to="/the-poisonous-milkshake/introduction"
+        to={linkTarget}
       >
         {progress === 100 ? "Completed!" : !progress ? "Start" : "Continue"}
       </Link>
+      <button onClick={() => console.log(chapters)}>
+        x
+      </button>
     </article>
   );
 };

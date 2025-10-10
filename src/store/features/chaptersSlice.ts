@@ -29,15 +29,18 @@ const chaptersSlice = createSlice({
         chapters: Omit<Chapter, "exerciseTitle" | "exerciseSlug">[];
       }>
     ) => {
-      const { exerciseTitle, exerciseSlug, chapters } = action.payload;
-      state.items = state.items.filter((ch) => ch.exerciseSlug !== exerciseSlug);
-      const withMeta = chapters.map((c) => ({
-        ...c,
-        exerciseTitle,
-        exerciseSlug,
+      state.items = state.items.filter(
+        (ch) => ch.exerciseSlug !== action.payload.exerciseSlug
+      );
+    
+      const withMeta = action.payload.chapters.map((ch) => ({
+        ...ch,
+        exerciseTitle: action.payload.exerciseTitle,
+        exerciseSlug: action.payload.exerciseSlug,
       }));
+    
       state.items.push(...withMeta);
-    },
+    },    
 
     markChapterCompleted: (
       state,

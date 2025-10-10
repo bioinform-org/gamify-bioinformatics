@@ -30,14 +30,20 @@ export const ExerciseDetails = ({ children }: Props) => {
   const safeIndex = index === -1 ? 0 : index;
   const isLast = chapters.length > 0 && safeIndex === chapters.length - 1;
   const nextPage = isLast ? "answer" : chapters[safeIndex + 1]?.link;
-  const previousPage = safeIndex <= 0 ? chapters[0]?.link : chapters[safeIndex - 1]?.link;
+  const previousPage =
+    safeIndex <= 0 ? chapters[0]?.link : chapters[safeIndex - 1]?.link;
 
   const prefix = baseIsExercises ? "/exercises" : ""; // zachowujemy strukturę ścieżek
 
   const handleNextClick = () => {
     // oznacz jako completed jeśli znaleziono
     if (index >= 0 && chapters[index]) {
-      dispatch(markChapterCompleted({ exerciseSlug, chapterLink: chapters[index].link }));
+      dispatch(
+        markChapterCompleted({
+          exerciseSlug,
+          chapterLink: chapters[index].link,
+        })
+      );
     }
 
     // nawiguj
@@ -47,11 +53,24 @@ export const ExerciseDetails = ({ children }: Props) => {
 
   return (
     <div className="exercise-details">
-      <h4 className="exercise-details__title">{exerciseSlug.replace(/-/g, " ")}</h4>
+      <h4 className="exercise-details__title">
+        {exerciseSlug.replace(/-/g, " ")}
+      </h4>
       {children}
       <div className="exercise-details__buttons">
-        <Link to={`${prefix}/${exerciseSlug}/${previousPage}`} className="exercise-details__button">Back</Link>
-        <button onClick={handleNextClick} className="exercise-details__button" type="button">Next</button>
+        <Link
+          to={`${prefix}/${exerciseSlug}/${previousPage}`}
+          className="exercise-details__button"
+        >
+          Back
+        </Link>
+        <button
+          onClick={handleNextClick}
+          className="exercise-details__button"
+          type="button"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

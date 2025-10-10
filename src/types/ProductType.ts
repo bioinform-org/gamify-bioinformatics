@@ -5,9 +5,9 @@ export type Exercise = {
   description: string;
   steps: number;
   time: string;
-  imagePath: string;
+  imagePath?: string;
   progress: number | null;
-  topic: string;
+  slug: string;
 };
 
 export type User = {
