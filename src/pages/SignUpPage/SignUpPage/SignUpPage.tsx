@@ -7,11 +7,12 @@ import eyeImg from '/images/eye.svg';
 import eyeSlashImg from '/images/eye-slash.svg';
 import { PasswordRules } from '../../../components/PasswordRules';
 import { Loader } from '../../../components/Loader';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getTokenFromRegestration, selectToken, removeErorrMessageForToken } from '../../../store/features/tokenSlice';
-import { getUser, selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
+import { selectUser, removeErrorMessageForUser } from '../../../store/features/userSlice';
 import { Role } from '../../../types/Roles';
 import { validateEmail, validatePassword, validateUserName } from '../../../utils/validation';
+import { ResetPasswordEmailSendPage } from '../../ResetPasswordEmailSendPage';
 // import { AuthViaGoogleFacebookApple } from '../../../components/AuthViaGoogleFacebookApple';
 
 export const SignUpPage = () => {
@@ -23,10 +24,10 @@ export const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [isPasswordError, setIsPasswordError] = useState('');
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const token = useAppSelector(selectToken);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -63,19 +64,31 @@ export const SignUpPage = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (token.value) {
-      dispatch(getUser(token.value));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token.value])
+  // useEffect(() => {
+  //   if (token.value) {
+  //     dispatch(getUser(token.value));
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [token.value])
+
+  // useEffect(() => {
+  //   if (token.value && user.value) {
+  //     navigate('/exercises');
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [token.value, user.value])
 
   useEffect(() => {
-    if (token.value && user.value) {
-      navigate('/exercises');
+    if (token.value) {
+      setIsSuccess(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token.value, user.value])
+  }, [token.value]);
+
+  if (isSuccess) {
+    return (
+      <ResetPasswordEmailSendPage />
+    );
+  }
 
   return (
       <PageCompilator 
