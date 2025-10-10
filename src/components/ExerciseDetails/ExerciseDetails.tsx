@@ -1,62 +1,58 @@
-import { Link, useLocation } from 'react-router-dom';
-import './ExerciseDetails.scss';
-
-const chapters = [
-  {
-    id: 1,
-    name: "Introduction",
-    link: "introduction",
-    completed: false,
-  },
-  {
-    id: 2,
-    name: "Species identification",
-    link: "species-identification",
-    completed: false,
-  },
-  {
-    id: 3,
-    name: "Protein identification",
-    link: "protein-identification",
-    completed: false,
-  },
-  {
-    id: 4,
-    name: "Suspect identification",
-    link: "suspect-identification",
-    completed: false,
-  },
-];
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./ExerciseDetails.scss";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { markChapterCompleted } from "../../store/features/chaptersSlice";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export const ExerciseDetails = ({ children }: Props) => {
-
   const { pathname } = useLocation();
-  const index = chapters.findIndex(chapter => pathname === `/the-poisonous-milkshake/${chapter.link}`)
-  const nextPage = chapters && index === chapters.length - 1 ? 'answer' : chapters[index + 1].link;
-  const previousPage = chapters && index === 0 ? chapters[0].link : chapters[index-1].link;
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  // Wyznacz slug bazując na pathname; obsłużamy oba warianty:
+  // /the-poisonous-milkshake/... i /exercises/the-poisonous-milkshake/...
+  const segments = pathname.split("/").filter(Boolean);
+  const baseIsExercises = segments[0] === "exercises";
+  const exerciseSlug = baseIsExercises ? segments[1] : segments[0];
+  const currentChapterLink = segments[segments.length - 1] || "";
+
+  // pobierz chaptery dla tego sluga
+  const chapters = useAppSelector((s) =>
+    s.chapters.items.filter((ch) => ch.exerciseSlug === exerciseSlug)
+  );
+
+  const index = chapters.findIndex((ch) => ch.link === currentChapterLink);
+
+  // Bezpieczne obliczenia next/previous
+  const safeIndex = index === -1 ? 0 : index;
+  const isLast = chapters.length > 0 && safeIndex === chapters.length - 1;
+  const nextPage = isLast ? "answer" : chapters[safeIndex + 1]?.link;
+  const previousPage = safeIndex <= 0 ? chapters[0]?.link : chapters[safeIndex - 1]?.link;
+
+  const prefix = baseIsExercises ? "/exercises" : ""; // zachowujemy strukturę ścieżek
+
+  const handleNextClick = () => {
+    // oznacz jako completed jeśli znaleziono
+    if (index >= 0 && chapters[index]) {
+      dispatch(markChapterCompleted({ exerciseSlug, chapterLink: chapters[index].link }));
+    }
+
+    // nawiguj
+    if (!nextPage) return;
+    navigate(`${prefix}/${exerciseSlug}/${nextPage}`);
+  };
 
   return (
     <div className="exercise-details">
-      <h4 className="exercise-details__title">The poisonous Milkshake</h4>
+      <h4 className="exercise-details__title">{exerciseSlug.replace(/-/g, " ")}</h4>
       {children}
       <div className="exercise-details__buttons">
-        <Link
-          to={`/the-poisonous-milkshake/${previousPage}`}
-          className="exercise-details__button"
-        >
-          Back
-        </Link>
-        <Link
-          to={`/the-poisonous-milkshake/${nextPage}`}
-          className="exercise-details__button"
-        >
-          Next
-        </Link>
+        <Link to={`${prefix}/${exerciseSlug}/${previousPage}`} className="exercise-details__button">Back</Link>
+        <button onClick={handleNextClick} className="exercise-details__button" type="button">Next</button>
       </div>
     </div>
   );
-}
+};

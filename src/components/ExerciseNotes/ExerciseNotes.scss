@@ -16,10 +16,13 @@
     width: 100%;
     background-color: vars.$c-white;
     padding: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
   }
 
   &__textarea {
     height: 100%;
+    width: 100%;
     background-color: vars.$c-gray-10;
     resize: none;
     padding: 8px;

@@ -1,35 +1,28 @@
 import { useState } from "react";
 import "./DetailedExercisePage.scss";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { removeErrorMessageForUser } from "../../store/features/userSlice";
 import { removeToken } from "../../store/features/tokenSlice";
 import { ExerciseSideBar } from "../../components/ExerciseSideBar";
 import { ExerciseNotes } from "../../components/ExerciseNotes";
 
-type Chapter = {
-  id: number;
-  name: string;
-  link: string;
-  completed: boolean;
-}
-
 type Props = {
   children: React.ReactNode;
-  chapters: Chapter[];
+  exerciseTitle: string;
+  exerciseSlug: string;
 };
 
-export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) => {
+export const DetailedExercisePage: React.FC<Props> = ({
+  children,
+  exerciseSlug,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const token = useAppSelector(selectToken);
-  // const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   if (!user.value && token.value) {
-  //     dispatch(getUser(token.value));
-  //   }
-  // }, [dispatch, token.value, user.value])
+  const chapters = useAppSelector((state) =>
+    state.chapters.items.filter((ch) => ch.exerciseSlug === exerciseSlug)
+  );
 
   return (
     <div className="detailed-exercise">
@@ -40,17 +33,13 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
           <Link to={"/exercises"} className="detailed-exercise__breadcrumbs">
             Back to Exercises
           </Link>
+
           <div className="detailed-exercise__user">
-            <img
-              className="detailed-exercise__user-img"
-              src="/images/avatar_by_default.svg"
-              alt=""
-            />
+            <img className="detailed-exercise__user-img" src="/images/avatar_by_default.svg" alt="" />
             <button
               className="detailed-exercise__user-btn"
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              //using setTimeout to give some time for a click on the link to be processed before closing
               onBlur={() => setTimeout(() => setIsMenuOpen(false), 240)}
             >
               Admin
@@ -60,20 +49,10 @@ export const DetailedExercisePage: React.FC<Props> = ({ children, chapters }) =>
           {isMenuOpen && (
             <ul className="detailed-exercise__user-menu">
               <li className="detailed-exercise__user-menu-item">
-                <Link
-                  className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--settings"
-                  to="/settings/account"
-                >
-                  Settings
-                </Link>
+                <Link className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--settings" to="/settings/account">Settings</Link>
               </li>
               <li className="detailed-exercise__user-menu-item">
-                <Link
-                  className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--help"
-                  to="/help-center"
-                >
-                  Help Center
-                </Link>
+                <Link className="detailed-exercise__user-menu-btn detailed-exercise__user-menu-btn--help" to="/help-center">Help Center</Link>
               </li>
               <li className="detailed-exercise__user-menu-item">
                 <Link

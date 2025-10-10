@@ -1,37 +1,43 @@
-import { Outlet, } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setChaptersForExercise } from "../../store/features/chaptersSlice";
+import chaptersData from "../../../public/api/chapters.json";
 import { DetailedExercisePage } from "../DetailedExercisePage";
 
-
-const chapters = [
-    { 
-      id: 1, 
-      name: "Introduction", 
-      link: "introduction", 
-      completed: true },
-    {
-      id: 2,
-      name: "Species identification",
-      link: "species-identification",
-      completed: false,
-    },
-    {
-      id: 3,
-      name: "Protein identification",
-      link: "protein-identification",
-      completed: false,
-    },
-    {
-      id: 4,
-      name: "Suspect identification",
-      link: "suspect-identification",
-      completed: false,
-    },
-  ];
+const exerciseSlug = "the-poisonous-milkshake";
+const exerciseTitle = "The poisonous Milkshake";
 
 export const ThePoisonousMilkshakePage = () => {
-  return (
-      <DetailedExercisePage chapters={chapters}>
-        <Outlet />
-      </DetailedExercisePage>
+  const dispatch = useAppDispatch();
+
+  // Jeśli w store nie ma chapterów dla tego sluga, wczytujemy z JSON
+  const existing = useAppSelector((s) =>
+    s.chapters.items.some((c) => c.exerciseSlug === exerciseSlug)
+  );
+
+  useEffect(() => {
+    if (existing) return;
+
+    const found = (chaptersData as any[]).find(
+      (e) => e.exerciseSlug === exerciseSlug || e.exerciseTitle === exerciseTitle
     );
-  }
+
+    if (found) {
+      dispatch(
+        setChaptersForExercise({
+          exerciseTitle: found.exerciseTitle,
+          exerciseSlug: found.exerciseSlug,
+          chapters: found.chapters,
+        })
+      );
+    }
+  }, [dispatch, existing]);
+
+  // możesz też renderować "loading" zanim dane załadują się do store
+  return (
+    <DetailedExercisePage exerciseTitle={exerciseTitle} exerciseSlug={exerciseSlug}>
+      <Outlet />
+    </DetailedExercisePage>
+  );
+};
