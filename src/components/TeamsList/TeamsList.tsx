@@ -1,22 +1,20 @@
-import "./ChannelsList.scss";
+import "./TeamsList.scss";
 import classNames from "classnames";
-import { useAppSelector } from '../../store/hooks';
+import { TeamType } from "../../types/TeamType";
 
+type Props = { onDirectSelect: (id: string) => void, teams: TeamType[], activeButtonId: string };
 
-type Props = { onChannelSelect: (id: string) => void, activeButtonId: string };
-
-export const ChannelsList: React.FC<Props> = ({ onChannelSelect, activeButtonId }) => {
-  const channels = useAppSelector((state) => state.channels.channels);
+export const TeamsList: React.FC<Props> = ({ onDirectSelect,teams, activeButtonId }) => {
 
   const toggleButton = (id: string) => {
-    onChannelSelect(id)
+    onDirectSelect(id)
   };
 
   return (
     <section className="channels_list">
       <ul className="channels_list__list">
-        {channels.map(({ id, label }) => (
-          <li key={id} className="channels_list__element">
+        {teams.map(({ name, id }) => (
+          <li key={name} className="channels_list__element">
             <button
               type="button"
               className={classNames("channels_list__button", {
@@ -24,7 +22,7 @@ export const ChannelsList: React.FC<Props> = ({ onChannelSelect, activeButtonId 
               })}
               onClick={() => toggleButton(id)}
             >
-              #{label}
+              #{name}
             </button>
           </li>
         ))}

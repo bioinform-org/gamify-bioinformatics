@@ -1,0 +1,40 @@
+@use "../../styles/utils/vars";
+@use "../../styles/utils/extends";
+
+.channels_list {
+  width: 100%;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  &__list {
+    list-style: none;
+  }
+
+  &__element {
+    height: 40px;
+    line-height: 32px;
+    color: #333;
+    display: flex;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__button {
+    all: unset;
+    cursor: pointer;
+    width: 100%;
+    margin-right: 16px;
+    border-radius: 4px;
+    padding-left: 8px;
+
+    &--clicked {
+      background-color: vars.$c-light-teal-30;
+      font-weight: bold;
+      color: vars.$c-primary-teal;
+    }
+  }
+}
