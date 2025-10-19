@@ -5,7 +5,7 @@
     "steps": 4,
     "time": "1",
     "imagePath": "/images/milkshake-image.png",
-    "progress": null,
+    "progress": 25,
     "topic": "Molecular biology",
     "slug": "the-poisonous-milkshake"
   },

@@ -71,9 +71,6 @@ export const ExerciseCard: React.FC<Props> = ({
       >
         {progress === 100 ? "Completed!" : !progress ? "Start" : "Continue"}
       </Link>
-      <button onClick={() => console.log(chapters)}>
-        x
-      </button>
     </article>
   );
 };

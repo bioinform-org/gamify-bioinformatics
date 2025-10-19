@@ -73,7 +73,7 @@ export const App: React.FC = () => {
             <Route index element={<Navigate to={"exercises"} />} />
             <Route path="/exercises" element={<ExercisesPage />} />
             <Route
-              path="/the-poisonous-milkshake"
+              path="/:exerciseSlug"
               element={<ThePoisonousMilkshakePage />}
             >
               <Route index element={<Introduction />} />
