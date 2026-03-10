@@ -7,22 +7,22 @@
   gap: 16px;
 
   &__welcome {
-    grid-column: 1 / 10;
+    grid-column: 1 / -1; 
     border-radius: 16px;
     padding: 24px;
     background-color: vars.$c-yellow;
   }
 
   &__rewards {
-    grid-column: 1 / 10;
+    grid-column: 1 / -1;
   }
 
   &__progress {
-    grid-column: 1 / 6;
+    grid-column: 1 / 7; 
   }
 
   &__leaderboard {
-    grid-column: 6 / 10;
+    grid-column: 7 / -1;
   }
 
   &__welcome-title {
